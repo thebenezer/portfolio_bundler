@@ -61,8 +61,8 @@ module.exports = {
             // glb
             {
                 test: /\.(glb|gltf)$/,
-                // loader: 'file-loader',
-                type: 'asset/resource',
+                loader: 'file-loader',
+                // type: 'asset/resource',
                 generator:{
                     filename: 'assets/models/[name][ext]'
                 }
