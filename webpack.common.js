@@ -1,28 +1,19 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path')
 
 module.exports = {
-    entry: path.resolve(__dirname, './src/js/script.js'),
+    entry: {
+        main: {
+            import: path.resolve(__dirname, './src/js/script.js'),
+            // dependOn: 'vendor'
+        },
+        // vendor: path.resolve(__dirname, './src/js/vendor.js'),
+    },
+    // optimization: {
+    //     splitChunks: {
+    //       chunks: 'all',
+    //     },
+    //   },
 
-    plugins: [new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, './src/index.html'),
-        // minify: true
-    })],
-
-    // devtool: 'source-map',
-    // plugins:
-    // [
-    //     new CopyWebpackPlugin({
-    //         patterns: [
-    //             { from: path.resolve(__dirname, '../static') }
-    //         ]
-    //     }),
-    //     new HtmlWebpackPlugin({
-    //         template: path.resolve(__dirname, '../src/index.html'),
-    //         minify: true
-    //     }),
-    //     new MiniCSSExtractPlugin()
-    // ],
     module:
     {
         rules:
@@ -32,14 +23,19 @@ module.exports = {
                 test: /\.(html)$/,
                 use: ['html-loader']
             },
-
-            // CSS
+            // JS
             {
-                test: /\.css$/,
-                use:[ 'style-loader','css-loader' ]
-                // use:[ MiniCSSExtractPlugin.loader,'css-loader' ]
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                      presets: [
+                        ['@babel/preset-env']
+                      ]
+                    }
+                }
             },
-
             // Images
             {
                 test: /\.(jpg|png|gif|svg)$/,
