@@ -14,7 +14,7 @@ module.exports = merge(common,{
     output:
     {
         filename: '[name].[contenthash].js',
-        path: path.resolve(__dirname, './build'),
+        path: path.resolve(__dirname, '../build'),
         assetModuleFilename: 'assets/images/[name][hash][ext]'
     },
     optimization: {

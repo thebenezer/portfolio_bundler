@@ -9,12 +9,12 @@ module.exports = merge(common,{
     output:
     {
         filename: '[name].js',
-        path: path.resolve(__dirname, './build'),
+        path: path.resolve(__dirname, '../build'),
         // assetModuleFilename: 'assets/images/[name].[ext]'
     },
     plugins: [
         new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, './src/index.html'),
+        template: path.resolve(__dirname, '../src/index.html'),
         // minify: true
     })],
     module:

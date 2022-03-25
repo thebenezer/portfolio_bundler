@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = {
     entry: {
         main: {
-            import: path.resolve(__dirname, './src/js/script.js'),
+            import: path.resolve(__dirname, '../src/js/script.js'),
             // dependOn: 'vendor'
         },
         // vendor: path.resolve(__dirname, './src/js/vendor.js'),
