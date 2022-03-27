@@ -2,17 +2,14 @@ const path = require('path')
 
 module.exports = {
     entry: {
-        main: {
-            import: path.resolve(__dirname, '../src/js/script.js'),
-            // dependOn: 'vendor'
-        },
-        // vendor: path.resolve(__dirname, './src/js/vendor.js'),
+        main: path.resolve(__dirname, '../src/js/script.js'),
+        character: path.resolve(__dirname, '../src/js/characterController.js'),
+        joystick:path.resolve(__dirname, '../src/js/touchControls.js'),
+        // vendor:{
+        //     import: path.resolve(__dirname, '../src/js/vendor.js'),
+        // } 
     },
-    // optimization: {
-    //     splitChunks: {
-    //       chunks: 'all',
-    //     },
-    //   },
+    // devtool: 'source-map',
 
     module:
     {

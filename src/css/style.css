@@ -27,7 +27,7 @@
     letter-spacing: 1px;
 }
 body{
-    background-color: var(--bee);
+    background-color: var(--backgnd);
     color: var(--foregnd);
     display: flex;
     flex-direction: column;
@@ -48,8 +48,8 @@ nav{
 .logo{
   position: absolute;
   z-index: 2;
-  bottom:5%;
-  left:5%;
+  /* bottom:5%;
+  left:5%; */
 }
 .logo a{
   height: 100%;

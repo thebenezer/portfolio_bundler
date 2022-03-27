@@ -1,5 +1,5 @@
 import '../css/style.css'
-import './vendor.js';
+// import './vendor.js';
 
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
@@ -9,7 +9,13 @@ import * as dat from 'lil-gui';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as CANNON from 'cannon-es'
 import CharacterController from './characterController.js';
+
+
 const hitSound = new Audio(require('../assets/hit.mp3'));
+
+
+
+
 
 /*
 * Debug GUI
@@ -24,26 +30,16 @@ const debugObject = {
 /*
 * Canvas
 */
-const canvas = document.querySelector('#canvas' );
-let stats,info,plane;
-let camera, scene, renderer,controls;
-let world;
 
-const objectsToUpdate=[];
-let character,characterBoxMesh;
-let characterControllerInstance;
-const keysPressed = {ArrowUp:false,ArrowDown:false,ArrowLeft:false,ArrowRight:false, ' ':false};
-let shiftToggle=false;
-var logo = document.querySelector(".logo");
 logo.addEventListener("touchstart", handleStart, false);
 logo.addEventListener("touchend", handleEnd, false);
 function handleStart(e){
     e.preventDefault();
-    keysPressed.ArrowUp=true
+    // keysPressed.ArrowUp=true
 }
 function handleEnd(e){
     e.preventDefault();
-    keysPressed.ArrowUp=false
+    // keysPressed.ArrowUp=false
 }
 const clock=new THREE.Clock();
 function hasWebGL() {
