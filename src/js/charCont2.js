@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 const DIRECTIONS=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
 import * as CANNON from 'cannon-es'
-import CharacterInput from './characterInput'
+
 
 export default class CharacterController{
 
@@ -18,7 +18,7 @@ export default class CharacterController{
 
     constructor(character,animations,camera,orbitControls,world){
         this.canJump = true
-        this._input=new CharacterInput();    
+        this.wantsJump=false    
         this.character = character;
         this.actions = {};
         this.mixer = new THREE.AnimationMixer( character );
@@ -42,7 +42,7 @@ export default class CharacterController{
             position: new CANNON.Vec3(0, 3, 30),
             shape: shape,
             allowSleep: false,
-            linearDamping:0.999,
+            linearDamping:0.99,
             angularDamping:1
             // material: defaultMaterial
         })
@@ -56,32 +56,33 @@ export default class CharacterController{
         this.updateCameraTarget(0,0,0);
     }
 
-    update(delta) {
+    update( keysPressed, shiftToggle,delta,direction=0) {
         // console.log(this.character.position.y)
         if(this.character.position.y<-10){
             this.body.position.y=10
             // console.log('yes')
         }
 
-        const directionPressed = DIRECTIONS.some(key => this._input.keysPressed[key] == true) || this._input._inputTouch.touchInputToggle
+        const directionPressed = DIRECTIONS.some(key => keysPressed[key] == true)
         var play = 'idle';
-        if (directionPressed && (this._input.shiftToggle||this._input._inputTouch.touchRun)) {
+        if (directionPressed && shiftToggle) {
             play = 'run'
         } else if (directionPressed) {
             play = 'walk'
         }
-        if((this._input.keysPressed[' ']||this._input._inputTouch.touchJump) && this.canJump){
+        if(this.wantsJump && this.canJump){
             // this.camera.position.y =this.character.position.y
-            // moveY = 7*delta*100  
-            this.body.velocity.y=15
+            // moveY = 7*delta*100
+            this.body.velocity.y=10
+            this.wantsJump=false
             this.canJump=false
-            this._input._inputTouch.touchJump=false;
             play='fall'
         }
 
         this.fadeToAction(play)
         this.mixer.update(delta)
 
+        // console.log(this.canJump,this.wantsJump )
         let moveX=0,moveZ=0,moveY=0;
         
         if (this.currentAction == 'run' || this.currentAction == 'walk') {
@@ -90,10 +91,10 @@ export default class CharacterController{
                     (this.camera.position.x - this.character.position.x), 
                     (this.camera.position.z - this.character.position.z))
             // diagonal movement angle offset
-            var directionOffset = this._input._directionOffset()
+            // var directionOffset = this.directionOffset(keysPressed)
 
             // rotate character
-            this.rotateQuarternion.setFromAxisAngle(this.rotateAngle, angleYCameraDirection + directionOffset)
+            this.rotateQuarternion.setFromAxisAngle(this.rotateAngle,angleYCameraDirection+direction)
             this.body.quaternion.copy(this.character.quaternion)
             // this.character.quaternion.rotateTowards(this.body.quaternion, 0.1)
             this.character.quaternion.rotateTowards(this.rotateQuarternion, delta*10)
@@ -103,7 +104,7 @@ export default class CharacterController{
             this.camera.getWorldDirection(this.walkDirection)
             // this.walkDirection.y = 0
             this.walkDirection.normalize()
-            this.walkDirection.applyAxisAngle(this.rotateAngle, directionOffset)
+            this.walkDirection.applyAxisAngle(this.rotateAngle, direction)
             // console.log(this.walkDirection)
 
             
@@ -111,8 +112,6 @@ export default class CharacterController{
             const velocity = this.currentAction == 'run' ? this.runVelocity : this.walkVelocity
      
             // move character & camera
-            moveX=this.body.position.x,moveZ=this.body.position.z;
-
             moveX = -this.walkDirection.x * velocity * delta
             moveZ = -this.walkDirection.z * velocity * delta
             // this.body.interpolatedPosition.set(this.body.position.x+moveY,this.body.position.y,this.body.position.z+moveZ)
@@ -128,6 +127,7 @@ export default class CharacterController{
         // else{
         //     this.body.velocity.x = 0
         //     this.body.velocity.z = 0
+        //     this.body.angularVelocity.set(0,0,0)
         // }
         this.character.position.x = this.body.position.x
         this.character.position.y = this.body.position.y-0.5
@@ -141,9 +141,9 @@ export default class CharacterController{
         this.camera.position.x += moveX
         this.camera.position.z += moveZ
         // this.camera.position.y += moveY
-        if (this.camera.position.y<this.character.position.y+1){
-            this.camera.position.y=this.character.position.y+1
-        }
+        // if (this.camera.position.y<this.character.position.y+1){
+        //     this.camera.position.y=this.character.position.y+1
+        // }
         // console.log(this.camera.position,this.character.position)
         // update camera target
         this.cameraTarget.x = this.character.position.x
@@ -177,6 +177,31 @@ export default class CharacterController{
         }
         this.currentAction = 'idle' ;
         this.actions[this.currentAction].play();
+    }
+    directionOffset(keysPressed) {
+        var directionOffset = 0 // w
+
+        if (keysPressed['ArrowDown']) {
+            if (keysPressed['ArrowRight']) {
+                directionOffset  = Math.PI / 4 
+            } else if (keysPressed['ArrowLeft']) {
+                directionOffset = - Math.PI / 4 
+            }
+        } else if (keysPressed['ArrowUp']) {
+            if (keysPressed['ArrowRight']) {
+                directionOffset = Math.PI / 4 + Math.PI / 2 
+            } else if (keysPressed['ArrowLeft']) {
+                directionOffset = -Math.PI / 4 - Math.PI / 2 
+            } else {
+                directionOffset = Math.PI 
+            }
+        } else if (keysPressed['ArrowRight']) {
+            directionOffset = Math.PI / 2 
+        } else if (keysPressed['ArrowLeft']) {
+            directionOffset = - Math.PI / 2 
+        }
+
+        return directionOffset
     }
 
 }

@@ -8,7 +8,7 @@ import * as dat from 'lil-gui';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as CANNON from 'cannon-es'
-import CharacterController from './characterController.js';
+import CharacterController from './characterController';
 
 
 const hitSound = new Audio(require('../assets/hit.mp3'));
@@ -30,17 +30,18 @@ const debugObject = {
 /*
 * Canvas
 */
+const canvas = document.querySelector('#canvas' );
+let stats,info,plane;
+let camera, scene, renderer,controls;
+let world,dir;
 
-logo.addEventListener("touchstart", handleStart, false);
-logo.addEventListener("touchend", handleEnd, false);
-function handleStart(e){
-    e.preventDefault();
-    // keysPressed.ArrowUp=true
-}
-function handleEnd(e){
-    e.preventDefault();
-    // keysPressed.ArrowUp=false
-}
+const objectsToUpdate=[];
+let character,characterBoxMesh;
+let characterControllerInstance;
+const keysPressed = {ArrowUp:false,ArrowDown:false,ArrowLeft:false,ArrowRight:false, ' ':false};
+let shiftToggle=false;
+var logo = document.querySelector(".logo");
+
 const clock=new THREE.Clock();
 function hasWebGL() {
     const gl =canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
@@ -248,7 +249,7 @@ function render() {
     if(characterControllerInstance){
         characterControllerInstance.body.addEventListener('collide', collisionJumpCheck)
         characterControllerInstance.world.step(1/120,dt);
-        characterControllerInstance.update(keysPressed,shiftToggle,dt)
+        characterControllerInstance.update(dt)
         // characterBoxMesh.position.copy(characterControllerInstance.body.position)
         // characterBoxMesh.quaternion.copy(characterControllerInstance.body.quaternion)
     }
@@ -265,31 +266,6 @@ function render() {
 
 
 
-
-
-document.addEventListener('keydown', (e) => {
-    shiftToggle=e.shiftKey;
-    if(e.key == ' ' && characterControllerInstance.canJump){
-        // characterControllerInstance.canJump=false
-        characterControllerInstance.wantsJump=true
-    }
-    if (e.key in keysPressed){
-        keysPressed[e.key]=true;
-    }
-}, false);
-document.addEventListener('keyup', (e) => {
-    shiftToggle=e.shiftKey;
-    if (e.key in keysPressed){
-        keysPressed[e.key]=false;
-    }
-    if(e.key == ' '){
-        characterControllerInstance.wantsJump=false
-        // characterControllerInstance.canJump=true
-    }
-}, false);
-
-
-
 function setupOrbitControls() {
     // Setup orbital controls
     controls = new OrbitControls(camera, renderer.domElement);
@@ -301,7 +277,7 @@ function setupOrbitControls() {
     controls.dampingFactor = 0.1;
     // controls.screenSpacePanning = true;
     controls.minDistance = 2.4;
-    // controls.maxDistance = 20;
+    controls.maxDistance = 20;
     // controls.maxPolarAngle = Math.PI/2;
     controls.update();
 

@@ -10,18 +10,9 @@
 	<style>
 		#info{
 			position: absolute;
-			display: none;
+			display: block;
 		}
-		#zone_joystick{
-			position: absolute;
-			left: 70px;
-			bottom: 70px;
-			z-index: 3;
-		}
-		#zone_joystick .nipple .front{
-			background-color: brown;
-			display: none;
-		}
+		
 	</style>
 </head>
 <body>
@@ -31,24 +22,14 @@
 		</a>
 	</div>
     <canvas  id="canvas"></canvas>
-	<div id="zone_joystick"></div>
+	<div id="zone_joystick">
+		<img src="./assets/images/arrows.svg" alt="">
+	</div>
+	<img src="./assets/images/select3.svg" id="interractButton"/>
+	<img src="./assets/images/jump.svg" id="jumpButton"/>
 
 	<div id="info"></div>
-	<script>
-		const canvas = document.querySelector('#canvas' );
-		let stats,info,plane;
-		let camera, scene, renderer,controls;
-		let world;
 
-		const objectsToUpdate=[];
-		let character,characterBoxMesh;
-		let characterControllerInstance;
-		const keysPressed = {ArrowUp:false,ArrowDown:false,ArrowLeft:false,ArrowRight:false, ' ':false};
-		let shiftToggle=false;
-		var logo = document.querySelector(".logo");
-		var joystickDOM = document.getElementById('zone_joystick');
-
-	</script>
 <!-- <script src="/dist/bundle.js"></script> -->
 </body>
 </html>

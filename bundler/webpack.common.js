@@ -2,9 +2,9 @@ const path = require('path')
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, '../src/js/script.js'),
+        main: path.resolve(__dirname, '../src/js/main.js'),
         character: path.resolve(__dirname, '../src/js/characterController.js'),
-        joystick:path.resolve(__dirname, '../src/js/touchControls.js'),
+        // joystick:path.resolve(__dirname, '../src/js/touchControls.js'),
         // vendor:{
         //     import: path.resolve(__dirname, '../src/js/vendor.js'),
         // } 

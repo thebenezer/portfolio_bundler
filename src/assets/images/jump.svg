@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 12.7 12.7"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (b8e25be8, 2022-02-05)"
+   sodipodi:docname="jump.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="3.2207873"
+     inkscape:cx="2.1733817"
+     inkscape:cy="4.5020048"
+     inkscape:window-width="1496"
+     inkscape:window-height="905"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1315"
+       transform="rotate(-90,6.729408,6.729408)">
+      <g
+         id="g399"
+         transform="matrix(0.12526123,0,0,0.12526123,1.0363083,-0.68226567)"
+         style="fill:#f9f9f9">
+        <g
+           id="g395"
+           style="fill:#f9f9f9"
+           transform="matrix(0,0.035433,-0.035433,0,457.23,-213.15)">
+          <path
+             id="path393"
+             sodipodi:nodetypes="ccccc"
+             d="m 7601,11063 -1251,1249 1252,-1999 1248,2001 z"
+             style="fill:#f9f9f9" />
+        </g>
+        <g
+           id="g397"
+           style="fill:#f9f9f9;stroke:#683f54"
+           transform="matrix(0,0.035433,-0.035433,0,457.12,-213.04)" />
+      </g>
+      <g
+         id="g3160"
+         transform="matrix(0.08201932,0,0,0.08201932,-0.03370676,1.7453699)"
+         style="fill:#f9f9f9">
+        <g
+           id="g3152"
+           style="fill:#f9f9f9"
+           transform="matrix(0,0.035433,-0.035433,0,457.23,-213.15)">
+          <path
+             id="path3154"
+             sodipodi:nodetypes="ccccc"
+             d="m 7601,11063 -1251,1249 1252,-1999 1248,2001 z"
+             style="fill:#f9f9f9" />
+        </g>
+        <g
+           id="g2604"
+           style="fill:#f9f9f9;stroke:#683f54"
+           transform="matrix(0,0.035433,-0.035433,0,457.12,-213.04)" />
+      </g>
+    </g>
+  </g>
+</svg>
