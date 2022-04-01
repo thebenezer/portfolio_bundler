@@ -39,7 +39,7 @@ export default class CharacterController{
 
         this.body = new CANNON.Body({
             mass: 1,
-            position: new CANNON.Vec3(0, 3, 30),
+            position: new CANNON.Vec3(-2, 3, 33),
             shape: shape,
             allowSleep: false,
             linearDamping:0.999,
@@ -141,9 +141,9 @@ export default class CharacterController{
         this.camera.position.x += moveX
         this.camera.position.z += moveZ
         // this.camera.position.y += moveY
-        if (this.camera.position.y<this.character.position.y+1){
-            this.camera.position.y=this.character.position.y+1
-        }
+        // if (this.camera.position.y<this.character.position.y+0.5){
+        //     this.camera.position.y=this.character.position.y+0.5
+        // }
         // console.log(this.camera.position,this.character.position)
         // update camera target
         this.cameraTarget.x = this.character.position.x

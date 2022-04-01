@@ -66,11 +66,15 @@ margin: auto;
   -ms-user-select: none;
   user-select: none;
   touch-action: none;
+  transition: all 0.5s ease;
 }
 #interractButton{
   right:80px;
 }
-
+.highlight{
+  /* display: none; */
+  border: 2px rgb(0, 238, 255) solid !important;
+}
 body{
     background-color: var(--backgnd);
     color: var(--foregnd);

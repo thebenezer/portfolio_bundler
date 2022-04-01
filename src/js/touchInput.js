@@ -41,38 +41,33 @@ export default class ControllerTouchInput {
     this.joystick.on('start end', (evt, data)=>this.toggleMovement(evt,data));
     this.joystick.on('move',(evt,data)=>this.modifyDir(evt,data));
   }
+  toggleMovement(evt,data) {
+    this.joystickDOM.classList.remove('highlight')
+    this.touchInputToggle=!this.touchInputToggle
+  }
   modifyDir(evt,data){
-    // data.direction.x=
+    this.joystickDOM.classList.add('highlight')
     this.dir=data.angle.radian+Math.PI/2
-    // console.log(data.distance);
     if(data.distance>40){
       this.touchRun=true
     }
     else{
       this.touchRun=false
-
     }
-    // return this.dir
   }
-  toggleMovement(evt,data) {
-    // console.log(evt)
-    this.touchInputToggle=!this.touchInputToggle
-    // console.log(this.touchInputToggle)
-    // console.log
-    // switch(evt.type){
-    //   // case 'start':keysPressed['ArrowUp']=true;break;
-    //   // case 'end':keysPressed['ArrowUp']=false;break;
-    // }
-    // keysPressed['ArrowUp']
-  }
+
   _setupEventListeners(){
     this.jumpButton.addEventListener('touchstart',()=>{
       this.touchJump=!this.touchJump;
-    });
+      this.jumpButton.classList.add('highlight')
+    },false);
+    this.jumpButton.addEventListener('touchend',()=>{
+      this.jumpButton.classList.remove('highlight')
+    },false);
     this.interractButton.addEventListener('click',()=>{
       console.log('select')
       // this.touchJump=true;
-    });
+    },false);
     // this.runButton.addEventListener('touchstart',(e)=>{
     //   // this.shifttoggle=true;
     //   e.preventDefault();
