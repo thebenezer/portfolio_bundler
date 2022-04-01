@@ -68,8 +68,8 @@ function init() {
     // renderer.toneMappingExposure=0.05
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
-    // renderer.shadowMap.enabled=true
-    // renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+    renderer.shadowMap.enabled=true
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
 
     // ***** LOADERS ****** //
@@ -109,8 +109,8 @@ function init() {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3)
     directionalLight.castShadow = true
 
-    directionalLight.shadow.mapSize.width = 1024
-    directionalLight.shadow.mapSize.height = 1024
+    directionalLight.shadow.mapSize.width = 2048
+    directionalLight.shadow.mapSize.height = 2048
 
     directionalLight.shadow.camera.near = 1
     directionalLight.shadow.camera.far = 200
@@ -121,7 +121,7 @@ function init() {
     directionalLight.shadow.camera.left = - 50
 
     directionalLight.position.set(-50, 70, 70)
-    gui.add(directionalLight, 'intensity').min(0).max(1).step(0.001)
+    gui.add(directionalLight, 'intensity').min(0).max(5).step(0.001)
     gui.add(directionalLight.position, 'x').min(- 500).max(500).step(1)
     gui.add(directionalLight.position, 'y').min(- 500).max(500).step(1)
     gui.add(directionalLight.position, 'z').min(- 500).max(500).step(1)
@@ -133,6 +133,8 @@ function init() {
 
     // ***** RAYCASTER ****** //
     raycaster = new THREE.Raycaster();
+    raycaster.near=0
+    raycaster.far=5
     let geo=new THREE.PlaneBufferGeometry(5, 5);
     const proj1 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     proj1.rotation.x = - Math.PI * 0.5
@@ -223,10 +225,6 @@ function init() {
         }
     )
     world.defaultContactMaterial = defaultContactMaterial
-    
-
-
-   
 
 
     // Baked material
@@ -237,7 +235,7 @@ function init() {
     const landMaterial=new THREE.MeshStandardMaterial({
         color: 0xffffff,
         metalness: 0.5,
-        roughness: 0,
+        roughness: 1,
     })
 
     // ***** MODELS ****** //
@@ -257,18 +255,15 @@ function init() {
                 // scene.add( helper );
 
                 const boxShape = new CANNON.Box(size.divideScalar(2))
-
                 const boxBody = new CANNON.Body({
                 mass: 0,
                 position: center,
                 shape: boxShape,
                 })
                 world.addBody(boxBody)
-                // interractObjects.push(child)
-                // console.log(child)
                 // child.material=landMaterial
-                // child.receiveShadow=true
-                // child.castShadow=true
+                child.receiveShadow=true
+                child.castShadow=true
             }
         })
         scene.add( gltf.scene );
@@ -284,14 +279,8 @@ function init() {
         gltf.scene.traverse((child)=>
         {
             // child.material = characterMaterial;
-            // console.log(child)
-            if (child.type==='Mesh'){
-                child.material=landMaterial
-                // child.receiveShadow=true
-                child.castShadow=true
-            }
             // child.material=landMaterial
-            //     child.castShadow=true
+                // child.castShadow=true
         })
         character.scale.set(0.2,0.2,0.2)
         scene.add( character );
@@ -345,7 +334,7 @@ function render() {
         characterControllerInstance.world.step(1/120,dt);
         characterControllerInstance.update(dt)
 
-        raycaster.set(new THREE.Vector3(characterControllerInstance.character.position.x,characterControllerInstance.character.position.y+5,characterControllerInstance.character.position.z),new THREE.Vector3(0,-1,0))
+        raycaster.set(new THREE.Vector3(characterControllerInstance.character.position.x,characterControllerInstance.character.position.y+2,characterControllerInstance.character.position.z),new THREE.Vector3(0,-1,0))
         rayCheck();
     }
     
@@ -395,7 +384,7 @@ function setupOrbitControls() {
     controls.dampingFactor = 0.1;
     // controls.screenSpacePanning = true;
     controls.minDistance = 2.4;
-    controls.maxDistance = 10;
+    // controls.maxDistance = 10;
     // controls.maxPolarAngle = Math.PI/2;
     controls.update();
 

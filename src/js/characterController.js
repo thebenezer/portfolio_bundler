@@ -48,6 +48,8 @@ export default class CharacterController{
         })
         this.world.addBody(this.body)
         
+        this.oldObjectPosition = new THREE.Vector3();
+        this.character.getWorldPosition(this.oldObjectPosition);
 
         this.camera.position.x=this.character.position.x;
         this.camera.position.y=this.character.position.y+3;
@@ -62,6 +64,7 @@ export default class CharacterController{
             this.body.position.y=10
             // console.log('yes')
         }
+        this.character.getWorldPosition(this.oldObjectPosition);
 
         const directionPressed = DIRECTIONS.some(key => this._input.keysPressed[key] == true) || this._input._inputTouch.touchInputToggle
         var play = 'idle';
@@ -138,18 +141,25 @@ export default class CharacterController{
     }
     updateCameraTarget(moveX, moveZ,moveY) {
         // move camera
-        this.camera.position.x += moveX
-        this.camera.position.z += moveZ
-        // this.camera.position.y += moveY
-        // if (this.camera.position.y<this.character.position.y+0.5){
-        //     this.camera.position.y=this.character.position.y+0.5
-        // }
-        // console.log(this.camera.position,this.character.position)
-        // update camera target
+        // this.camera.position.x += moveX
+        // this.camera.position.z += moveZ
+        // // this.camera.position.y += moveY
+        // // if (this.camera.position.y<this.character.position.y+0.5){
+        // //     this.camera.position.y=this.character.position.y+0.5
+        // // }
+        // // console.log(this.camera.position,this.character.position)
+        // // update camera target
         this.cameraTarget.x = this.character.position.x
         this.cameraTarget.y = this.character.position.y+2
         this.cameraTarget.z = this.character.position.z
         this.orbitControls.target = this.cameraTarget
+
+        const newObjectPosition = new THREE.Vector3();
+        this.character.getWorldPosition(newObjectPosition);
+
+        const delta = newObjectPosition.clone().sub(this.oldObjectPosition);
+
+        this.camera.position.add(delta);
 
     }
     fadeToAction( actionName ) {
