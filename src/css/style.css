@@ -25,7 +25,62 @@
     letter-spacing: 1px;
     
 }
+body{
+  background-color: var(--backgnd);
+  color: var(--foregnd);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
 
+.logo{
+position: absolute;
+z-index: 2;
+/* bottom:5%;
+left:5%; */
+}
+.logo a{
+height: 100%;
+}
+.logo a img{
+margin-top: 5px;
+width: 50px;
+}
+
+#canvas{
+display: block;
+position: absolute;
+top: 0%;
+right: 0%;
+width: 100%;
+height: 100%;
+/*To remove on tap blue color && select*/
+-webkit-tap-highlight-color: transparent;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+touch-action: none;
+}
+.loading-bar{
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height:2px;
+  z-index: 3;
+  background-color: var(--backgnd);
+  transform: scaleX(0);
+  transform-origin: top left;
+  will-change: transform;
+}
+.loading-bar.endload{
+  transform-origin: top right;
+  transform: scaleX(0);
+  transition: transform 1.5s ease-in-out;
+}
 #zone_joystick{
   position: absolute;
   display: flex;
@@ -42,11 +97,15 @@
   -ms-user-select: none;
   user-select: none;
   touch-action: none;
+  border: 2px rgba(255, 255, 255, 0) solid ;
+  will-change: border;
+  transition: all 0.5s ease;
 }
 #zone_joystick img{
 margin: auto;
 }
 #interractButton,#jumpButton,#runButton{
+  display: block;
   position: absolute;
   bottom: 40px;
   right: 25px;
@@ -67,6 +126,7 @@ margin: auto;
   user-select: none;
   touch-action: none;
   transition: all 0.5s ease;
+  will-change: border;
 }
 #interractButton{
   right:80px;
@@ -75,239 +135,59 @@ margin: auto;
   /* display: none; */
   border: 2px rgb(0, 238, 255) solid !important;
 }
-body{
-    background-color: var(--backgnd);
-    color: var(--foregnd);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    overflow: hidden;
-}
 
-/* *************NAV STYLING************** */
-nav{
-    display: flex;
-    position: absolute;
-    width: 100%;
-    z-index: 2;
-    justify-content: space-around;
-    padding: 15px;
-    transition: all 1s ease;
-}
-.logo{
-  position: absolute;
-  z-index: 2;
-  /* bottom:5%;
-  left:5%; */
-}
-.logo a{
-  height: 100%;
-}
-.logo a img{
-  margin-top: 5px;
-  width: 50px;
-}
-.navlinks{
-    flex: 1;
-    /* margin: auto; */
-    display: flex;
-    /* align-items: flex-end; */
-    justify-content: flex-end;
-}
-.navlinks li{
-  margin: 0px 0px 0px 50px;
-}
-.link{
-    list-style: none;
-    /* margin: auto 0 auto 90px; */
-}
-.link a{
-    position: relative;
-    color: var(--foregnd);
-}
-.link a::before {
-    content: '';
-    background: var(--foregnd);
-    position:absolute;
-    width: 100%;
-    height: 1px;
-    top: 100%;
-    left: 0;
-    height: 1px;
-    transform-origin: 100% 50%;
-    transform: scale3d(0, 1, 1);
-    transition: transform 0.3s;
-}
-.link a:hover::before {
-    transform-origin: 0% 50%;
-    transform: scale3d(1, 1, 1);
-}
-
-.clip-caption {
-  width: 100%;
-  color: #fff;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-  text-align: center;
-}
-
-/* *************Contact Form STYLING************** */
-
-.contactwindow{
-    display: none;
-}
-
-
-/* *************Landing STYLING************** */
-
-.landing-section{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -10%);
-  /* border: 2px solid #FFFF00; */
-  /* display: flex; */
-  /* justify-content: space-around; */
-  /* margin: auto; */
-  /* margin-top: 50vh; */
-  text-align: center;
-  z-index: -1 ;
-}
-.content{
-    /* flex:1; */
-    margin: auto;
-    z-index: 1;
-}
-
-#canvas{
-  display: block;
+.projects{
+  z-index: -1;
   position: absolute;
   top: 0%;
   right: 0%;
-  width: 100%;
+  width:100%;
   height: 100%;
-  /*To remove on tap blue color && select*/
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  touch-action: none;
 }
-.link{
-  color: var(--foregnd);
+.proj1,.proj2,.proj3,.proj4,.proj5{
+  display: block;
+  /* margin: 20px; */
+  position: absolute;
+  z-index: -1;
+  top: 0%;
+  right: 0%;
+  width:100%;
+  height: 100%;
+  background-color: #b6e3ff;
+  opacity: 0;
+}
+.closeProj{
+  z-index: 3;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.proj2{
+  background-color: #55a93b;
+}
+.proj3{
+  background-color: #665cff;
+}
+.proj4{
+  background-color: #2d0bff;
+}
+.proj5{
+  background-color: #ffc725;
+}
+.slider-nav {
+  z-index: 5;
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  top: 50%;
+  width: 100%;
+}
+.prev,.next{
+  /* margin: 0px 10px 30px 10px; */
+  /* align-self: flex-end; */
+  /* background-color: chartreuse; */
 
 }
-
-
-@media screen and (max-width:768px){
-    .hamburger{
-        position: absolute;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-    }
-    .line1,.line2,.line3{
-        display: block;
-        content: "";
-        width: 15px;
-        height: 4px;
-        background-color: backgnd;
-        margin: 5px auto 5px auto;
-        transition: all 0.5s ease;
-    }
-    .line2{
-        width: 30px;
-    }
-}
-
-/* .cta {
-    padding: 0.6em 2em;
-    border: 1px solid var(--foregnd);
-    color: var(--foregnd);
-    background: var(--backgnd);
-    backdrop-filter: blur(10px);
-    cursor: pointer;
-    position: relative;
-    z-index: 0;
-  } */
-  
-    /* background: linear-gradient(
-      45deg,
-      #ff0000,
-      #ff7300,
-      #fffb00,
-      #48ff00,
-      #00ffd5,
-      #002bff,
-      #7a00ff,
-      #ff00c8,
-      #ff0000
-    ); */
-  /* .cta:before {
-    content: "";
-  
-    background: linear-gradient(
-      45deg,
-        #ffee32,
-        #f3f3f3,
-        #a1a1a1,
-        #515151,
-        #ffd100
-
-    );
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    background-size: 400%;
-    z-index: -1;
-    filter: blur(5px);
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    animation: glowingcta 20s linear infinite;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
-    border-radius: 10px;
-  }
-  
-  @keyframes glowingcta {
-    0% {
-      background-position: 0 0;
-    }
-    50% {
-      background-position: 400% 0;
-    }
-    100% {
-      background-position: 0 0;
-    }
-  }
-  
-  .cta:active {
-    color: #000;
-  }
-  
-  .cta:active:after {
-    background: transparent;
-  }
-  
-  .cta:hover:before {
-    opacity: 1;
-  }
-  
-  .cta:after {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #191919;
-    left: 0;
-    top: 0;
-    border-radius: 10px;
-  }
- */

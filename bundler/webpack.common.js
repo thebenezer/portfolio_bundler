@@ -3,7 +3,8 @@ const path = require('path')
 module.exports = {
     entry: {
         main: path.resolve(__dirname, '../src/js/main.js'),
-        character: path.resolve(__dirname, '../src/js/characterController.js'),
+        nonthree: path.resolve(__dirname, '../src/js/nonthree.js')
+        // character: path.resolve(__dirname, '../src/js/characterController.js'),
         // joystick:path.resolve(__dirname, '../src/js/touchControls.js'),
         // vendor:{
         //     import: path.resolve(__dirname, '../src/js/vendor.js'),
@@ -60,6 +61,15 @@ module.exports = {
                     filename: 'assets/models/[name][ext]'
                 }
             },
+            // Shaders
+            {
+                test: /\.(glsl|vs|fs|vert|frag)$/,
+                exclude: /node_modules/,
+                use: [
+                    'raw-loader',
+                    'glslify-loader'
+                ]
+            }
         ]
     }
 }

@@ -46,7 +46,7 @@ module.exports = merge(common,{
         },
     },
     plugins: [
-            new BundleAnalyzerPlugin(),
+        new BundleAnalyzerPlugin(),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../src/index.html'),
             minify: {

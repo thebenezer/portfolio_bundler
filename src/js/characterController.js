@@ -39,10 +39,10 @@ export default class CharacterController{
 
         this.body = new CANNON.Body({
             mass: 1,
-            position: new CANNON.Vec3(-2, 3, 33),
+            position: new CANNON.Vec3(-2, 3, 0),
             shape: shape,
             allowSleep: false,
-            linearDamping:0.999,
+            linearDamping:0.99,
             angularDamping:1
             // material: defaultMaterial
         })
@@ -53,7 +53,7 @@ export default class CharacterController{
 
         this.camera.position.x=this.character.position.x;
         this.camera.position.y=this.character.position.y+3;
-        this.camera.position.z=this.character.position.z+40;
+        this.camera.position.z=this.character.position.z+10;
         this.orbitControls = orbitControls;
         this.updateCameraTarget(0,0,0);
     }
@@ -118,20 +118,12 @@ export default class CharacterController{
 
             moveX = -this.walkDirection.x * velocity * delta
             moveZ = -this.walkDirection.z * velocity * delta
-            // this.body.interpolatedPosition.set(this.body.position.x+moveY,this.body.position.y,this.body.position.z+moveZ)
             this.body.velocity.x=-this.walkDirection.x * velocity
-            // this.body.velocity.y=0.5
             this.body.velocity.z=-this.walkDirection.z * velocity
-            // moveX = moveX-this.body.position.x
-            // moveZ = moveZ-this.body.position.z
-            // this.character.position.x += moveX
-            // this.character.position.z += moveZ
-            // console.log(this.camera.position) 
         }
-        // else{
-        //     this.body.velocity.x = 0
-        //     this.body.velocity.z = 0
-        // }
+        else{
+            this.body.velocity.lerp(this.body.velocity,1,new CANNON.Vec3(0,0,0))
+        }
         this.character.position.x = this.body.position.x
         this.character.position.y = this.body.position.y-0.5
         this.character.position.z = this.body.position.z
