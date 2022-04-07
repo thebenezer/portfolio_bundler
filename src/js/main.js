@@ -11,6 +11,7 @@ import { gsap } from 'gsap'
 import * as CANNON from 'cannon-es'
 
 import CharacterController from './characterController';
+import all from 'gsap/all';
 
 const hitSound = new Audio(require('../assets/hit.mp3'));
 
@@ -38,7 +39,7 @@ loadingBar.style.transition='transform 0.5s';
 
 let stats,info,plane;
 let camera, scene, renderer,controls;
-let world,raycaster,camRaycaster,INTERSECTED,interractObjects=[];
+let world,raycaster,camRaycaster,INTERSECTED,interractObjects=[],projy=1.0;
 
 let character;
 let characterControllerInstance;
@@ -107,7 +108,7 @@ function init() {
         // Loaded
         ()=>{
             gsap.delayedCall(0.5,()=>{
-                gsap.to(overlayMat.uniforms.uAlpha,{duration: 3, value:0})
+                gsap.to(overlayMat.uniforms.uAlpha,{duration: 1, value:0})
                 loadingBar.style.transform=``;
                 loadingBar.classList.add('endload')
             });
@@ -141,7 +142,7 @@ function init() {
     
 
     // ***** CAMERA ****** //
-    const fov = 60;
+    const fov = 45;
     const aspect = window.innerWidth / window.innerHeight;  // the canvas default
     const near = 0.1;
     const far = 400;
@@ -508,6 +509,7 @@ function onDocumentMouseMove( event ) {
             // INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
             gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.in(1)", y: INTERSECTED.userData.y });
         } 
+        // gsap.to(interractObjects, { duration: 0.5, ease: "back.in(1)", y: projy });
 
         INTERSECTED = null;
 
