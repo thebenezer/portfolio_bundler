@@ -33,7 +33,7 @@ const hitSound = new Audio(require('../assets/hit.mp3'));
 */
 const canvas = document.querySelector('#canvas' );
 const loadingBar= document.querySelector('.loading-bar')
-const closeProj= document.querySelector('.closeProj')
+const closeProj= document.querySelectorAll('.closeProj')
 const projects= document.querySelector('.projects')
 loadingBar.style.transition='transform 0.5s';
 
@@ -225,42 +225,58 @@ function init() {
     proj5.name='proj5'
     proj5.userData.y=1.0
     proj5.userData.i=4
+    proj1.userData.group='projects'
+    proj2.userData.group='projects'
+    proj3.userData.group='projects'
+    proj4.userData.group='projects'
+    proj5.userData.group='projects'
 
 
-    geo=new THREE.PlaneBufferGeometry(9, 9);
+
+    geo=new THREE.BoxBufferGeometry(9, 9,2);
     const lightHouse = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     lightHouse.rotation.x = - Math.PI * 0.5
     lightHouse.position.set(22, 1, 77)
     lightHouse.name='lightHouse'
+    lightHouse.userData.y=1
 
     const lab = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     lab.rotation.x = - Math.PI * 0.5
     lab.position.set(-24, 1, 47.7)
     lab.name='lab'
+    lab.userData.y=1
 
     const library = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     library.rotation.x = - Math.PI * 0.5
     library.position.set(-43, 3.5, 10.6)
     library.name='library'
+    library.userData.y=3.5
+    lightHouse.userData.group='buildings'
+    lab.userData.group='buildings'
+    library.userData.group='buildings'
 
 
-    geo=new THREE.PlaneBufferGeometry(3, 3);
+    geo=new THREE.BoxBufferGeometry(3, 3,2);
     const social1 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     social1.rotation.x = - Math.PI * 0.5
     social1.position.set(37.9, 1, 32)
     social1.name='social1'
+    social1.userData.y=1
     const social2 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     social2.rotation.x = - Math.PI * 0.5
     social2.position.set(43.5, 1, 32)
     social2.name='social2'
+    social2.userData.y=1
     const social3 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     social3.rotation.x = - Math.PI * 0.5
     social3.position.set(49.1, 1, 32)
     social3.name='social3'
+    social3.userData.y=1
     const social4 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     social4.rotation.x = - Math.PI * 0.5
     social4.position.set(54.7, 1, 32)
     social4.name='social4'
+    social4.userData.y=1
 
 
     scene.add(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
@@ -357,7 +373,9 @@ function init() {
     canvas.addEventListener( 'click', onClickOpen, false );
     canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
     canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
-    closeProj.addEventListener( 'click', onClose, false );
+    closeProj.forEach(close => {
+        close.addEventListener( 'click', onClose, false );
+      });
 
 }
 
@@ -461,7 +479,7 @@ function onClose(){
         // const element= document.querySelector('.'+INTERSECTED.name)
         // console.log(element)
         // gsap.to(element,{opacity:0,duration:0.5})
-        gsap.to('.box',{zIndex:-1,opacity:0,duration:0.5})
+        gsap.to('.box, .library, .lab',{zIndex:-1,opacity:0,duration:0.5})
         // gsap.to(projects,{zIndex:-1,duration:0.5})
         // INTERSECTED=null
     // }
@@ -469,13 +487,16 @@ function onClose(){
 function onClickOpen(){
     if (INTERSECTED) {
         console.log(INTERSECTED.name)
-        // const element= document.querySelector('.'+INTERSECTED.name)
-        currentSlideID = INTERSECTED.userData.i;
-        isAnimating=false
-	    // gotoSlide(currentSlideID, 0,'next');
-	    setActiveSlide(currentSlideID, 0);
-        // gsap.to(projects,{zIndex:2,duration:0.5})
-        gsap.to('.box',{zIndex:2,opacity:1,duration:0.5})
+        if(INTERSECTED.userData.group!='projects'){
+            const element= document.querySelector('.'+INTERSECTED.name)
+            gsap.to(element,{zIndex:2,opacity:1,duration:0.5})
+        }
+        else{
+            currentSlideID = INTERSECTED.userData.i;
+            isAnimating=false
+            setActiveSlide(currentSlideID, 0);
+            gsap.to('.box',{zIndex:2,opacity:1,duration:0.5})
+        }
     }
     // console.log(INTERSECTED)
 }

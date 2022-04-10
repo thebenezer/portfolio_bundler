@@ -146,17 +146,18 @@ margin: auto;
 .closeProj{
   z-index: 3;
   padding: 10px;
+  margin: 10px 12px;
   width: 40px;
   height: 40px;
   background-color: #ffffff63;
   position: absolute;
-  top: 25px;
-  right: 25px;
+  /* top: 5%;*/
+  right: 5%; 
   border: #fefefe 2px solid;
   border-radius: 50%;
   cursor: pointer;
 }
-.box{
+.box,.library,.lab{
   display: flex;
   /* justify-content: space-around; */
   /* flex-direction: row; */
@@ -173,7 +174,7 @@ margin: auto;
   backdrop-filter: blur(10px);
   opacity: 1;
 }
-.proj_info_cont{
+.info_cont{
   display: flex;
   justify-content: space-around;
   flex-direction: row;
@@ -181,9 +182,30 @@ margin: auto;
   width: 90%;
   height: 90%;
   margin: auto;
-  background-color: #ffffff9b;
+  /* background-color: #ffffff9b; */
+  /* background: linear-gradient(-0deg, #efd5fff3 0%, #515adaf1 100%); */
+  background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
   border: 2px #e0e0e0 solid;
   border-radius: 10px;
+}
+.lib_cont{
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  grid-template-columns: auto auto; /*Make the grid smaller than the container*/
+  /*grid-template-rows: 20px 20px; /*Make the grid smaller than the container*/
+  gap: 10px;
+  background-color: #2196F3;
+}
+.book{
+  content: "";
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px;
+  /* font-size: 30px; */
+  /* width: 20%; */
+  /* height: 100%; */
 }
 .projImg{
   flex: 1;
@@ -228,4 +250,8 @@ margin: auto;
 }
 .next{
   right: 0%;
+}
+
+.library{
+  background-color: #0e0e0e;
 }
