@@ -1,5 +1,21 @@
-// import { gsap } from 'gsap'
+import { gsap } from 'gsap'
+let openBook_cont= document.querySelector(".bookIMG_container");
+let openBookImg= document.querySelector(".openBookImg");
+let closeBook= document.querySelector(".closeBook");
+let books= document.querySelectorAll(".book");
+books.forEach(open => {
+        open.addEventListener( 'click', openBook, false );
+    });
+closeBook.addEventListener( 'click', ()=>{
+    gsap.to(openBookImg,{scaleX:0,duration:0.25});
+    gsap.to(openBook_cont,{zIndex:-1,duration:0.5});
+}, false );
 
+
+function openBook(){
+    gsap.to(openBook_cont,{zIndex:5,duration:0});
+    gsap.to(openBookImg,{scaleX:1,duration:0.5});
+}
 // var slides = document.querySelectorAll(".box");
 // var navPrev = document.querySelector(".go-prev");
 // var navNext = document.querySelector(".go-next");

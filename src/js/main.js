@@ -260,23 +260,27 @@ function init() {
     const social1 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     social1.rotation.x = - Math.PI * 0.5
     social1.position.set(37.9, 1, 32)
-    social1.name='social1'
+    social1.name='twitter'
     social1.userData.y=1
     const social2 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     social2.rotation.x = - Math.PI * 0.5
     social2.position.set(43.5, 1, 32)
-    social2.name='social2'
+    social2.name='github'
     social2.userData.y=1
     const social3 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     social3.rotation.x = - Math.PI * 0.5
     social3.position.set(49.1, 1, 32)
-    social3.name='social3'
+    social3.name='linkedin'
     social3.userData.y=1
     const social4 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
     social4.rotation.x = - Math.PI * 0.5
     social4.position.set(54.7, 1, 32)
-    social4.name='social4'
+    social4.name='mail'
     social4.userData.y=1
+    social1.userData.group='socials'
+    social2.userData.group='socials'
+    social3.userData.group='socials'
+    social4.userData.group='socials'
 
 
     scene.add(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
@@ -487,15 +491,27 @@ function onClose(){
 function onClickOpen(){
     if (INTERSECTED) {
         console.log(INTERSECTED.name)
-        if(INTERSECTED.userData.group!='projects'){
-            const element= document.querySelector('.'+INTERSECTED.name)
-            gsap.to(element,{zIndex:2,opacity:1,duration:0.5})
-        }
-        else{
+        if(INTERSECTED.userData.group=='projects'){
             currentSlideID = INTERSECTED.userData.i;
             isAnimating=false
             setActiveSlide(currentSlideID, 0);
             gsap.to('.box',{zIndex:2,opacity:1,duration:0.5})
+        }
+        else if(INTERSECTED.userData.group=='buildings'){
+            const element= document.querySelector('.'+INTERSECTED.name)
+            gsap.to(element,{zIndex:2,opacity:1,duration:0.5})   
+        }
+        else{
+            if (INTERSECTED.name=='twitter') {
+                window.open("https://www.twitter.org", "_blank");
+            }else if(INTERSECTED.name=='github'){
+                window.open("https://github.com/thebenezer", "_blank"); 
+            }else if(INTERSECTED.name=='linkedin'){
+                window.open("https://www.linkedin.com/in/thebenezer/", "_blank");
+            }
+            else{
+                window.location.href = "mailto:samebenezer21@gmail.com?subject=Contacting from Portfolio";
+            }
         }
     }
     // console.log(INTERSECTED)
