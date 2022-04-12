@@ -87,7 +87,7 @@ touch-action: none;
 .loading-bar.endload{
   transform-origin: top right;
   transform: scaleX(0);
-  transition: transform 1.5s ease-in-out;
+  /* transition: transform 1.5s ease-in-out; */
 }
 #zone_joystick{
   position: absolute;
@@ -183,7 +183,7 @@ margin: auto;
   width: 90%;
   height: 90%;
   margin: auto;
-  background-color: #ffffff9b;
+  /* background-color: #ffffff9b; */
   /* background: linear-gradient(-0deg, #efd5fff3 0%, #515adaf1 100%); */
   /* background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); */
   border: 2px #e0e0e0 solid;

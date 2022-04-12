@@ -11,7 +11,6 @@ import { gsap } from 'gsap'
 import * as CANNON from 'cannon-es'
 
 import CharacterController from './characterController';
-import all from 'gsap/all';
 
 const hitSound = new Audio(require('../assets/hit.mp3'));
 
@@ -20,12 +19,12 @@ const hitSound = new Audio(require('../assets/hit.mp3'));
 /*
 * Debug GUI
 */
-// const debugObject = {
-//     deepcolor: 0x142e39,
-//     surfacecolor: 0x98caf0,
-//     scenecolor: 0x111522,
-//     ambientlight: 0x96cbfd
-// }
+const debugObject = {
+    deepcolor: 0x142e39,
+    surfacecolor: 0x98caf0,
+    scenecolor: 0x111522,
+    ambientlight: 0x96cbfd
+}
 // guiPanel()
 
 /*
@@ -97,10 +96,10 @@ function init() {
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     // renderer.toneMappingExposure=0.05
-    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setPixelRatio( window.devicePixelRatio);
     renderer.setSize( window.innerWidth, window.innerHeight );
-    renderer.shadowMap.enabled=true
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+    // renderer.shadowMap.enabled=true
+    // renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
 
     // ***** LOADERS ****** //
@@ -111,6 +110,7 @@ function init() {
                 gsap.to(overlayMat.uniforms.uAlpha,{duration: 1, value:0})
                 loadingBar.style.transform=``;
                 loadingBar.classList.add('endload')
+                // gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:2})
             });
             console.log('Loaded')
         },
@@ -150,15 +150,15 @@ function init() {
 
 
     // ***** Light & FOG ****** //
-    scene.background = backgroundTexture;
-    // scene.background = new THREE.Color( debugObject.scenecolor );
-    // scene.fog = new THREE.FogExp2( 0x111522,0.005);
+    // scene.background = backgroundTexture;
+    scene.background = new THREE.Color( debugObject.scenecolor );
+    // scene.fog = new THREE.FogExp2( 0x111522,1);
 
     // ***** LIGHTS ****** //
-    scene.add( new THREE.AmbientLight( 0xfefefe, 0.1 ) );
+    scene.add( new THREE.AmbientLight( 0x00fefe, 0.2 ) );
     // Directional light
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3)
-    directionalLight.castShadow = true
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    directionalLight.castShadow = false
 
     directionalLight.shadow.mapSize.width = 2048
     directionalLight.shadow.mapSize.height = 2048
@@ -182,110 +182,7 @@ function init() {
     directionalLightCameraHelper.visible = false
     scene.add(directionalLightCameraHelper)
 
-    // ***** RAYCASTER ****** //
-    camRaycaster = new THREE.Raycaster();
-    raycaster = new THREE.Raycaster();
-    raycaster.near=0
-    raycaster.far=5
-    let geo=new THREE.BoxBufferGeometry(10, 7,2);
-    let mat=new THREE.MeshPhongMaterial( { 
-        color: 0xfefefe,
-    })
-    const proj1 = new THREE.Mesh(geo,mat.clone());
-    proj1.rotation.x = - Math.PI * 0.5
-    proj1.rotation.z = - Math.PI * 0.81
-    proj1.position.set(6.5, 1.0,-25)
-    proj1.name='proj1'
-    proj1.userData.y=1.0
-    proj1.userData.i=0
-    const proj2 = new THREE.Mesh(geo,mat.clone());
-    proj2.rotation.x = - Math.PI * 0.5
-    proj2.rotation.z = - Math.PI * 0.42
-    proj2.position.set(12.3, 1.0,-41.3)
-    proj2.name='proj2'
-    proj2.userData.y=1.0
-    proj2.userData.i=1
-    const proj3 = new THREE.Mesh(geo,mat.clone());
-    proj3.rotation.x = - Math.PI * 0.5
-    proj3.position.set(-2.1, 1.0, -52.4)
-    proj3.name='proj3'
-    proj3.userData.y=1.0
-    proj3.userData.i=2
-    const proj4 = new THREE.Mesh(geo,mat.clone());
-    proj4.rotation.x = - Math.PI * 0.5
-    proj4.rotation.z = - Math.PI * 0.59
-    proj4.position.set(-16.5, 1.0, -41.3)
-    proj4.name='proj4'
-    proj4.userData.y=1.0
-    proj4.userData.i=3
-    const proj5 = new THREE.Mesh(geo,mat.clone());
-    proj5.rotation.x = - Math.PI * 0.5
-    proj5.rotation.z = - Math.PI * 0.19
-    proj5.position.set(-10.6, 1.0, -25)
-    proj5.name='proj5'
-    proj5.userData.y=1.0
-    proj5.userData.i=4
-    proj1.userData.group='projects'
-    proj2.userData.group='projects'
-    proj3.userData.group='projects'
-    proj4.userData.group='projects'
-    proj5.userData.group='projects'
-
-
-
-    geo=new THREE.BoxBufferGeometry(9, 9,2);
-    const lightHouse = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
-    lightHouse.rotation.x = - Math.PI * 0.5
-    lightHouse.position.set(22, 1, 77)
-    lightHouse.name='lightHouse'
-    lightHouse.userData.y=1
-
-    const lab = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
-    lab.rotation.x = - Math.PI * 0.5
-    lab.position.set(-24, 1, 47.7)
-    lab.name='lab'
-    lab.userData.y=1
-
-    const library = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
-    library.rotation.x = - Math.PI * 0.5
-    library.position.set(-43, 3.5, 10.6)
-    library.name='library'
-    library.userData.y=3.5
-    lightHouse.userData.group='buildings'
-    lab.userData.group='buildings'
-    library.userData.group='buildings'
-
-
-    geo=new THREE.BoxBufferGeometry(3, 3,2);
-    const social1 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
-    social1.rotation.x = - Math.PI * 0.5
-    social1.position.set(37.9, 1, 32)
-    social1.name='twitter'
-    social1.userData.y=1
-    const social2 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
-    social2.rotation.x = - Math.PI * 0.5
-    social2.position.set(43.5, 1, 32)
-    social2.name='github'
-    social2.userData.y=1
-    const social3 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
-    social3.rotation.x = - Math.PI * 0.5
-    social3.position.set(49.1, 1, 32)
-    social3.name='linkedin'
-    social3.userData.y=1
-    const social4 = new THREE.Mesh(geo,new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff }));
-    social4.rotation.x = - Math.PI * 0.5
-    social4.position.set(54.7, 1, 32)
-    social4.name='mail'
-    social4.userData.y=1
-    social1.userData.group='socials'
-    social2.userData.group='socials'
-    social3.userData.group='socials'
-    social4.userData.group='socials'
-
-
-    scene.add(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
-    interractObjects.push(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
-
+   setUpRayInterractions()
 
     // ***** PHYSICS WORLD ****** //
     world = new CANNON.World({
@@ -309,18 +206,25 @@ function init() {
 
     // Baked material
     const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture })
+    // Portal light material
+    const doorLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+
+    // Pole light material
+    const lampLightMaterial = new THREE.MeshBasicMaterial({ 
+        color: 0x005CFF, 
+    })
 
     const characterMaterial = new THREE.MeshBasicMaterial({ map: characterTexture })
     
-    const landMaterial=new THREE.MeshStandardMaterial({
+    const landMaterial=new THREE.MeshPhongMaterial({
         color: 0xffffff,
-        metalness: 0.5,
-        roughness: 1,
+        // metalness: 1,
+        // roughness: 0,
     })
 
     // ***** MODELS ****** //
     //World Model
-    loader.load( require('../assets/VRWorld/portfolio1.glb').default, function ( gltf ) {
+    loader.load( require('../assets/VRWorld/portfolio_v1.2.glb').default, function ( gltf ) {
         gltf.scene.traverse((child)=>
         {
             child.material = bakedMaterial;
@@ -342,9 +246,22 @@ function init() {
                 })
                 world.addBody(boxBody)
                 // child.material=landMaterial
-                child.receiveShadow=true
-                child.castShadow=true
+                // child.receiveShadow=true
+                // child.castShadow=true
             }
+            // if (child.name.includes('doorLight')) {
+            //     child.material = doorLightMaterial
+            // }
+            // else if (child.name.includes('lampLight')) {
+            //     child.material = lampLightMaterial
+            //     // const light = new THREE.PointLight( 0x000fff, 1, 20 );
+            //     // light.position.set(child.position.x,child.position.y+2,child.position.z);
+            //     // scene.add( light );
+            // }
+            // else if (child.name.includes('portalLight')) {
+            //     child.material = doorLightMaterial
+            //     child.material.side=THREE.DoubleSide
+            // }
         })
         scene.add( gltf.scene );
     }, undefined, function ( error ) {
@@ -373,8 +290,9 @@ function init() {
     
     
     window.addEventListener( 'resize', onWindowResize,false );
-    canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
-    canvas.addEventListener( 'click', onClickOpen, false );
+    // canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
+    // canvas.addEventListener( 'click', onClickOpen, false );
+    document.addEventListener('keypress',(event)=>onEnterOpen(event),false)
     canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
     canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
     closeProj.forEach(close => {
@@ -411,7 +329,7 @@ function onWindowResize() {
 
 
 function render() {
-    // renderer.shadowMap.needsUpdate=true
+    // renderer.shadowMap.needsUpdate=false
     const dt = clock.getDelta();
     // Update physics
     if(characterControllerInstance){
@@ -421,7 +339,7 @@ function render() {
         
         raycaster.set(new THREE.Vector3(characterControllerInstance.character.position.x,characterControllerInstance.character.position.y+4,characterControllerInstance.character.position.z),new THREE.Vector3(0,-1,0))
         // rayCheck(dt);
-        // rayCheck();
+        rayCheck();
     }
     
     renderer.render( scene, camera );
@@ -431,31 +349,31 @@ function render() {
 function rayCheck(){
     const intersects = raycaster.intersectObjects( interractObjects, false );
 
-        if ( intersects.length > 0 ) {
-            // console.log(intersects)
+    if ( intersects.length > 0 ) {
+        // console.log(intersects)
 
-            if ( INTERSECTED != intersects[ 0 ].object ) {
-                // if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+        if ( INTERSECTED != intersects[ 0 ].object ) {
+            // if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
 
-                INTERSECTED = intersects[ 0 ].object;
-                // INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-                // INTERSECTED.material.emissive.setHex( 0xff0000 ); 
-                console.log(INTERSECTED.name)
-                // INTERSECTED.position.y+=1
-                gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.out(1)", y: INTERSECTED.userData.y+1 });
-
-            }
-
-        } else {
-
-            if ( INTERSECTED ){
-                // INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
-                gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.in(1)", y: INTERSECTED.userData.y });
-            } 
-
-            INTERSECTED = null;
+            INTERSECTED = intersects[ 0 ].object;
+            // INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+            // INTERSECTED.material.emissive.setHex( 0xff0000 ); 
+            // INTERSECTED.position.y+=1
+            gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.out(1)", y: INTERSECTED.userData.y+1 });
 
         }
+
+    } else {
+
+        if ( INTERSECTED ){
+            // INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+            gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.in(1)", y: INTERSECTED.userData.y });
+        } 
+        // gsap.to(interractObjects, { duration: 0.5, ease: "back.in(1)", y: projy });
+
+        INTERSECTED = null;
+
+    }
 
 }
 
@@ -488,7 +406,14 @@ function onClose(){
         // INTERSECTED=null
     // }
 }
+function onEnterOpen(e) {
+    e.preventDefault();
+    if(e.key=='Enter'){
+        onClickOpen()
+    }
+}
 function onClickOpen(){
+    // event.preventDefault();
     if (INTERSECTED) {
         console.log(INTERSECTED.name)
         if(INTERSECTED.userData.group=='projects'){
@@ -670,4 +595,111 @@ function gotoSlide(slideID, _time, _direction) {
 			isAnimating = false;
 		});
 	}
+}
+
+function setUpRayInterractions() {
+     // ***** RAYCASTER ****** //
+     camRaycaster = new THREE.Raycaster();
+     raycaster = new THREE.Raycaster();
+     raycaster.near=0
+     raycaster.far=5
+     let geo=new THREE.BoxBufferGeometry(10, 7,2);
+     let mat=new THREE.MeshPhongMaterial( { 
+         color: 0xfefefe,
+     })
+     const proj1 = new THREE.Mesh(geo,mat);
+     proj1.rotation.x = - Math.PI * 0.5
+     proj1.rotation.z = - Math.PI * 0.81
+     proj1.position.set(6.5, 1.0,-25)
+     proj1.name='proj1'
+     proj1.userData.y=1.0
+     proj1.userData.i=0
+     const proj2 = new THREE.Mesh(geo,mat);
+     proj2.rotation.x = - Math.PI * 0.5
+     proj2.rotation.z = - Math.PI * 0.42
+     proj2.position.set(12.3, 1.0,-41.3)
+     proj2.name='proj2'
+     proj2.userData.y=1.0
+     proj2.userData.i=1
+     const proj3 = new THREE.Mesh(geo,mat);
+     proj3.rotation.x = - Math.PI * 0.5
+     proj3.position.set(-2.1, 1.0, -52.4)
+     proj3.name='proj3'
+     proj3.userData.y=1.0
+     proj3.userData.i=2
+     const proj4 = new THREE.Mesh(geo,mat);
+     proj4.rotation.x = - Math.PI * 0.5
+     proj4.rotation.z = - Math.PI * 0.59
+     proj4.position.set(-16.5, 1.0, -41.3)
+     proj4.name='proj4'
+     proj4.userData.y=1.0
+     proj4.userData.i=3
+     const proj5 = new THREE.Mesh(geo,mat);
+     proj5.rotation.x = - Math.PI * 0.5
+     proj5.rotation.z = - Math.PI * 0.19
+     proj5.position.set(-10.6, 1.0, -25)
+     proj5.name='proj5'
+     proj5.userData.y=1.0
+     proj5.userData.i=4
+     proj1.userData.group='projects'
+     proj2.userData.group='projects'
+     proj3.userData.group='projects'
+     proj4.userData.group='projects'
+     proj5.userData.group='projects'
+ 
+ 
+ 
+     geo=new THREE.BoxBufferGeometry(9, 9,2);
+     const lightHouse = new THREE.Mesh(geo, mat);
+     lightHouse.rotation.x = - Math.PI * 0.5
+     lightHouse.position.set(22, 1, 77)
+     lightHouse.name='lightHouse'
+     lightHouse.userData.y=1
+ 
+     const lab = new THREE.Mesh(geo, mat);
+     lab.rotation.x = - Math.PI * 0.5
+     lab.position.set(-24, 1, 47.7)
+     lab.name='lab'
+     lab.userData.y=1
+ 
+     const library = new THREE.Mesh(geo, mat);
+     library.rotation.x = - Math.PI * 0.5
+     library.position.set(-43, 3.5, 10.6)
+     library.name='library'
+     library.userData.y=3.5
+     lightHouse.userData.group='buildings'
+     lab.userData.group='buildings'
+     library.userData.group='buildings'
+ 
+ 
+     geo=new THREE.BoxBufferGeometry(3, 3,2);
+     const social1 = new THREE.Mesh(geo, mat);
+     social1.rotation.x = - Math.PI * 0.5
+     social1.position.set(37.9, 1, 32)
+     social1.name='twitter'
+     social1.userData.y=1
+     const social2 = new THREE.Mesh(geo, mat);
+     social2.rotation.x = - Math.PI * 0.5
+     social2.position.set(43.5, 1, 32)
+     social2.name='github'
+     social2.userData.y=1
+     const social3 = new THREE.Mesh(geo, mat);
+     social3.rotation.x = - Math.PI * 0.5
+     social3.position.set(49.1, 1, 32)
+     social3.name='linkedin'
+     social3.userData.y=1
+     const social4 = new THREE.Mesh(geo, mat);
+     social4.rotation.x = - Math.PI * 0.5
+     social4.position.set(54.7, 1, 32)
+     social4.name='mail'
+     social4.userData.y=1
+     social1.userData.group='socials'
+     social2.userData.group='socials'
+     social3.userData.group='socials'
+     social4.userData.group='socials'
+ 
+ 
+     scene.add(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
+     interractObjects.push(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
+ 
 }
