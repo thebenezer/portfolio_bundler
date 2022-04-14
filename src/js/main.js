@@ -6,15 +6,18 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
+
+
 import { gsap } from 'gsap'
 // import * as dat from 'lil-gui';
 import * as CANNON from 'cannon-es'
 
 import CharacterController from './characterController';
 
+
+
+
 const hitSound = new Audio(require('../assets/hit.mp3'));
-
-
 // const gui=new dat.GUI();
 /*
 * Debug GUI
@@ -38,7 +41,7 @@ loadingBar.style.transition='transform 0.5s';
 
 let stats,info,plane;
 let camera, scene, renderer,controls;
-let world,raycaster,camRaycaster,INTERSECTED,interractObjects=[],projy=1.0;
+let world,raycaster,camRaycaster,INTERSECTED,interractObjects=[],composer;
 
 let character;
 let characterControllerInstance;
@@ -91,12 +94,15 @@ function init() {
     // ***** RENDERER ****** //
     renderer = new THREE.WebGLRenderer({
         canvas,
-        antialias: true,
+        powerPreference: "high-performance",
+        antialias: false,
+        stencil: false,
+        depth: false
         });
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     // renderer.toneMappingExposure=0.05
-    renderer.setPixelRatio( window.devicePixelRatio);
+    renderer.setPixelRatio( Math.min(window.devicePixelRatio,2) );
     renderer.setSize( window.innerWidth, window.innerHeight );
     // renderer.shadowMap.enabled=true
     // renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
@@ -125,20 +131,6 @@ function init() {
 
         }
     )
-    const textureLoader = new THREE.TextureLoader(loadingManager)
-    const loader = new GLTFLoader(loadingManager);
-    // ***** TEXTURES ****** //
-    const backgroundTexture = textureLoader.load(require('../assets/skies/Night2.png'))
-    backgroundTexture.mapping=THREE.EquirectangularReflectionMapping
-    backgroundTexture.encoding = THREE.sRGBEncoding;
-    const bakedTexture = textureLoader.load(require('../assets/VRWorld/baked3.jpg'))
-    bakedTexture.flipY = false
-    bakedTexture.encoding = THREE.sRGBEncoding;
-
-    const characterTexture = textureLoader.load(require('../assets/Character/Baked.png'))
-    characterTexture.flipY = false
-    characterTexture.encoding = THREE.sRGBEncoding;
-
     
 
     // ***** CAMERA ****** //
@@ -182,8 +174,6 @@ function init() {
     directionalLightCameraHelper.visible = false
     scene.add(directionalLightCameraHelper)
 
-   setUpRayInterractions()
-
     // ***** PHYSICS WORLD ****** //
     world = new CANNON.World({
         gravity: new CANNON.Vec3(0, -20, 0), // m/s²
@@ -204,15 +194,25 @@ function init() {
     world.defaultContactMaterial = defaultContactMaterial
 
 
-    // Baked material
-    const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture })
-    // Portal light material
-    const doorLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+    // ***** TEXTURES ****** //
+    const textureLoader = new THREE.TextureLoader(loadingManager)
+    const loader = new GLTFLoader(loadingManager);
 
-    // Pole light material
-    const lampLightMaterial = new THREE.MeshBasicMaterial({ 
-        color: 0x005CFF, 
-    })
+    const backgroundTexture = textureLoader.load(require('../assets/skies/Night2.png'))
+    backgroundTexture.mapping=THREE.EquirectangularReflectionMapping
+    backgroundTexture.encoding = THREE.sRGBEncoding;
+
+    const bakedTexture = textureLoader.load(require('../assets/VRWorld/baked3.jpg'))
+    bakedTexture.flipY = false
+    bakedTexture.encoding = THREE.sRGBEncoding;
+
+    const characterTexture = textureLoader.load(require('../assets/Character/Baked.png'))
+    characterTexture.flipY = false
+    characterTexture.encoding = THREE.sRGBEncoding;
+
+    const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture })
+    const doorLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+    const lampLightMaterial = new THREE.MeshBasicMaterial({ color: 0x005CFF })
 
     const characterMaterial = new THREE.MeshBasicMaterial({ map: characterTexture })
     
@@ -221,6 +221,7 @@ function init() {
         // metalness: 1,
         // roughness: 0,
     })
+
 
     // ***** MODELS ****** //
     //World Model
@@ -249,19 +250,16 @@ function init() {
                 // child.receiveShadow=true
                 // child.castShadow=true
             }
-            // if (child.name.includes('doorLight')) {
-            //     child.material = doorLightMaterial
-            // }
-            // else if (child.name.includes('lampLight')) {
-            //     child.material = lampLightMaterial
-            //     // const light = new THREE.PointLight( 0x000fff, 1, 20 );
-            //     // light.position.set(child.position.x,child.position.y+2,child.position.z);
-            //     // scene.add( light );
-            // }
-            // else if (child.name.includes('portalLight')) {
-            //     child.material = doorLightMaterial
-            //     child.material.side=THREE.DoubleSide
-            // }
+            if (child.name.includes('doorLight')) {
+                child.material = doorLightMaterial
+            }
+            else if (child.name.includes('lampLight')) {
+                child.material = lampLightMaterial
+            }
+            else if (child.name.includes('portalLight')) {
+                child.material = doorLightMaterial
+                child.material.side=THREE.DoubleSide
+            }
         })
         scene.add( gltf.scene );
     }, undefined, function ( error ) {
@@ -286,9 +284,10 @@ function init() {
     }, undefined, function ( e ) {
         console.error( e );
     });
+    setUpRayInterractions()
 
-    
-    
+
+
     window.addEventListener( 'resize', onWindowResize,false );
     // canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
     // canvas.addEventListener( 'click', onClickOpen, false );
@@ -297,7 +296,7 @@ function init() {
     canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
     closeProj.forEach(close => {
         close.addEventListener( 'click', onClose, false );
-      });
+    });
 
 }
 
@@ -341,11 +340,16 @@ function render() {
         // rayCheck(dt);
         rayCheck();
     }
-    
-    renderer.render( scene, camera );
+ 
+    renderer.render(scene, camera);
     stats.update();
+    // composer.render();
+
     requestAnimationFrame( render );
 }
+
+
+
 function rayCheck(){
     const intersects = raycaster.intersectObjects( interractObjects, false );
 
@@ -697,7 +701,6 @@ function setUpRayInterractions() {
      social2.userData.group='socials'
      social3.userData.group='socials'
      social4.userData.group='socials'
- 
  
      scene.add(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
      interractObjects.push(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
