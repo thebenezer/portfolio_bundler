@@ -115,6 +115,7 @@ function init() {
             gsap.delayedCall(0.5,()=>{
                 gsap.to(overlayMat.uniforms.uAlpha,{duration: 1, value:0})
                 loadingBar.style.transform=``;
+                scene.remove(overlay)
                 loadingBar.classList.add('endload')
                 // gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:2})
             });

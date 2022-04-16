@@ -175,7 +175,7 @@ margin: auto;
   backdrop-filter: blur(10px);
   opacity: 1;
 }
-.info_cont,.lib_cont{
+.info_cont{
   display: flex;
   justify-content: space-around;
   flex-direction: row;
@@ -188,10 +188,6 @@ margin: auto;
   /* background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); */
   border: 2px #e0e0e0 solid;
   border-radius: 10px;
-}
-.lib_cont{
-  justify-content: center;
-  flex-wrap: nowrap;
 }
 .book{
   flex: 1;
