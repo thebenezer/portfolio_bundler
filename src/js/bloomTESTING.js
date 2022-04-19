@@ -15,7 +15,6 @@ import { BlendFunction,KernelSize,BloomEffect, EffectComposer, EffectPass, Rende
 const canvas = document.querySelector('#canvas' );
 const loadingBar= document.querySelector('.loading-bar')
 const closeProj= document.querySelectorAll('.closeProj')
-const projects= document.querySelector('.projects')
 let stats,info;
 let camera, scene, renderer,controls,composer;
 let selectiveBloomEffect,selectiveBloomPass;
@@ -40,6 +39,7 @@ function init() {
     info = document.querySelector('#info' );
     stats = new Stats();
     info.appendChild( stats.dom );
+    stats.dom.style='position:absolute;top:50%;right:0;'
     scene = new THREE.Scene();
 
     // LOADING SCREEN
@@ -72,7 +72,7 @@ function init() {
                 scene.remove(overlay)
                 loadingBar.style.transform=``;
                 loadingBar.classList.add('endload')
-                gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:2})
+                gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
             });
             console.log('Loaded')
         },
@@ -123,7 +123,7 @@ function init() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 
     // ***** CAMERA ****** //
-    const fov = 45;
+    const fov = 60;
     const aspect = window.innerWidth / window.innerHeight;  // the canvas default
     const near = 0.1;
     const far = 300;
@@ -338,12 +338,12 @@ function onWindowResize() {
 
     renderer.setSize( window.innerWidth, window.innerHeight );
 
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    composer  .setSize( window.innerWidth, window.innerHeight );
 
 }
 
 function onClose(){
-    gsap.to('.box, .library, .lab',{zIndex:-1,opacity:0,duration:0.5})
+    gsap.to('.box, .library, .lab, .next, .prev',{zIndex:-1,opacity:0,duration:0.5})
 }
 function onEnterOpen(e) {
     e.preventDefault();
@@ -360,6 +360,7 @@ function onClickOpen(){
             isAnimating=false
             setActiveSlide(currentSlideID, 0);
             gsap.to('.box',{zIndex:2,opacity:1,duration:0.5})
+            gsap.to('.next, .prev',{zIndex:2,opacity:1,duration:0.5})
         }
         else if(INTERSECTED.userData.group=='buildings'){
             const element= document.querySelector('.'+INTERSECTED.name)
@@ -367,7 +368,7 @@ function onClickOpen(){
         }
         else{
             if (INTERSECTED.name=='twitter') {
-                window.open("https://www.twitter.org", "_blank");
+                window.open("https://www.twitter.com", "_blank");
             }else if(INTERSECTED.name=='github'){
                 window.open("https://github.com/thebenezer", "_blank"); 
             }else if(INTERSECTED.name=='linkedin'){
@@ -553,6 +554,7 @@ function setUpRayInterractions() {
     proj3.userData.group='projects'
     proj4.userData.group='projects'
     proj5.userData.group='projects'
+    // proj5.layers.enable(11)
 
 
 

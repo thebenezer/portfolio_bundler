@@ -1,21 +1,42 @@
 import { gsap } from 'gsap'
-let openBook_cont= document.querySelector(".bookIMG_container");
-let openBookImg= document.querySelector(".openBookImg");
-let closeBook= document.querySelector(".closeBook");
-let books= document.querySelectorAll(".book");
-books.forEach(open => {
-        open.addEventListener( 'click', openBook, false );
-    });
-closeBook.addEventListener( 'click', ()=>{
-    gsap.to(openBookImg,{scaleX:0,duration:0.25});
-    gsap.to(openBook_cont,{zIndex:-1,duration:0.5});
-}, false );
+
+const hamburger = document.querySelector('.hamburger');
+const line1 = document.querySelector('.line1');
+const line2 = document.querySelector('.line2');
+const line3 = document.querySelector('.line3');
+
+hamburger.addEventListener('click',()=>{
+    if(line1.classList.contains('close')){
+        gsap.to('nav',{duration:0.5,scaleX:0})
+    }
+    else
+      gsap.to('nav',{duration:0.5,scaleX:1})
+
+    line1.classList.toggle('close');
+    line2.classList.toggle('close');
+    line3.classList.toggle('close');
+    // cta.classList.toggle('fade');
+    // navlinks.forEach(link =>{
+    //     link.classList.toggle('fade');
+    // });
+});
+// let openBook_cont= document.querySelector(".bookIMG_container");
+// let openBookImg= document.querySelector(".openBookImg");
+// let closeBook= document.querySelector(".closeBook");
+// let books= document.querySelectorAll(".book");
+// books.forEach(open => {
+//         open.addEventListener( 'click', openBook, false );
+//     });
+// closeBook.addEventListener( 'click', ()=>{
+//     gsap.to(openBookImg,{scaleX:0,duration:0.25});
+//     gsap.to(openBook_cont,{zIndex:-1,duration:0.5});
+// }, false );
 
 
-function openBook(){
-    gsap.to(openBook_cont,{zIndex:5,duration:0});
-    gsap.to(openBookImg,{scaleX:1,duration:0.5});
-}
+// function openBook(){
+//     gsap.to(openBook_cont,{zIndex:5,duration:0});
+//     gsap.to(openBookImg,{scaleX:1,duration:0.5});
+// }
 // var slides = document.querySelectorAll(".box");
 // var navPrev = document.querySelector(".go-prev");
 // var navNext = document.querySelector(".go-next");

@@ -8,10 +8,11 @@
     <link rel="shortcut icon" href="./assets/images/ebelogo_black.svg" type="image/x-icon">
 	<title>thebenezer</title>
 	<style>
-		#info{
+		/* #info{
 			position: absolute;
 			display: block;
-		}
+			
+		} */
 		
 	</style>
 </head>
@@ -21,6 +22,30 @@
 			<img src="./assets/images/ebelogo_black.svg" alt=""/>
 		</a>
 	</div>
+	<div class="hamburger">
+		<span class="line1"></span>
+		<span class="line2"></span>
+		<span class="line3"></span>
+	</div>
+	<nav>
+		<div class="navlinks">
+			<div>About</div>
+			<div>Works</div>
+			<div>Resume</div>
+			<div>Credits</div>
+			<div class="navsocial">
+				<a href="#"><img src="./assets/images/linkedin.png" alt=""></a>
+				<a href="#"><img src="./assets/images/github.png" alt=""></a>
+				<a href="#"><img src="./assets/images/twitter.png" alt=""></a>
+				<a href="#"><img src="./assets/images/email.png" alt=""></a>
+			</div>
+			<div class="logo">
+				<a href="index.html" >
+					<img src="./assets/images/ebelogo_black.svg" alt=""/>
+				</a>
+			</div>
+		</div>
+	</nav>
 
 	<div class="loading-bar"></div>
     <canvas  id="canvas"></canvas>
@@ -117,9 +142,36 @@
 	<div class="library">
 		<div class="lib_cont">
 			<img src="./assets/images/close.svg" class="closeProj"/>
-			<img src="./assets/ImageCreated/about.jpg" class="book"/>
+			<div class="book about">
+				<div class="booktitle">
+					<h3>About</h3>
+				</div>
+				<div class="bookcontent">
+					<p></p>
+					<button></button>
+				</div>
+			</div>
+			<div class="book resume">
+				<div class="booktitle">
+					<h3>Resume</h3>
+				</div>
+				<div class="bookcontent">
+					<p></p>
+					<button></button>
+				</div>
+			</div>
+			<div class="book credits">
+				<div class="booktitle">
+					<h3>Credits</h3>
+				</div>
+				<div class="bookcontent">
+					<p></p>
+					<button></button>
+				</div>
+			</div>
+			<!-- <img src="./assets/ImageCreated/about.jpg" class="book"/>
 			<img src="./assets/ImageCreated/resume.jpg" class="book"/>
-			<img src="./assets/ImageCreated/credits.png" class="book"/>
+			<img src="./assets/ImageCreated/credits.png" class="book"/> -->
 		</div>
 	</div>
 	<div class="lab">
@@ -139,6 +191,10 @@
 	<img src="./assets/images/jump.svg" class=""id="jumpButton"/>
 
 	<div id="info"></div>
+	<div class="hide-portrait">
+		<img src="./assets/images/orientation.png" alt=""/>
+		<p>Please rotate your screen to landscape</p>
+	</div>
 <!-- <script src="/dist/bundle.js"></script> -->
 </body>
 </html>

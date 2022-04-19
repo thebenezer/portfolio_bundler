@@ -43,7 +43,7 @@ body{
 }
 
 .logo{
-/* position: absolute; */
+position: absolute;
 z-index: 2;
 /* bottom:5%;
 left:5%; */
@@ -56,70 +56,9 @@ margin-top: 5px;
 width: 50px;
 }
 
-.hamburger{
-  z-index: 3;
-  margin: auto 0px auto 20px;
-  position: absolute;
-  top: 50px;
-  left: 10px;
-  cursor: pointer;
-}
-.line1,.line2,.line3{
-  display: block;
-  content: "";
-  width: 30px;
-  height: 2px;
-  background-color: rgb(240, 240, 240);
-  margin: 5px 0 5px 0;
-  transition: all 0.5s ease;
-}
-.line1.close{
-  transform: translate(0px,0px) rotate(-45deg);
-}
-.line2.close{
-  transform: rotate(45deg);
-}
-.line3.close{
-  width: 16px;
-  transform: translate(1px,0px) rotate(45deg);
-}
-nav{
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  height: 100%;
-  z-index: 2;
-  width: 350px;
-  background-color: #e0e0e0;
-  transform-origin: top left;
-  transform: scaleX(0);
-}
-.navlinks{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  padding: 20% 0;
-}
-.navlinks div{
-  margin: auto;
-  /* cursor: pointer; */
-}
-.navsocial{
-  /* flex:1; */
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-.navsocial a{
-  margin: 0 10px;
-}
-.navsocial img{
-  width: 30px;
-}
 #canvas{
 display: block;
-position: fixed;
+position: absolute;
 top: 0%;
 right: 0%;
 width: 100%;
@@ -221,8 +160,6 @@ margin: auto;
 }
 .box,.library,.lab{
   display: flex;
-  /* justify-content: space-around; */
-  /* flex-direction: row; */
   align-items: center;
   /* margin: 20px; */
   position: absolute;
@@ -248,37 +185,9 @@ margin: auto;
   /* background: linear-gradient(-0deg, #efd5fff3 0%, #515adaf1 100%); */
   /* background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); */
   border: 2px #e0e0e0 solid;
-  border-radius: 10px;
+  border-radius: 5px;
 }
-.bookIMG_container{
-  position: absolute;
-  top: 0%;
-  left: 0%;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
-.openBookImg{
-  margin: auto;
-  width: 90%;
-  height: 90%;
-  transform: scaleX(0);
-}
-.closeBook{
-  z-index: 2;
-  position: absolute;
-  padding: 10px;
-  /* margin: 10px 12px; */
-  width: 40px;
-  height: 40px;
-  background-color: #ffffff63;
-  top: 6.9%;
-  right: 5.8%; 
-  border: #fefefe 2px solid;
-  border-radius: 50%;
-  cursor: pointer;
-}
+
 .projImg{
   flex: 1;
   display: block;
@@ -301,22 +210,9 @@ margin: auto;
   padding-left: 60px;
   /* background-color: #ffd100; */
 }
-/* .proj2{
-  background-color: #55a93b;
-}
-.proj3{
-  background-color: #665cff;
-}
-.proj4{
-  background-color: #2d0bff;
-}
-.proj5{
-  background-color: #ffc725;
-} */
-
 .prev,.next{
   position: absolute;
-  z-index: -1;
+  z-index: 5;
   top: 50%;
   transform: translateY(-24px);
 }
@@ -325,8 +221,8 @@ margin: auto;
 }
 
 .library{
-  z-index: -1;
-  /* background-color: #e0e0e0; */
+  z-index: 5;
+  background-color: #e0e0e0;
 }
 .lib_cont{
   background-color: var(--backgnd);
@@ -372,32 +268,52 @@ margin: auto;
   background-color: #ebe3d6;
 }
 
+
+
+
+.bookIMG_container{
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.openBookImg{
+  margin: auto;
+  width: 90%;
+  height: 90%;
+  transform: scaleX(0);
+}
+.closeBook{
+  z-index: 2;
+  position: absolute;
+  padding: 10px;
+  /* margin: 10px 12px; */
+  width: 40px;
+  height: 40px;
+  background-color: #ffffff63;
+  top: 6.9%;
+  right: 5.8%; 
+  border: #fefefe 2px solid;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
 .hide-portrait{
-  display: none;
+  display: block;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
   background-color: blue;
 }
 
 @media only screen and (orientation:portrait){
   .hide-portrait{
     z-index: 10;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
     width: 100%;
     height: 100%;
-    background-color: rgb(0, 0, 0);
-  }
-  .hide-portrait img{
-    width: 100px;
-    -webkit-filter: invert(1);
-   filter: invert(1);
-  }
-  .hide-portrait p{
-    color: var(--white);
+    background-color: red;
   }
 }
