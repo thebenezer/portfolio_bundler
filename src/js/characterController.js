@@ -13,8 +13,8 @@ export default class CharacterController{
     
     // constants
     fadeDuration= 0.2
-    runVelocity = 9
-    walkVelocity = 3
+    runVelocity = 10
+    walkVelocity = 5
 
     constructor(character,animations,camera,orbitControls,world){
         this.canJump = true

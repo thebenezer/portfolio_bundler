@@ -45,7 +45,7 @@ module.exports = {
             },
             // mp3
             {
-                test: /\.mp3$/,
+                test: /\.(mp3|wav)$/,
                 // loader: 'file-loader',
                 type: 'asset/resource',
                 generator:{

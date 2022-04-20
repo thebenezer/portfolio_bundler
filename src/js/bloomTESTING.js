@@ -381,6 +381,20 @@ function onClickOpen(){
     }
     // console.log(INTERSECTED)
 }
+const navlinksWorks = document.querySelector('.navlinks-works');
+const navlinksAbout = document.querySelector('.navlinks-about');
+
+navlinksWorks.addEventListener('click',()=>{
+    currentSlideID = 1;
+    isAnimating=false
+    setActiveSlide(currentSlideID, 0);
+    gsap.to('.box',{zIndex:2,opacity:1,duration:0.5})
+    gsap.to('.next, .prev',{zIndex:2,opacity:1,duration:0.5})
+});
+navlinksAbout.addEventListener('click',()=>{
+    gsap.to('.library',{zIndex:2,opacity:1,duration:0.5})
+});
+
 function onDocumentTouchStart( event ) {
 
     event.preventDefault();

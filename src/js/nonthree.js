@@ -1,25 +1,61 @@
 import { gsap } from 'gsap'
 
+const music = new Audio(require('../assets/sounds/MistintheMorning.mp3'));
+const selectMenuSound = new Audio(require('../assets/sounds/mainselectsound.wav'));
+const selectItemSound = new Audio(require('../assets/sounds/itemselectsound.wav'));
+var isPlayingMusic =false;
+
+
+const equilizer = document.querySelector('.equilizer');
+const bars = document.querySelectorAll('.bar');
+equilizer.addEventListener('click',()=>{
+    selectItemSound.play()
+    bars.forEach(bar => {
+        bar.classList.toggle('animate')
+    });
+    //toggleMusic
+    if(!isPlayingMusic){
+        music.play();
+        gsap.to(music,{volume:0.5, duration:2})
+        music.loop =true;
+        music.playbackRate = 1;
+        isPlayingMusic =true;
+    }
+    else{
+        gsap.to(music,{volume:0, duration:2})
+        gsap.delayedCall(2,()=>{
+            music.pause();
+        })
+        isPlayingMusic =false;
+    }
+    
+})
+
 const hamburger = document.querySelector('.hamburger');
 const line1 = document.querySelector('.line1');
 const line2 = document.querySelector('.line2');
 const line3 = document.querySelector('.line3');
 
+const navitems=document.querySelectorAll('.navitem');
+const timeline=gsap.timeline();
+timeline.pause()
+timeline.to('nav',{duration:0.4,ease: "back.out(1.7)",width:300})
+timeline.to(navitems,{opacity:1,stagger: 0.1})
 hamburger.addEventListener('click',()=>{
     if(line1.classList.contains('close')){
-        gsap.to('nav',{duration:0.5,scaleX:0})
+        timeline.reverse()
     }
     else
-      gsap.to('nav',{duration:0.5,scaleX:1})
+        timeline.play()
 
     line1.classList.toggle('close');
     line2.classList.toggle('close');
     line3.classList.toggle('close');
-    // cta.classList.toggle('fade');
-    // navlinks.forEach(link =>{
-    //     link.classList.toggle('fade');
-    // });
+    selectMenuSound.play()
 });
+
+
+
 // let openBook_cont= document.querySelector(".bookIMG_container");
 // let openBookImg= document.querySelector(".openBookImg");
 // let closeBook= document.querySelector(".closeBook");
