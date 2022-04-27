@@ -44,64 +44,60 @@ export default class CharacterInput {
         return directionOffset
     }
     _onKeyDown(e){
-        // this.shiftToggle=e.shiftKey;
-        // if(e.key == ' ' && characterControllerInstance.canJump){
-        //     // characterControllerInstance.canJump=false
-        //     characterControllerInstance.wantsJump=true
+        this.shiftToggle=e.shiftKey;
+        // if(e.key == ' '){
+        //     this.keysPressed[e.key]=true
         // }
-        // if (e.key in this.keysPressed){
-        //     this.keysPressed[e.key]=true;
-        // }
-        switch (e.key) {
-            case 'ArrowUp': // w
-                this.keysPressed[e.key] = true;
-                break;
-            case 'ArrowDown': // a
-                this.keysPressed[e.key] = true;
-                break;
-            case 'ArrowRight': // s
-                this.keysPressed[e.key] = true;
-                break;
-            case 'ArrowLeft': // d
-                this.keysPressed[e.key] = true;
-                break;
-            case ' ': // SPACE
-                this.keysPressed[e.key]=true
-                break;
-            case 'Shift': // SHIFT
-            this.shiftToggle = true;
-            break;
+        if (e.key in this.keysPressed){
+            this.keysPressed[e.key]=true;
         }
+        // e.preventDefault();
+        // switch (e.key) {
+        //     case 'ArrowUp': // w
+        //         this.keysPressed[e.key] = true;
+        //         break;
+        //     case 'ArrowDown': // a
+        //         this.keysPressed[e.key] = true;
+        //         break;
+        //     case 'ArrowRight': // s
+        //         this.keysPressed[e.key] = true;
+        //         break;
+        //     case 'ArrowLeft': // d
+        //         this.keysPressed[e.key] = true;
+        //         break;
+        //     case ' ': // SPACE
+        //         this.keysPressed[e.key]=true
+        //         break;
+        //     case 'Shift': // SHIFT
+        //     this.shiftToggle = true;
+        //     break;
+        // }
     }
     _onKeyUp(e){
-        // this.shiftToggle=e.shiftKey;
-        // if (e.key in this.keysPressed){
-        //     this.keysPressed[e.key]=false;
-        // }
-        // if(e.key == ' '){
-        //     characterControllerInstance.wantsJump=false
-        //     // characterControllerInstance.canJump=true
-        // }
-        switch (e.key) {
-            case 'ArrowUp': // w
-                this.keysPressed[e.key] = false;
-                break;
-            case 'ArrowDown': // a
-                this.keysPressed[e.key] = false;
-                break;
-            case 'ArrowRight': // s
-                this.keysPressed[e.key] = false;
-                break;
-            case 'ArrowLeft': // d
-                this.keysPressed[e.key] = false;
-                break;
-            case ' ': // SPACE
-                this.keysPressed[e.key]=false
-                break;
-            case 'Shift': // SHIFT
-            this.shiftToggle = false;
-            break;
+        this.shiftToggle=e.shiftKey;
+        if (e.key in this.keysPressed){
+            this.keysPressed[e.key]=false;
         }
+        // switch (e.key) {
+        //     case 'ArrowUp': // w
+        //         this.keysPressed[e.key] = false;
+        //         break;
+        //     case 'ArrowDown': // a
+        //         this.keysPressed[e.key] = false;
+        //         break;
+        //     case 'ArrowRight': // s
+        //         this.keysPressed[e.key] = false;
+        //         break;
+        //     case 'ArrowLeft': // d
+        //         this.keysPressed[e.key] = false;
+        //         break;
+        //     case ' ': // SPACE
+        //         this.keysPressed[e.key]=false
+        //         break;
+        //     case 'Shift': // SHIFT
+        //     this.shiftToggle = false;
+        //     break;
+        // }
     }
 
 

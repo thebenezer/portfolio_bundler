@@ -10,7 +10,7 @@ import * as CANNON from 'cannon-es'
 
 import CharacterController from './characterController';
 
-import { BlendFunction,KernelSize,BloomEffect, EffectComposer, EffectPass, RenderPass, SelectiveBloomEffect, Selection} from "postprocessing";
+import { BlendFunction,KernelSize, EffectComposer, EffectPass, RenderPass, SelectiveBloomEffect} from "postprocessing";
 
 const canvas = document.querySelector('#canvas' );
 const loadingBar= document.querySelector('.loading-bar')
@@ -21,7 +21,8 @@ let selectiveBloomEffect,selectiveBloomPass;
 const clock=new THREE.Clock();
 
 let characterControllerInstance,raycaster,interractObjects=[],INTERSECTED;
-
+const selectMenuSound = new Audio(require('../assets/sounds/mainselectsound.wav'));
+const selectItemSound = new Audio(require('../assets/sounds/itemselectsound.wav'));
 
 hasWebGL();
 function hasWebGL() {
@@ -126,7 +127,7 @@ function init() {
     const fov = 60;
     const aspect = window.innerWidth / window.innerHeight;  // the canvas default
     const near = 0.1;
-    const far = 300;
+    const far = 170;
     camera = new THREE.PerspectiveCamera( fov, aspect, near, far);
 
      // ***** LIGHTS ****** //
@@ -269,8 +270,8 @@ function init() {
     // canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
     // canvas.addEventListener( 'click', onClickOpen, false );
     document.addEventListener('keypress',(event)=>onEnterOpen(event),false)
-    canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
-    canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
+    // canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
+    // canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
     closeProj.forEach(close => {
         close.addEventListener( 'click', onClose, false );
     });
@@ -302,6 +303,7 @@ function rayCheck(){
 
         if ( INTERSECTED != intersects[ 0 ].object ) {
             // if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+            selectItemSound.play()
 
             INTERSECTED = intersects[ 0 ].object;
             // INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
@@ -343,6 +345,7 @@ function onWindowResize() {
 }
 
 function onClose(){
+    selectItemSound.play()
     gsap.to('.box, .library, .lab, .next, .prev',{zIndex:-1,opacity:0,duration:0.5})
 }
 function onEnterOpen(e) {
@@ -356,6 +359,7 @@ function onClickOpen(){
     if (INTERSECTED) {
         console.log(INTERSECTED.name)
         if(INTERSECTED.userData.group=='projects'){
+            selectMenuSound.play()
             currentSlideID = INTERSECTED.userData.i;
             isAnimating=false
             setActiveSlide(currentSlideID, 0);
@@ -363,10 +367,12 @@ function onClickOpen(){
             gsap.to('.next, .prev',{zIndex:2,opacity:1,duration:0.5})
         }
         else if(INTERSECTED.userData.group=='buildings'){
+            selectMenuSound.play()
             const element= document.querySelector('.'+INTERSECTED.name)
             gsap.to(element,{zIndex:2,opacity:1,duration:0.5})   
         }
         else{
+            selectItemSound.play()
             if (INTERSECTED.name=='twitter') {
                 window.open("https://www.twitter.com", "_blank");
             }else if(INTERSECTED.name=='github'){
@@ -385,6 +391,7 @@ const navlinksWorks = document.querySelector('.navlinks-works');
 const navlinksAbout = document.querySelector('.navlinks-about');
 
 navlinksWorks.addEventListener('click',()=>{
+    // selectItemSound.play()
     currentSlideID = 1;
     isAnimating=false
     setActiveSlide(currentSlideID, 0);
@@ -392,6 +399,7 @@ navlinksWorks.addEventListener('click',()=>{
     gsap.to('.next, .prev',{zIndex:2,opacity:1,duration:0.5})
 });
 navlinksAbout.addEventListener('click',()=>{
+    // selectItemSound.play()
     gsap.to('.library',{zIndex:2,opacity:1,duration:0.5})
 });
 
@@ -428,6 +436,7 @@ function init2() {
 }
 
 function gotoPrevSlide() {
+    selectItemSound.play()
 	var slideToGo = currentSlideID - 1;
 	if (slideToGo <= -1) {
 		slideToGo = slidesNum - 1;
@@ -437,6 +446,7 @@ function gotoPrevSlide() {
 }
 
 function gotoNextSlide() {
+    selectItemSound.play()
 	var slideToGo = currentSlideID + 1;
 	if (slideToGo >= slidesNum) {
 		slideToGo = 0;

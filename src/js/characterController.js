@@ -14,7 +14,7 @@ export default class CharacterController{
     // constants
     fadeDuration= 0.2
     runVelocity = 10
-    walkVelocity = 5
+    walkVelocity = 4
 
     constructor(character,animations,camera,orbitControls,world){
         this.canJump = true
@@ -26,11 +26,11 @@ export default class CharacterController{
         this.currentAction='idle'
         this.camera = camera;
         // console.log(this.hitSound)
-        // this.hitSound = new Audio('./assets/hit.mp3')
+    
+        // this.footstepSound = new Audio(require('../assets/sounds/footsteps.wav'));
+        // this.footstepSound.loop =true;
+        // this.footstepSound.volume=0.5
 
-        // this.hitSound.volume = Math.random()
-        // this.hitSound.currentTime = 0
-        // this.hitSound.play()
 
         this.world = world;
         // Cannon.js body
@@ -39,7 +39,7 @@ export default class CharacterController{
 
         this.body = new CANNON.Body({
             mass: 1,
-            position: new CANNON.Vec3(-43, 5, 10.6),
+            position: new CANNON.Vec3(-2, 5, 10.6),
             shape: shape,
             allowSleep: false,
             linearDamping:0.99,
@@ -68,10 +68,14 @@ export default class CharacterController{
 
         const directionPressed = DIRECTIONS.some(key => this._input.keysPressed[key] == true) || this._input._inputTouch.touchInputToggle
         var play = 'idle';
+        // this.footstepSound.pause()
+
         if (directionPressed && (this._input.shiftToggle||this._input._inputTouch.touchRun)) {
             play = 'run'
+            // this.footstepSound.playbackRate = 2; 
         } else if (directionPressed) {
             play = 'walk'
+            // this.footstepSound.play()
         }
         if((this._input.keysPressed[' ']||this._input._inputTouch.touchJump) && this.canJump){
             // this.camera.position.y =this.character.position.y
