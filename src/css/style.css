@@ -169,7 +169,7 @@ nav{
   top: 0%;
   left: 0%;
   height: 100%;
-  z-index: 2;
+  z-index: -1;
   width: 0px;
   background-color: var(--paperlight);
   /* transform-origin: top left; */
@@ -502,6 +502,9 @@ margin: auto;
 }
 
 @media only screen and (max-device-width: 800px) and (orientation:portrait){
+  .info_cont{
+    font-size: 12px;
+  }
   .hide-portrait{
     z-index: 10;
     display: flex;

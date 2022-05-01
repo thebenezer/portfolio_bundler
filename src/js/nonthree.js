@@ -40,9 +40,11 @@ const line3 = document.querySelector('.line3');
 const navitems=document.querySelectorAll('.navitem');
 const timeline=gsap.timeline();
 timeline.pause()
+timeline.to('nav',{duration:0,zIndex:2})
 timeline.to('nav',{duration:0.4,ease: "back.out(1.7)",width:300})
 timeline.to(navitems,{opacity:1,stagger: 0.1})
 hamburger.addEventListener('click',()=>{
+
     if(line1.classList.contains('close')){
         timeline.reverse()
         selectItemSound.play()
@@ -60,7 +62,7 @@ hamburger.addEventListener('click',()=>{
 navitems.forEach(navitem=>{navitem.addEventListener('click',()=>{
     // const selectItemSound2 = new Audio(require('../assets/sounds/itemselectsound.wav'));
     selectItemSound.play()
-    console.log('hi')
+    // console.log('hi')
 })})
 
 if(isMobileTablet()){

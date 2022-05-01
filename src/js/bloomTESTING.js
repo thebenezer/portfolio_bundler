@@ -15,12 +15,15 @@ import { BlendFunction,KernelSize, EffectComposer, EffectPass, RenderPass, Selec
 const canvas = document.querySelector('#canvas' );
 const loadingBar= document.querySelector('.loading-bar')
 const closeProj= document.querySelectorAll('.closeProj')
-let stats,info;
+let stats,info,loadingManager;
 let camera, scene, renderer,controls,composer;
 let selectiveBloomEffect,selectiveBloomPass;
 const clock=new THREE.Clock();
 
-let characterControllerInstance,raycaster,interractObjects=[],INTERSECTED;
+let mouse = new THREE.Vector2();
+let clickxy = new THREE.Vector2();
+
+let characterControllerInstance,raycaster,camRaycaster,interractObjects=[],INTERSECTED;
 const selectMenuSound = new Audio(require('../assets/sounds/mainselectsound.wav'));
 const selectItemSound = new Audio(require('../assets/sounds/itemselectsound.wav'));
 
@@ -44,50 +47,7 @@ function init() {
     scene = new THREE.Scene();
 
     // LOADING SCREEN
-    const overlayGeo= new THREE.PlaneBufferGeometry(2,2,1,1)
-    const overlayMat= new THREE.ShaderMaterial({
-        transparent:true,
-        uniforms:{
-            uAlpha: { value: 1.0 }
-        },
-        vertexShader:`
-            void main(){
-                gl_Position = vec4(position , 1.0);
-            }
-        `,
-        fragmentShader:`
-            uniform float uAlpha;
-            void main(){
-                gl_FragColor =vec4(0.0,0.0,0.0,uAlpha);
-            }
-        `,
-    })
-    const overlay= new THREE.Mesh(overlayGeo,overlayMat)
-    scene.add(overlay)
-    // ***** LOADERS ****** //
-    const loadingManager= new THREE.LoadingManager(
-        // Loaded
-        ()=>{
-            gsap.delayedCall(0.5,()=>{
-                gsap.to(overlayMat.uniforms.uAlpha,{duration: 1, value:0})
-                scene.remove(overlay)
-                loadingBar.style.transform=``;
-                loadingBar.classList.add('endload')
-                gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
-            });
-            console.log('Loaded')
-        },
-        // Progress
-        (url, itemsLoaded, itemsTotal)=>{
-            const progressRatio=itemsLoaded/itemsTotal;
-            loadingBar.style.transform=`scaleX(${progressRatio})`;
-            console.log(itemsLoaded/itemsTotal)
-        },
-        // Error
-        ()=>{
-
-        }
-    )
+    setupLoadingScreen();
 
     // ***** PHYSICS WORLD ****** //
     const world = new CANNON.World({
@@ -108,21 +68,6 @@ function init() {
     )
     world.defaultContactMaterial = defaultContactMaterial
 
-
-    // ***** RENDERER ****** //
-    renderer = new THREE.WebGLRenderer({
-        canvas,
-        powerPreference: "high-performance",
-        // antialias: false,
-        // stencil: false,
-        // depth: false
-        });
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    // renderer.toneMapping = THREE.ACESFilmicToneMapping
-    // renderer.toneMappingExposure=0.05
-    renderer.setPixelRatio( Math.min(window.devicePixelRatio,2) );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
     // ***** CAMERA ****** //
     const fov = 60;
     const aspect = window.innerWidth / window.innerHeight;  // the canvas default
@@ -130,7 +75,7 @@ function init() {
     const far = 170;
     camera = new THREE.PerspectiveCamera( fov, aspect, near, far);
 
-     // ***** LIGHTS ****** //
+    // ***** LIGHTS ****** //
     scene.add( new THREE.AmbientLight( 0xfffefe, 0.5 ) );
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
     directionalLight.castShadow = false
@@ -153,26 +98,19 @@ function init() {
     directionalLightCameraHelper.visible = false
     scene.add(directionalLightCameraHelper)
 
-    // ***** TEXTURE ****** //
-    const textureLoader = new THREE.TextureLoader(loadingManager)
-    const loader = new GLTFLoader(loadingManager);
-
-    const backgroundTexture = textureLoader.load(require('../assets/skies/Night2.png'))
-    backgroundTexture.mapping=THREE.EquirectangularReflectionMapping
-    backgroundTexture.encoding = THREE.sRGBEncoding;
-    // scene.background=backgroundTexture
-    scene.background = new THREE.Color( 0x000);
-    scene.fog = new THREE.FogExp2( 0x111522,1);
-
-
-    // const box1= new THREE.Mesh(new THREE.BoxBufferGeometry(1,1,1) , new THREE.MeshPhongMaterial({color:0x00ff00}))
-    // box1.position.set(1,2,0)
-    // scene.add(box1)
-    // const box2= new THREE.Mesh(new THREE.BoxBufferGeometry(1,1,1) , new THREE.MeshBasicMaterial({color:0x00ff00}))
-    // box2.position.set(-1,2,0)
-    // box2.layers.enable(11)
-    // scene.add(box2)
-    window.addEventListener( 'resize', onWindowResize,false );
+    // ***** RENDERER ****** //
+    renderer = new THREE.WebGLRenderer({
+        canvas,
+        powerPreference: "high-performance",
+        // antialias: false,
+        // stencil: false,
+        // depth: false
+        });
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    // renderer.toneMapping = THREE.ACESFilmicToneMapping
+    // renderer.toneMappingExposure=0.05
+    renderer.setPixelRatio( Math.min(window.devicePixelRatio,2) );
+    renderer.setSize( window.innerWidth, window.innerHeight );
 
     const bloomOptions = {
         blendFunction: BlendFunction.SCREEN,
@@ -182,15 +120,26 @@ function init() {
         intensity: 2,
         height: 480
     };
-
     composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
 
     selectiveBloomEffect = new SelectiveBloomEffect(scene,camera,bloomOptions);
     // selectiveBloomEffect.selection.add(box2)
     selectiveBloomEffect.ignoreBackground=true
-    
 
+    selectiveBloomPass = new EffectPass(
+        camera,
+        selectiveBloomEffect
+    );
+    composer.addPass(selectiveBloomPass);
+    
+    // ***** TEXTURE ****** //
+    const textureLoader = new THREE.TextureLoader(loadingManager)
+    const loader = new GLTFLoader(loadingManager);
+    const backgroundTexture = textureLoader.load(require('../assets/skies/Night2.png'))
+    backgroundTexture.mapping=THREE.EquirectangularReflectionMapping
+    backgroundTexture.encoding = THREE.sRGBEncoding;
+    
     const bakedTexture = textureLoader.load(require('../assets/VRWorld/baked3.jpg'))
     bakedTexture.flipY = false
     bakedTexture.encoding = THREE.sRGBEncoding;
@@ -198,6 +147,38 @@ function init() {
     const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture })
     const doorLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
     const lampLightMaterial = new THREE.MeshBasicMaterial({ color: 0x00FFFF })
+
+    const proj1_texture = textureLoader.load(require('../assets/projectImages/arpDesktop.jpg'))
+    const proj2_texture = textureLoader.load(require('../assets/projectImages/stipling.jpg'))
+    const proj3_texture = textureLoader.load(require('../assets/projectImages/planes2.jpg'))
+    const proj4_texture = textureLoader.load(require('../assets/projectImages/shop.jpg'))
+    const proj5_texture = textureLoader.load(require('../assets/projectImages/surfDesktop.jpg'))
+
+    proj1_texture.flipY = false
+    proj1_texture.encoding = THREE.sRGBEncoding;
+    proj2_texture.flipY = false
+    proj2_texture.encoding = THREE.sRGBEncoding;
+    proj3_texture.flipY = false
+    proj3_texture.encoding = THREE.sRGBEncoding;
+    proj4_texture.flipY = false
+    proj4_texture.encoding = THREE.sRGBEncoding;
+    proj5_texture.flipY = false
+    proj5_texture.encoding = THREE.sRGBEncoding;
+
+    const proj1_Material = new THREE.MeshBasicMaterial({ map: proj1_texture })
+    const proj2_Material = new THREE.MeshBasicMaterial({ map: proj2_texture })
+    const proj3_Material = new THREE.MeshBasicMaterial({ map: proj3_texture })
+    const proj4_Material = new THREE.MeshBasicMaterial({ map: proj4_texture })
+    const proj5_Material = new THREE.MeshBasicMaterial({ map: proj5_texture })
+
+    
+   
+    // scene.background=backgroundTexture
+    scene.background = new THREE.Color( 0x000);
+    scene.fog = new THREE.FogExp2( 0x111522,1);
+
+    
+    
     //World Model
     loader.load( require('../assets/VRWorld/portfolio_v1.2.glb').default, function ( gltf ) {
         gltf.scene.traverse((child)=>
@@ -230,6 +211,25 @@ function init() {
             }
             else if (child.name.includes('portalLight')) {
                 child.material = doorLightMaterial
+            }
+            else if (child.name.includes('proj1')) {
+                child.material = proj1_Material
+                child.material.side=THREE.DoubleSide
+            }
+            else if (child.name.includes('proj2')) {
+                child.material = proj2_Material
+                child.material.side=THREE.DoubleSide
+            }
+            else if (child.name.includes('proj3')) {
+                child.material = proj3_Material
+                child.material.side=THREE.DoubleSide
+            }
+            else if (child.name.includes('proj4')) {
+                child.material = proj4_Material
+                child.material.side=THREE.DoubleSide
+            }
+            else if (child.name.includes('proj5')) {
+                child.material = proj5_Material
                 child.material.side=THREE.DoubleSide
             }
         })
@@ -259,22 +259,18 @@ function init() {
     });
     
 
-    selectiveBloomPass = new EffectPass(
-        camera,
-        selectiveBloomEffect
-    );
-    composer.addPass(selectiveBloomPass);
 
-    setUpRayInterractions();
     window.addEventListener( 'resize', onWindowResize,false );
-    // canvas.addEventListener( 'mousemove', onDocumentMouseMove, false );
-    // canvas.addEventListener( 'click', onClickOpen, false );
     document.addEventListener('keypress',(event)=>onEnterOpen(event),false)
-    // canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
-    // canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
     closeProj.forEach(close => {
         close.addEventListener( 'click', onClose, false );
     });
+
+    setUpRayInterractions();
+    canvas.addEventListener( 'click', onClickEventHandler, false );
+    // canvas.addEventListener( 'click', onClickOpen, false );
+    // canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
+    // canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
 }
 
 function render() {
@@ -295,6 +291,40 @@ function render() {
     requestAnimationFrame( render );
 }
 
+function collisionJumpCheck(){
+    characterControllerInstance.canJump=true
+}
+
+function onClickEventHandler( event ) {
+// Optimization needed in checking so many objects
+    event.preventDefault();
+    if(INTERSECTED){
+        clickxy.x=event.clientX;
+        clickxy.y=event.clientY;
+        mouse.x = ( ( clickxy.x - renderer.domElement.offsetLeft ) / renderer.domElement.clientWidth ) * 2 - 1;
+        mouse.y = - ( ( clickxy.y - renderer.domElement.offsetTop ) / renderer.domElement.clientHeight ) * 2 + 1;
+        camRaycaster.setFromCamera(mouse,characterControllerInstance.camera)
+        const selected = camRaycaster.intersectObjects( interractObjects, false );
+        // console.log(clickxy, mouse,selected.length)
+        if ( selected.length > 0 && INTERSECTED == selected[ 0 ].object ) {
+            onClickOpen();    
+        }
+    }
+}
+// function onDocumentTouchStart( event ) {
+
+//     event.preventDefault();
+//     var touches = event.changedTouches;
+//     clickxy.x=touches[0].pageX;
+//     clickxy.y=touches[0].pageY;
+//     mouse.x = ( (clickxy.x- renderer.domElement.offsetLeft) / renderer.domElement.clientWidth  ) * 2 - 1;
+//     mouse.y = - ( (clickxy.y- renderer.domElement.offsetTop) / renderer.domElement.clientHeight  ) * 2 + 1;
+//     // mouse.x = ( touches[0].pageX / window.innerWidth ) * 2 - 1;
+// }
+// function onDocumentTouchEnd(){
+//     mouse = new THREE.Vector2();
+// }
+
 function rayCheck(){
     const intersects = raycaster.intersectObjects( interractObjects, false );
 
@@ -302,48 +332,25 @@ function rayCheck(){
         // console.log(intersects)
 
         if ( INTERSECTED != intersects[ 0 ].object ) {
-            // if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
             selectItemSound.play()
 
             INTERSECTED = intersects[ 0 ].object;
-            // INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
-            // INTERSECTED.material.emissive.setHex( 0xff0000 ); 
-            // INTERSECTED.position.y+=1
             gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.out(1)", y: INTERSECTED.userData.y+1 });
 
         }
 
     } else {
-
         if ( INTERSECTED ){
-            // INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
             gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.in(1)", y: INTERSECTED.userData.y });
         } 
-        // gsap.to(interractObjects, { duration: 0.5, ease: "back.in(1)", y: projy });
-
         INTERSECTED = null;
-
     }
 
 }
 
-function collisionJumpCheck(){
-    characterControllerInstance.canJump=true
-}
 
 
-
-function onWindowResize() {
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-    composer  .setSize( window.innerWidth, window.innerHeight );
-
-}
-
+// OPENING AND CLOSING WORKS
 function onClose(){
     selectItemSound.play()
     gsap.to('.box, .library, .lab, .next, .prev',{zIndex:-1,opacity:0,duration:0.5})
@@ -363,13 +370,13 @@ function onClickOpen(){
             currentSlideID = INTERSECTED.userData.i;
             isAnimating=false
             setActiveSlide(currentSlideID, 0);
-            gsap.to('.box',{zIndex:2,opacity:1,duration:0.5})
-            gsap.to('.next, .prev',{zIndex:2,opacity:1,duration:0.5})
+            gsap.to('.box',{zIndex:5,opacity:1,duration:0.5})
+            gsap.to('.next, .prev',{zIndex:5,opacity:1,duration:0.5})
         }
         else if(INTERSECTED.userData.group=='buildings'){
             selectMenuSound.play()
             const element= document.querySelector('.'+INTERSECTED.name)
-            gsap.to(element,{zIndex:2,opacity:1,duration:0.5})   
+            gsap.to(element,{zIndex:5,opacity:1,duration:0.5})   
         }
         else{
             selectItemSound.play()
@@ -387,35 +394,13 @@ function onClickOpen(){
     }
     // console.log(INTERSECTED)
 }
+
+
+
+
+//############# NON THREE ###################
 const navlinksWorks = document.querySelector('.navlinks-works');
 const navlinksAbout = document.querySelector('.navlinks-about');
-
-navlinksWorks.addEventListener('click',()=>{
-    // selectItemSound.play()
-    currentSlideID = 1;
-    isAnimating=false
-    setActiveSlide(currentSlideID, 0);
-    gsap.to('.box',{zIndex:2,opacity:1,duration:0.5})
-    gsap.to('.next, .prev',{zIndex:2,opacity:1,duration:0.5})
-});
-navlinksAbout.addEventListener('click',()=>{
-    // selectItemSound.play()
-    gsap.to('.library',{zIndex:2,opacity:1,duration:0.5})
-});
-
-function onDocumentTouchStart( event ) {
-
-    event.preventDefault();
-    var touches = event.changedTouches;
-    clickxy.x=touches[0].pageX;
-    clickxy.y=touches[0].pageY;
-    mouse.x = ( (clickxy.x- renderer.domElement.offsetLeft) / renderer.domElement.clientWidth  ) * 2 - 1;
-    mouse.y = - ( (clickxy.y- renderer.domElement.offsetTop) / renderer.domElement.clientHeight  ) * 2 + 1;
-    // mouse.x = ( touches[0].pageX / window.innerWidth ) * 2 - 1;
-}
-function onDocumentTouchEnd(){
-    mouse = new THREE.Vector2();
-}
 var slides = document.querySelectorAll(".box");
 var navPrev = document.querySelector(".prev");
 var navNext = document.querySelector(".next");
@@ -425,6 +410,21 @@ var prevSlideID = null;
 var currentSlideID = 0;
 var isAnimating = false;
 init2();
+
+navlinksWorks.addEventListener('click',()=>{
+    // selectItemSound.play()
+    currentSlideID = 0;
+    isAnimating=false
+    setActiveSlide(currentSlideID, 0);
+    gsap.to('.box',{zIndex:5,opacity:1,duration:0.5})
+    gsap.to('.next, .prev',{zIndex:5,opacity:1,duration:0.5})
+});
+navlinksAbout.addEventListener('click',()=>{
+    // selectItemSound.play()
+    gsap.to('.library',{zIndex:5,opacity:1,duration:0.5})
+});
+
+
 
 function init2() {
 	gsap.set(slides, {
@@ -532,6 +532,7 @@ function setupOrbitControls() {
 
 function setUpRayInterractions() {
     // ***** RAYCASTER ****** //
+    camRaycaster = new THREE.Raycaster();
     raycaster = new THREE.Raycaster();
     raycaster.near=0
     raycaster.far=5
@@ -578,8 +579,6 @@ function setUpRayInterractions() {
     proj3.userData.group='projects'
     proj4.userData.group='projects'
     proj5.userData.group='projects'
-    // proj5.layers.enable(11)
-
 
 
     geo=new THREE.BoxBufferGeometry(9, 9,2);
@@ -634,4 +633,64 @@ function setUpRayInterractions() {
     scene.add(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
     interractObjects.push(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
 
+}
+
+
+function onWindowResize() {
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+    composer  .setSize( window.innerWidth, window.innerHeight );
+
+}
+
+function setupLoadingScreen(){
+    const overlayGeo= new THREE.PlaneBufferGeometry(2,2,1,1)
+    const overlayMat= new THREE.ShaderMaterial({
+        transparent:true,
+        uniforms:{
+            uAlpha: { value: 1.0 }
+        },
+        vertexShader:`
+            void main(){
+                gl_Position = vec4(position , 1.0);
+            }
+        `,
+        fragmentShader:`
+            uniform float uAlpha;
+            void main(){
+                gl_FragColor =vec4(0.0,0.0,0.0,uAlpha);
+            }
+        `,
+    })
+    const overlay= new THREE.Mesh(overlayGeo,overlayMat)
+    scene.add(overlay)
+
+
+    loadingManager= new THREE.LoadingManager(
+        // Loaded
+        ()=>{
+            gsap.delayedCall(0.5,()=>{
+                gsap.to(overlayMat.uniforms.uAlpha,{duration: 1, value:0})
+                scene.remove(overlay)
+                loadingBar.style.transform=``;
+                loadingBar.classList.add('endload')
+                gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
+            });
+            console.log('Loaded')
+        },
+        // Progress
+        (url, itemsLoaded, itemsTotal)=>{
+            const progressRatio=itemsLoaded/itemsTotal;
+            loadingBar.style.transform=`scaleX(${progressRatio})`;
+            console.log(itemsLoaded/itemsTotal)
+        },
+        // Error
+        ()=>{
+
+        }
+    )
 }
