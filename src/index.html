@@ -10,15 +10,45 @@
 	<link rel="shortcut icon" href="./assets/images/ebelogo_black.svg" type="image/x-icon">
 	<title>thebenezer</title>
 	<style>
-		/* #info{
-			position: absolute;
-			display: block;
-			
-		} */
-		
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}	
+		.overlay{
+			position: fixed;
+			display: flex;
+			width: 100%;
+			height: 100%;
+			background-color: black;
+			z-index: 1;
+		}
+		.enter-button{
+			margin: auto;
+			opacity: 0;
+			padding: 10px 30px;
+			color: white;
+			border: #fefefe 1px solid;
+  			border-radius: 2px;
+			transition: all 0.5s ease;
+		}
+		.enter-button:hover{
+			background-color: white;
+			color: black;
+			/* color: white;
+			border: #fefefe 1px solid; */
+		}
 	</style>
 </head>
 <body>
+
+	<div class="overlay">
+		<div class="loading-bar"></div>
+		<div class="enter-button">Enter</div>
+	</div>
+	<div class="instruvtions">
+
+	</div>
     <div class="logo">
 		<a href="index.html" >
 			<img src="./assets/images/ebelogo_black.svg" alt=""/>
@@ -57,7 +87,6 @@
 		</div>
 	</nav>
 
-	<div class="loading-bar"></div>
     <canvas  id="canvas"></canvas>
 	<div id="zone_joystick" class="">
 		<img src="./assets/images/arrows.svg" alt="">
@@ -195,7 +224,7 @@
 	<div class="lab">
 		<div class="info_cont">
 			<img src="./assets/images/close.svg" class="closeProj"/>
-			<p>The laboratory is still under construction. Coming soon!</p>
+			<p class="laboratory">The laboratory is still under construction. Coming soon!</p>
 		</div>
 	</div>
 	<!-- <div class="bookIMG_container">
@@ -205,13 +234,13 @@
 	<img src="./assets/images/leftArrow.svg" class="prev"/>
 	<img src="./assets/images/rightArrow.svg" class="next"/>
 	
-	<img src="./assets/images/select3.svg" id="interractButton"/>
+	<!-- <img src="./assets/images/select3.svg" id="interractButton"/> -->
 	<img src="./assets/images/jump.svg" id="jumpButton"/>
 
 	<div id="info"></div>
 	<div class="hide-portrait">
-		<img src="./assets/images/orientation.png" alt=""/>
-		<p>Please rotate your screen to landscape</p>
+		<img src="./assets/images/screen-rotate.png" alt=""/>
+		<p>Please rotate your screen to landscape mode.</p>
 	</div>
 	<!-- <audio id="myAudio">
 		<source src="./assets/sounds/itemselectsound.wav" type="audio/wav">

@@ -18,14 +18,13 @@ const closeProj= document.querySelectorAll('.closeProj')
 let stats,info,loadingManager;
 let camera, scene, renderer,controls,composer;
 let selectiveBloomEffect,selectiveBloomPass;
+let music,selectMenuSound,selectItemSound;
 const clock=new THREE.Clock();
 
 let mouse = new THREE.Vector2();
 let clickxy = new THREE.Vector2();
 
 let characterControllerInstance,raycaster,camRaycaster,interractObjects=[],INTERSECTED;
-const selectMenuSound = new Audio(require('../assets/sounds/mainselectsound.wav'));
-const selectItemSound = new Audio(require('../assets/sounds/itemselectsound.wav'));
 
 hasWebGL();
 function hasWebGL() {
@@ -75,6 +74,9 @@ function init() {
     const far = 170;
     camera = new THREE.PerspectiveCamera( fov, aspect, near, far);
 
+    // ***** AUDIO ****** //
+    setupGlobalAudio();
+
     // ***** LIGHTS ****** //
     scene.add( new THREE.AmbientLight( 0xfffefe, 0.5 ) );
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
@@ -107,8 +109,8 @@ function init() {
         // depth: false
         });
     renderer.outputEncoding = THREE.sRGBEncoding;
-    // renderer.toneMapping = THREE.ACESFilmicToneMapping
-    // renderer.toneMappingExposure=0.05
+    renderer.toneMapping = THREE.ACESFilmicToneMapping
+    // renderer.toneMappingExposure=1
     renderer.setPixelRatio( Math.min(window.devicePixelRatio,2) );
     renderer.setSize( window.innerWidth, window.innerHeight );
 
@@ -673,19 +675,24 @@ function setupLoadingScreen(){
     loadingManager= new THREE.LoadingManager(
         // Loaded
         ()=>{
-            gsap.delayedCall(0.5,()=>{
+            gsap.delayedCall(1,()=>{
                 gsap.to(overlayMat.uniforms.uAlpha,{duration: 1, value:0})
                 scene.remove(overlay)
                 loadingBar.style.transform=``;
-                loadingBar.classList.add('endload')
-                gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
+                document.querySelector('.enter-button').addEventListener('click', openPortfolio,{once:true})
+                gsap.to(loadingBar,{scaleX:0,ease: "expo.in",duration:1})
+                gsap.to('.overlay',{opacity:0.7,duration:0.5, delay: 1})
+                gsap.to('.enter-button',{opacity:1,cursor: 'Pointer',duration:0.5, delay: 1})
             });
+            window.scrollTo(50, 50);
+
             console.log('Loaded')
         },
         // Progress
         (url, itemsLoaded, itemsTotal)=>{
             const progressRatio=itemsLoaded/itemsTotal;
-            loadingBar.style.transform=`scaleX(${progressRatio})`;
+            gsap.to(loadingBar,{scaleX:progressRatio,ease: "expo.out",duration:0.2})
+            // loadingBar.style.transform=`scaleX(${progressRatio})`;
             console.log(itemsLoaded/itemsTotal)
         },
         // Error
@@ -693,4 +700,108 @@ function setupLoadingScreen(){
 
         }
     )
+}
+
+
+const equilizer = document.querySelector('.equilizer');
+const bars = document.querySelectorAll('.bar');
+var isPlayingMusic =false;
+
+function openPortfolio(){
+    gsap.to('.overlay',{scaleY:0,duration:0.5, delay: 0.5})
+    gsap.delayedCall(1,()=>{
+        gsap.to('.overlay',{display:'none',duration:0})
+        gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
+        // music.play();
+        toggleMusic();
+        // scene.camera.music.play()
+    })
+}
+
+
+const hamburger = document.querySelector('.hamburger');
+const line1 = document.querySelector('.line1');
+const line2 = document.querySelector('.line2');
+const line3 = document.querySelector('.line3');
+
+const navitems=document.querySelectorAll('.navitem');
+const timeline=gsap.timeline();
+timeline.pause()
+timeline.to('nav',{duration:0,zIndex:2})
+timeline.to('nav',{duration:0.4,ease: "back.out(1.7)",width:300})
+timeline.to(navitems,{opacity:1,stagger: 0.1})
+hamburger.addEventListener('click',()=>{
+
+    if(line1.classList.contains('close')){
+        timeline.reverse()
+        selectItemSound.play()
+    }
+    else{
+        selectMenuSound.play()
+        timeline.play()
+    }
+
+    line1.classList.toggle('close');
+    line2.classList.toggle('close');
+    line3.classList.toggle('close');
+});
+
+navitems.forEach(navitem=>{navitem.addEventListener('click',()=>{
+    selectItemSound.play()
+})})
+
+// ********* MUSIC **********
+equilizer.addEventListener('click',toggleMusic,false)
+
+function toggleMusic() {
+    selectItemSound.play()
+    bars.forEach(bar => {
+        bar.classList.toggle('animate')
+    });
+    //toggleMusic
+    if(!isPlayingMusic){
+    isPlayingMusic =true;
+    music.play();
+        // gsap.to(music,{volume:0.5, duration:1})
+        music.loop =true;
+        music.playbackRate = 1;
+    }
+    else{
+        // gsap.to(music,{volume:0, duration:1})
+    isPlayingMusic =false;
+    music.pause();
+    }
+    // isPlayingMusic =!isPlayingMusic;
+}
+
+function setupGlobalAudio(){
+    // create an AudioListener and add it to the camera
+    const listener = new THREE.AudioListener();
+    camera.add( listener );
+    const audioLoader = new THREE.AudioLoader(loadingManager);
+
+    // create a global audio source
+    music = new THREE.Audio( listener );
+    selectMenuSound = new THREE.Audio( listener );
+    selectItemSound = new THREE.Audio( listener );
+    selectItemSound.volume=0.5
+
+    // load a music and set it as the Audio object's buffer
+    audioLoader.load( require('../assets/sounds/MistintheMorning.mp3'), function( buffer ) {
+        music.setBuffer( buffer );
+        music.setLoop( true );
+        music.setVolume( 0.5 );
+    });
+
+    audioLoader.load( require('../assets/sounds/mainselectsound.wav'), function( buffer ) {
+        selectMenuSound.setBuffer( buffer );
+        selectMenuSound.setVolume( selectItemSound.volume );
+    });
+
+    audioLoader.load( require('../assets/sounds/itemselectsound.wav'), function( buffer ) {
+        selectItemSound.setBuffer( buffer );
+        selectItemSound.setVolume( selectItemSound.volume );
+    });
+
+
 }

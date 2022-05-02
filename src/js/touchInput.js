@@ -64,10 +64,10 @@ export default class ControllerTouchInput {
     this.jumpButton.addEventListener('touchend',()=>{
       this.jumpButton.classList.remove('highlight')
     },false);
-    this.interractButton.addEventListener('click',()=>{
-      console.log('select')
+    // this.interractButton.addEventListener('click',()=>{
+      // console.log('select')
       // this.touchJump=true;
-    },false);
+    // },false);
     // this.runButton.addEventListener('touchstart',(e)=>{
     //   // this.shifttoggle=true;
     //   e.preventDefault();
