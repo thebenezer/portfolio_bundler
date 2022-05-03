@@ -714,10 +714,30 @@ function openPortfolio(){
         gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
         // music.play();
         toggleMusic();
+        openFullscreen();
         // scene.camera.music.play()
     })
 }
+var elem = document.documentElement;
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
 
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+}
 
 const hamburger = document.querySelector('.hamburger');
 const line1 = document.querySelector('.line1');

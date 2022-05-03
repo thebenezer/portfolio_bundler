@@ -21,12 +21,18 @@
 			width: 100%;
 			height: 100%;
 			background-color: black;
-			z-index: 1;
+			z-index: 5;
+		}
+		.logo{
+			width: 50px;
+			-webkit-filter: invert(1);
+			transition: all 0.5s ease;
+			filter: invert(1);
 		}
 		.enter-button{
 			margin: auto;
 			opacity: 0;
-			padding: 10px 30px;
+			padding: 7px 50px 3px;
 			color: white;
 			border: #fefefe 1px solid;
   			border-radius: 2px;
@@ -35,25 +41,27 @@
 		.enter-button:hover{
 			background-color: white;
 			color: black;
-			/* color: white;
-			border: #fefefe 1px solid; */
 		}
+		.enter-button:hover>.logo{
+			-webkit-filter: invert(0);
+			filter: invert(0);
+		}
+
+		
+
 	</style>
 </head>
 <body>
 
 	<div class="overlay">
+		
 		<div class="loading-bar"></div>
-		<div class="enter-button">Enter</div>
+		<div class="enter-button"><img class="logo" src="./assets/images/ebelogo_black.svg" alt=""/></div>
 	</div>
 	<div class="instruvtions">
 
 	</div>
-    <div class="logo">
-		<a href="index.html" >
-			<img src="./assets/images/ebelogo_black.svg" alt=""/>
-		</a>
-	</div>
+
 	<div class="hamburger">
 		<span class="line1"></span>
 		<span class="line2"></span>
@@ -78,11 +86,6 @@
 				<a href="2" target="_blank" class="navitem"><img src="./assets/images/github.png" alt=""></a>
 				<a href="3" target="_blank" class="navitem"><img src="./assets/images/twitter.png" alt=""></a>
 				<a href="4" target="_blank" class="navitem"><img src="./assets/images/email.png" alt=""></a>
-			</div>
-			<div class="logo navitem">
-				<!-- <a href="index.html" >
-					<img src="./assets/images/ebelogo_black.svg" alt=""/>
-				</a> -->
 			</div>
 		</div>
 	</nav>

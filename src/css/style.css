@@ -39,6 +39,9 @@
     -ms-user-select: none;
     user-select: none;
 }
+h1,h2,h3{
+  font-family: 'Libre Baskerville', serif;
+}
 body{
   background-color: var(--backgnd);
   color: var(--foregnd);
@@ -46,20 +49,6 @@ body{
   flex-direction: column; */
   min-height: 100vh;
   overflow: hidden;
-}
-
-.logo{
-/* position: fixed; */
-z-index: 2;
-/* bottom:5%;
-left:5%; */
-}
-.logo a{
-height: 100%;
-}
-.logo a img{
-margin-top: 5px;
-width: 50px;
 }
 
 .hamburger{
@@ -172,6 +161,10 @@ nav{
   z-index: -1;
   width: 0px;
   background-color: var(--paperlight);
+  background-image: url('../assets/images/ebelogo.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   /* transform-origin: top left; */
   /* transform: scaleX(0); */
 }
@@ -297,7 +290,7 @@ margin: auto;
   position: fixed;
   /* top: 5%;*/
   right: 5%; 
-  border: #303030 2px solid;
+  border: #fefefe 2px solid;
   border-radius: 50%;
   cursor: pointer;
 }
@@ -326,7 +319,11 @@ margin: auto;
   width: 90%;
   height: 90%;
   margin: auto;
-  background-color: #ffffff9b;
+  background-color: #393939ce;
+  background-image: url('../assets/images/ebelogo.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   /* background: linear-gradient(-0deg, #efd5fff3 0%, #515adaf1 100%); */
   /* background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); */
   border: 2px #e0e0e0 solid;
@@ -379,12 +376,25 @@ margin: auto;
 }
 .info{
   flex: 1;
-  color: var(--black);
+  color: var(--white);
   font-size: 14px;
   /* height: 100%; */
   margin: auto;
   padding-left: 60px;
   /* background-color: #ffd100; */
+}
+.info h2{
+  align-self: center;
+  text-align: center;
+  font-size: x-large;
+  margin-bottom: 30px;
+}
+.info h3{
+  font-size: medium;
+  margin-bottom: 20px;
+}
+.info p{
+  margin-bottom: 20px;
 }
 /* .proj2{
   background-color: #55a93b;
