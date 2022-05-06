@@ -146,8 +146,13 @@ function init() {
     bakedTexture.flipY = false
     bakedTexture.encoding = THREE.sRGBEncoding;
 
+    const bakedDirTexture = textureLoader.load(require('../assets/VRWorld/bakedDirectionTex.jpg'))
+    bakedDirTexture.flipY = false
+    bakedDirTexture.encoding = THREE.sRGBEncoding;
+
     const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture })
-    const doorLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+    const bakedDirMaterial = new THREE.MeshBasicMaterial({ map: bakedDirTexture })
+    const doorLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff,side:THREE.DoubleSide })
     const lampLightMaterial = new THREE.MeshBasicMaterial({ color: 0x00FFFF })
 
     const proj1_texture = textureLoader.load(require('../assets/projectImages/arpDesktop.jpg'))
@@ -182,7 +187,7 @@ function init() {
     
     
     //World Model
-    loader.load( require('../assets/VRWorld/portfolio_v1.2.glb').default, function ( gltf ) {
+    loader.load( require('../assets/VRWorld/portfolio_v3_bigItems.glb').default, function ( gltf ) {
         gltf.scene.traverse((child)=>
         {
             child.material = bakedMaterial;
@@ -207,6 +212,9 @@ function init() {
             if (child.name.includes('doorLight')) {
                 child.material = doorLightMaterial
             }
+            // else if (child.name.includes('lamppost')) {
+            //     child.material = bakedDirTexture
+            // }
             else if (child.name.includes('lampLight')) {
                 child.material = lampLightMaterial
                 selectiveBloomEffect.selection.add(child)
@@ -233,6 +241,35 @@ function init() {
             else if (child.name.includes('proj5')) {
                 child.material = proj5_Material
                 child.material.side=THREE.DoubleSide
+            }
+        })
+        scene.add( gltf.scene );
+    }, undefined, function ( error ) {
+    
+        console.error( error );
+    
+    } );
+
+    loader.load( require('../assets/VRWorld/portfolio_v3_smallItems.glb').default, function ( gltf ) {
+        gltf.scene.traverse((child)=>
+        {
+            child.material = bakedDirMaterial;
+            if (child.type==='Mesh'){
+
+                const box=new THREE.Box3().setFromObject(child)
+                let size=new THREE.Vector3()
+                let center=new THREE.Vector3()
+                box.getSize(size)
+                box.getCenter(center)
+                // const helper = new THREE.Box3Helper( box, 0x00ffff );
+                // scene.add( helper );
+                const boxShape = new CANNON.Box(size.divideScalar(2))
+                const boxBody = new CANNON.Body({
+                mass: 0,
+                position: center,
+                shape: boxShape,
+                })
+                world.addBody(boxBody)
             }
         })
         scene.add( gltf.scene );
@@ -398,8 +435,6 @@ function onClickOpen(){
 }
 
 
-
-
 //############# NON THREE ###################
 const navlinksWorks = document.querySelector('.navlinks-works');
 const navlinksAbout = document.querySelector('.navlinks-about');
@@ -526,7 +561,7 @@ function setupOrbitControls() {
     // controls.autoRotate = true;
     controls.autoRotateSpeed=-0.5
     controls.minDistance = 2.4;
-    // controls.maxDistance = 10;
+    controls.maxDistance = 10;
     // controls.maxPolarAngle = Math.PI/2;
     controls.update();
 
@@ -714,7 +749,7 @@ function openPortfolio(){
         gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
         // music.play();
         toggleMusic();
-        openFullscreen();
+        // openFullscreen();
         // scene.camera.music.play()
     })
 }

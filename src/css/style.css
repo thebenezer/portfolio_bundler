@@ -43,7 +43,7 @@ h1,h2,h3{
   font-family: 'Libre Baskerville', serif;
 }
 body{
-  background-color: var(--backgnd);
+  background-color: var(--black);
   color: var(--foregnd);
   /* display: flex;
   flex-direction: column; */
@@ -332,20 +332,11 @@ margin: auto;
 .laboratory{
   margin: auto;
 }
-.bookIMG_container{
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  display: flex;
-}
 .openBookImg{
   margin: auto;
   width: 90%;
   height: 90%;
-  transform: scaleX(0);
+  transform: scaleX(1);
 }
 .closeBook{
   z-index: 2;
@@ -391,24 +382,11 @@ margin: auto;
 }
 .info h3{
   font-size: medium;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .info p{
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
-/* .proj2{
-  background-color: #55a93b;
-}
-.proj3{
-  background-color: #665cff;
-}
-.proj4{
-  background-color: #2d0bff;
-}
-.proj5{
-  background-color: #ffc725;
-} */
-
 .prev,.next{
   position: fixed;
   z-index: -1;
@@ -426,45 +404,43 @@ margin: auto;
 .lib_cont{
   /* background-color: var(--backgnd); */
   /* background-color: blanchedalmond; */
-  justify-content: center;
+  justify-content: space-evenly;
   align-content: center;
   flex-wrap: wrap;
 }
 .book{
-  /* flex: 1; */
   height: 80%;
-  width: 25%;
+  width: 30%;
   margin: auto 10px;
   border-radius: 2px;
 }
 .booktitle{
+  height: 20%;
   position: relative;
 }
 .booktitle h3{
   position: absolute;
   top: 40px;
   left: 40px;
+  height: 20%;
   font-family: 'Libre Baskerville', serif;
   font-size: x-large;
   color: #e0e0e0;
 }
 .about .booktitle{
-  height: 40%;
   background: linear-gradient(140deg, #5a5482, #d097dc);
 }
 .resume .booktitle{
   background: linear-gradient(140deg, #475959, #76c086);
   /* background: linear-gradient(140deg, #505163, #808a96); */
-  height: 40%;
 }
 .credits .booktitle{
   background: linear-gradient(140deg, #545577, #57b0c6);
-  height: 40%;
 }
 .bookcontent{
-  height: 60%;
+  height: 80%;
   text-align: center;
-  /* position: relative; */
+  position: relative;
   display: flex;
   flex-direction: column;
   /* justify-content: end; */
@@ -473,17 +449,34 @@ margin: auto;
 .bookcontent p{
   text-align: justify;
   line-height: 30px;
+  padding: 20px;
+  overflow:auto;
+}
+.credits-info{
+  overflow-y: auto;
+  text-align: left;
+  line-height: 30px;
   padding: 10px;
-  overflow:hidden;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.credits-info::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.credits-info {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 .bookbutton{
-  /* position: absolute;
-  bottom: 20px;
+  position: absolute;
+  bottom: 0px;
   left:50%;
-  transform: translate(-50%,0%); */
+  transform: translate(-50%,0%);
   align-self:baseline;
   margin: 20px auto;
-  background-color: #a1a1a100;
+  background-color: var(--paperdark);
+  box-shadow: 5px 5px 25px 1px #0e0e0e99;
   border: #c9c5b9 1px solid;
   width: 150px;
   height: 30px;
@@ -504,16 +497,51 @@ margin: auto;
   background-color: var(--paperdark);
 }
 
+@media only screen and (max-device-width: 800px){
+  .book{
+  flex: 1;
+  }
+  .booktitle{
+    height: 20%;
+    text-align: center;
+  }
+  .booktitle h3{
+    height: 20%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .bookcontent{
+    height: 80%;
+  }
+  .bookcontent p{
+    padding: 10px;
+    overflow-y: scroll;
+  }
+  .bookcontent p,.bookcontent a,.bookbutton ,.credits-info{
+    font-size: 12px;
+    line-height: 20px;
+  }
+  .bookbutton{
+    margin-bottom: 10px;
+  }
+}
+
+
+
 .hide-portrait{
   display: none;
   background-color: blue;
 }
+
 
 @media only screen and (max-device-width: 800px) and (orientation:portrait){
   .info_cont{
     font-size: 12px;
   }
   .hide-portrait{
+    opacity: 0.5;
     z-index: 10;
     display: flex;
     flex-direction: column;
