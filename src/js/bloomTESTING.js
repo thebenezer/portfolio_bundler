@@ -5,19 +5,71 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { gsap } from 'gsap'
-// import * as dat from 'lil-gui';
+import * as dat from 'lil-gui';
+const gui=new dat.GUI();
+function guiPanel() {
+    const lightFolder = gui.addFolder('light')
+    lightFolder.add(directionalLight, 'intensity').min(0).max(5).step(0.001)
+    lightFolder.add(directionalLight.position, 'x').min(- 500).max(500).step(1)
+    lightFolder.add(directionalLight.position, 'y').min(- 500).max(500).step(1)
+    lightFolder.add(directionalLight.position, 'z').min(- 500).max(500).step(1)
+    const sceneFolder = gui.addFolder('scene')
+    sceneFolder.addColor(debugObject,'scenecolor')
+    .onChange(()=>{
+        scene.background.set(debugObject.scenecolor);
+    });
+    sceneFolder.addColor(debugObject,'ambientlight')
+    .onChange(()=>{
+        scene.children[0].color.set(debugObject.ambientlight);
+    });
+    sceneFolder.addColor(debugObject,'fogcolor')
+    .onChange(()=>{
+        scene.fog.color.set(debugObject.fogcolor);
+    });
+    sceneFolder.close()
+    const objectFolder = gui.addFolder('colors')
+    // lampFolder.add(selectiveBloomEffect.options,'intensity').min(0).max(5).step(0.01)
+    objectFolder.addColor(debugObject,'lampcolor')
+    .onChange(()=>{
+        lampLightMaterial.color.set(debugObject.lampcolor);
+    });
+    objectFolder.addColor(debugObject,'watercolor')
+    .onChange(()=>{
+        water.material.color.set(debugObject.watercolor);
+    });
+    objectFolder.addColor(debugObject,'socialcolor')
+    .onChange(()=>{
+        socialChildMaterial.color.set(debugObject.socialcolor);
+    });
+    objectFolder.close()
+    gui.close()
+}
+/*
+* Debug GUI
+*/
+const debugObject = {
+    lampcolor: 0x142e39,
+    watercolor: 0x00010a,
+    scenecolor: 0x111522,
+    ambientlight: 0x96cbfd,
+    fogcolor: 0x000,
+    socialcolor: 0x7fd2f5,
+}
+
 import * as CANNON from 'cannon-es'
 
 import CharacterController from './characterController';
 
 import { BlendFunction,KernelSize, EffectComposer, EffectPass, RenderPass, SelectiveBloomEffect} from "postprocessing";
+import { DirectionalLight } from 'three';
 
 const canvas = document.querySelector('#canvas' );
 const loadingBar= document.querySelector('.loading-bar')
 const closeProj= document.querySelectorAll('.closeProj')
 let stats,info,loadingManager;
 let camera, scene, renderer,controls,composer;
-let selectiveBloomEffect,selectiveBloomPass;
+let water,lampLightMaterial,directionalLight,socialChildMaterial;
+let selectiveBloomEffect,selectiveBloomPass,bloomOptions;
 let music,selectMenuSound,selectItemSound;
 const clock=new THREE.Clock();
 
@@ -71,7 +123,7 @@ function init() {
     const fov = 60;
     const aspect = window.innerWidth / window.innerHeight;  // the canvas default
     const near = 0.1;
-    const far = 170;
+    const far = 1000;
     camera = new THREE.PerspectiveCamera( fov, aspect, near, far);
 
     // ***** AUDIO ****** //
@@ -79,11 +131,11 @@ function init() {
 
     // ***** LIGHTS ****** //
     scene.add( new THREE.AmbientLight( 0xfffefe, 0.5 ) );
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
-    directionalLight.castShadow = false
+    directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight.castShadow = true
 
-    directionalLight.shadow.mapSize.width = 2048
-    directionalLight.shadow.mapSize.height = 2048
+    // directionalLight.shadow.mapSize.width = 2048
+    // directionalLight.shadow.mapSize.height = 2048
 
     directionalLight.shadow.camera.near = 1
     directionalLight.shadow.camera.far = 200
@@ -93,12 +145,13 @@ function init() {
     directionalLight.shadow.camera.bottom = - 50
     directionalLight.shadow.camera.left = - 50
 
-    directionalLight.position.set(-50, 70, 70)
+    directionalLight.position.set(-20, 70, 33)
+    // DirectionalLight.
     scene.add(directionalLight)
 
-    const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
-    directionalLightCameraHelper.visible = false
-    scene.add(directionalLightCameraHelper)
+    // const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)
+    // directionalLightCameraHelper.visible = true
+    // scene.add(directionalLightCameraHelper)
 
     // ***** RENDERER ****** //
     renderer = new THREE.WebGLRenderer({
@@ -114,7 +167,7 @@ function init() {
     renderer.setPixelRatio( Math.min(window.devicePixelRatio,2) );
     renderer.setSize( window.innerWidth, window.innerHeight );
 
-    const bloomOptions = {
+    bloomOptions = {
         blendFunction: BlendFunction.SCREEN,
         kernelSize: KernelSize.MEDIUM,
         luminanceThreshold: 0,
@@ -142,18 +195,18 @@ function init() {
     backgroundTexture.mapping=THREE.EquirectangularReflectionMapping
     backgroundTexture.encoding = THREE.sRGBEncoding;
     
-    const bakedTexture = textureLoader.load(require('../assets/VRWorld/baked3.jpg'))
+    const bakedTexture = textureLoader.load(require('../assets/VRWorld/baked6.jpg'))
     bakedTexture.flipY = false
     bakedTexture.encoding = THREE.sRGBEncoding;
 
-    const bakedDirTexture = textureLoader.load(require('../assets/VRWorld/bakedDirectionTex.jpg'))
+    const bakedDirTexture = textureLoader.load(require('../assets/VRWorld/DirectionTex2.jpg'))
     bakedDirTexture.flipY = false
     bakedDirTexture.encoding = THREE.sRGBEncoding;
 
     const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture })
     const bakedDirMaterial = new THREE.MeshBasicMaterial({ map: bakedDirTexture })
     const doorLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff,side:THREE.DoubleSide })
-    const lampLightMaterial = new THREE.MeshBasicMaterial({ color: 0x00FFFF })
+    lampLightMaterial = new THREE.MeshBasicMaterial({ color: 0x00FFFF })
 
     const proj1_texture = textureLoader.load(require('../assets/projectImages/arpDesktop.jpg'))
     const proj2_texture = textureLoader.load(require('../assets/projectImages/stipling.jpg'))
@@ -182,7 +235,15 @@ function init() {
    
     // scene.background=backgroundTexture
     scene.background = new THREE.Color( 0x000);
-    scene.fog = new THREE.FogExp2( 0x111522,1);
+    scene.fog = new THREE.FogExp2( debugObject.fogcolor,1);
+
+    // Ocean
+    const geometry = new THREE.PlaneGeometry( 2000, 2000 );
+    const material = new THREE.MeshBasicMaterial( {color: debugObject.watercolor} );
+    water = new THREE.Mesh( geometry, material );
+    water.rotation.x=-Math.PI/2
+    water.position.y=-0.2
+    scene.add( water );
 
     
     
@@ -249,11 +310,9 @@ function init() {
         console.error( error );
     
     } );
-
-    loader.load( require('../assets/VRWorld/portfolio_v3_smallItems.glb').default, function ( gltf ) {
+    loader.load( require('../assets/VRWorld/portfolio_v4_smalltems.glb').default, function ( gltf ) {
         gltf.scene.traverse((child)=>
         {
-            child.material = bakedDirMaterial;
             if (child.type==='Mesh'){
 
                 const box=new THREE.Box3().setFromObject(child)
@@ -270,6 +329,17 @@ function init() {
                 shape: boxShape,
                 })
                 world.addBody(boxBody)
+                if (child.name.includes('social')) {
+                    socialChildMaterial=child.material
+                    child.material.color.set(debugObject.socialcolor)
+                    child.material.emissive.set(0xfefefe)
+                    child.material.emissiveIntensity=(0.2)
+                    console.log(child.material)
+                }
+                else{
+                    child.material = bakedDirMaterial;
+                }
+
             }
         })
         scene.add( gltf.scene );
@@ -297,7 +367,7 @@ function init() {
         console.error( e );
     });
     
-
+    guiPanel()
 
     window.addEventListener( 'resize', onWindowResize,false );
     document.addEventListener('keypress',(event)=>onEnterOpen(event),false)
@@ -306,7 +376,7 @@ function init() {
     });
 
     setUpRayInterractions();
-    canvas.addEventListener( 'click', onClickEventHandler, false );
+    // canvas.addEventListener( 'click', onClickEventHandler, false );
     // canvas.addEventListener( 'click', onClickOpen, false );
     // canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
     // canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
@@ -561,7 +631,7 @@ function setupOrbitControls() {
     // controls.autoRotate = true;
     controls.autoRotateSpeed=-0.5
     controls.minDistance = 2.4;
-    controls.maxDistance = 10;
+    // controls.maxDistance = 10;
     // controls.maxPolarAngle = Math.PI/2;
     controls.update();
 
@@ -573,41 +643,42 @@ function setUpRayInterractions() {
     raycaster = new THREE.Raycaster();
     raycaster.near=0
     raycaster.far=5
-    let geo=new THREE.BoxBufferGeometry(10, 7,2);
+    let geo=new THREE.BoxBufferGeometry(10.2, 7.85,2);
     let mat=new THREE.MeshPhongMaterial( { 
         color: 0xfefefe,
     })
+
     const proj1 = new THREE.Mesh(geo,mat);
     proj1.rotation.x = - Math.PI * 0.5
-    proj1.rotation.z = - Math.PI * 0.81
-    proj1.position.set(6.5, 1.0,-25)
+    proj1.rotation.z = - 2.532
+    proj1.position.set(5.41, 1.0,-26.33)
     proj1.name='proj1'
     proj1.userData.y=1.0
     proj1.userData.i=0
     const proj2 = new THREE.Mesh(geo,mat);
     proj2.rotation.x = - Math.PI * 0.5
-    proj2.rotation.z = - Math.PI * 0.42
-    proj2.position.set(12.3, 1.0,-41.3)
+    proj2.rotation.z = -1.307
+    proj2.position.set(11.13, 1.0,-40.922)
     proj2.name='proj2'
     proj2.userData.y=1.0
     proj2.userData.i=1
     const proj3 = new THREE.Mesh(geo,mat);
     proj3.rotation.x = - Math.PI * 0.5
-    proj3.position.set(-2.1, 1.0, -52.4)
+    proj3.position.set(-2.12, 1.0, -51.06)
     proj3.name='proj3'
     proj3.userData.y=1.0
     proj3.userData.i=2
     const proj4 = new THREE.Mesh(geo,mat);
     proj4.rotation.x = - Math.PI * 0.5
-    proj4.rotation.z = - Math.PI * 0.59
-    proj4.position.set(-16.5, 1.0, -41.3)
+    proj4.rotation.z = -1.821
+    proj4.position.set(-15.26, 1.0, -41.01)
     proj4.name='proj4'
     proj4.userData.y=1.0
     proj4.userData.i=3
     const proj5 = new THREE.Mesh(geo,mat);
     proj5.rotation.x = - Math.PI * 0.5
-    proj5.rotation.z = - Math.PI * 0.19
-    proj5.position.set(-10.6, 1.0, -25)
+    proj5.rotation.z = -0.607
+    proj5.position.set(-9.82, 1.0, -26.55)
     proj5.name='proj5'
     proj5.userData.y=1.0
     proj5.userData.i=4
@@ -617,8 +688,7 @@ function setUpRayInterractions() {
     proj4.userData.group='projects'
     proj5.userData.group='projects'
 
-
-    geo=new THREE.BoxBufferGeometry(9, 9,2);
+    // geo=new THREE.BoxBufferGeometry(9, 9,2);
     const lightHouse = new THREE.Mesh(geo, mat);
     lightHouse.rotation.x = - Math.PI * 0.5
     lightHouse.position.set(22, 1, 77)
@@ -627,13 +697,19 @@ function setUpRayInterractions() {
 
     const lab = new THREE.Mesh(geo, mat);
     lab.rotation.x = - Math.PI * 0.5
-    lab.position.set(-24, 1, 47.7)
+    lab.rotation.z = 1.571
+    lab.position.set(-26.27, 1, 53.14)
+    gui.add(lab.position,'x').min(-30).max(-20).step(0.01)
+    gui.add(lab.position,'z').min(52.5).max(53.5).step(0.01)
+    gui.add(lab.rotation,'z').min(1.52).max(1.597).step(0.001)
     lab.name='lab'
     lab.userData.y=1
 
     const library = new THREE.Mesh(geo, mat);
     library.rotation.x = - Math.PI * 0.5
-    library.position.set(-43, 3.5, 10.6)
+    library.rotation.z = 1.571
+    library.position.set(-42.12, 3.5, 10.67)
+    
     library.name='library'
     library.userData.y=3.5
     lightHouse.userData.group='buildings'
@@ -669,6 +745,8 @@ function setUpRayInterractions() {
 
     scene.add(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
     interractObjects.push(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
+    
+
 
 }
 
@@ -715,9 +793,9 @@ function setupLoadingScreen(){
                 scene.remove(overlay)
                 loadingBar.style.transform=``;
                 document.querySelector('.enter-button').addEventListener('click', openPortfolio,{once:true})
-                gsap.to(loadingBar,{scaleX:0,ease: "expo.in",duration:1})
-                gsap.to('.overlay',{opacity:0.7,duration:0.5, delay: 1})
-                gsap.to('.enter-button',{opacity:1,cursor: 'Pointer',duration:0.5, delay: 1})
+                gsap.to(loadingBar,{scaleX:0,ease: "expo.in",duration:0.5})
+                gsap.to('.overlay',{opacity:0.7,duration:0.5, delay: 0.5})
+                gsap.to('.enter-button',{opacity:1,cursor: 'Pointer',duration:0.5, delay: 0.5})
             });
             window.scrollTo(50, 50);
 

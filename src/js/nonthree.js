@@ -1,9 +1,9 @@
 
-if(isMobileTablet()){
+// if(isMobileTablet()){
     document.getElementById('zone_joystick').style.display='flex'; 
     // document.getElementById('interractButton').style.display='block'; 
     document.getElementById('jumpButton').style.display='block'; 
-}
+// }
 function isMobileTablet(){
     var check = false;
     (function(a){

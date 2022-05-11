@@ -165,10 +165,7 @@ function init() {
     directionalLight.shadow.camera.left = - 50
 
     directionalLight.position.set(-50, 70, 70)
-    // gui.add(directionalLight, 'intensity').min(0).max(5).step(0.001)
-    // gui.add(directionalLight.position, 'x').min(- 500).max(500).step(1)
-    // gui.add(directionalLight.position, 'y').min(- 500).max(500).step(1)
-    // gui.add(directionalLight.position, 'z').min(- 500).max(500).step(1)
+    
     scene.add(directionalLight)
 
     const directionalLightCameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera)

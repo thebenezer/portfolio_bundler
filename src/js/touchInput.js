@@ -13,7 +13,7 @@ export default class ControllerTouchInput {
     this.joystick = nipplejs.create({
         zone: this.joystickDOM,                  // active zone
         color: '#ffffff',
-        size: 100,
+        size: 150,
         threshold: 0.1,               // before triggering a directional event
         fadeTime: 500,              // transition time
         multitouch: false,

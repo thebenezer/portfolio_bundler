@@ -56,7 +56,7 @@ body{
   margin: auto 0px auto 20px;
   position: fixed;
   top: 30px;
-  left: 10px;
+  left: 50px;
   cursor: pointer;
 }
 .line1,.line2,.line3{
@@ -86,7 +86,7 @@ body{
   position: fixed;
   z-index: 3;
   top:10px;
-  right: 10px;
+  right: 50px;
   height: 40px;
   width: 30px;
   transform: rotate(180deg);
@@ -226,8 +226,8 @@ touch-action: none;
   position: fixed;
   display: none;
   border-radius: 50%;
-  left: 40px;
-  bottom: 40px;
+  left: 80px;
+  bottom: 60px;
   z-index: 1;
   /*To remove on tap blue color && select*/
   -webkit-tap-highlight-color: transparent;
@@ -248,17 +248,16 @@ margin: auto;
 #interractButton,#jumpButton{
   touch-action: manipulation;
   /* pointer-events: none; */
-
   display: none;
   position: fixed;
   bottom: 40px;
-  right: 25px;
+  right: 50px;
   z-index: 1;
   border-radius: 50%;
   border: #fefefe 2px solid;
   padding: 2px;
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   background-color: #ffffff63;
   /*To remove on tap blue color && select*/
   -webkit-tap-highlight-color: transparent;
