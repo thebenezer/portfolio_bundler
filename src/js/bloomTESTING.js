@@ -6,7 +6,7 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { gsap } from 'gsap'
 import * as dat from 'lil-gui';
-const gui=new dat.GUI();
+// const gui=new dat.GUI();
 function guiPanel() {
     const lightFolder = gui.addFolder('light')
     lightFolder.add(directionalLight, 'intensity').min(0).max(5).step(0.001)
@@ -91,10 +91,10 @@ function hasWebGL() {
 
 function init() {
 
-    info = document.querySelector('#info' );
-    stats = new Stats();
-    info.appendChild( stats.dom );
-    stats.dom.style='position:absolute;top:50%;right:0;'
+    // info = document.querySelector('#info' );
+    // stats = new Stats();
+    // info.appendChild( stats.dom );
+    // stats.dom.style='position:absolute;top:50%;right:0;'
     scene = new THREE.Scene();
 
     // LOADING SCREEN
@@ -199,7 +199,7 @@ function init() {
     bakedTexture.flipY = false
     bakedTexture.encoding = THREE.sRGBEncoding;
 
-    const bakedDirTexture = textureLoader.load(require('../assets/VRWorld/DirectionTex2.jpg'))
+    const bakedDirTexture = textureLoader.load(require('../assets/VRWorld/DirectionTex3.jpg'))
     bakedDirTexture.flipY = false
     bakedDirTexture.encoding = THREE.sRGBEncoding;
 
@@ -268,6 +268,9 @@ function init() {
                 position: center,
                 shape: boxShape,
                 })
+                if(center.y<2){
+                    boxBody.userData={name:"land"}
+                }
                 world.addBody(boxBody)
             }
             if (child.name.includes('doorLight')) {
@@ -310,7 +313,7 @@ function init() {
         console.error( error );
     
     } );
-    loader.load( require('../assets/VRWorld/portfolio_v4_smalltems.glb').default, function ( gltf ) {
+    loader.load( require('../assets/VRWorld/portfolio_v4_smalllItems.glb').default, function ( gltf ) {
         gltf.scene.traverse((child)=>
         {
             if (child.type==='Mesh'){
@@ -328,16 +331,21 @@ function init() {
                 position: center,
                 shape: boxShape,
                 })
-                world.addBody(boxBody)
                 if (child.name.includes('social')) {
                     socialChildMaterial=child.material
                     child.material.color.set(debugObject.socialcolor)
                     child.material.emissive.set(0xfefefe)
                     child.material.emissiveIntensity=(0.2)
-                    console.log(child.material)
+                    // console.log(child.material)
+                    world.addBody(boxBody)
+                }
+                else if (child.name.includes('Circle')) {
+                    child.material = bakedDirMaterial;
                 }
                 else{
                     child.material = bakedDirMaterial;
+                    world.addBody(boxBody)
+
                 }
 
             }
@@ -367,7 +375,7 @@ function init() {
         console.error( e );
     });
     
-    guiPanel()
+    // guiPanel()
 
     window.addEventListener( 'resize', onWindowResize,false );
     document.addEventListener('keypress',(event)=>onEnterOpen(event),false)
@@ -377,7 +385,7 @@ function init() {
 
     setUpRayInterractions();
     // canvas.addEventListener( 'click', onClickEventHandler, false );
-    // canvas.addEventListener( 'click', onClickOpen, false );
+    canvas.addEventListener( 'click', onClickOpen, false );
     // canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
     // canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
 }
@@ -386,7 +394,7 @@ function render() {
     const dt = clock.getDelta();
     // Update physics
     if(characterControllerInstance){
-        characterControllerInstance.body.addEventListener('collide', collisionJumpCheck)
+        // characterControllerInstance.body.addEventListener('collide', collisionJumpCheck)
         characterControllerInstance.world.step(1/120,dt);
         characterControllerInstance.update(dt)
         raycaster.set(new THREE.Vector3(characterControllerInstance.character.position.x,characterControllerInstance.character.position.y+4,characterControllerInstance.character.position.z),new THREE.Vector3(0,-1,0))
@@ -394,15 +402,16 @@ function render() {
     }
 
     // renderer.render(scene, camera);
-    stats.update();
+    // stats.update();
     composer.render();
 
     requestAnimationFrame( render );
 }
 
-function collisionJumpCheck(){
-    characterControllerInstance.canJump=true
-}
+// function collisionJumpCheck(collision){
+//     characterControllerInstance.canJump=true
+//     console.log(collision.contact.bj)
+// }
 
 function onClickEventHandler( event ) {
 // Optimization needed in checking so many objects
@@ -442,27 +451,29 @@ function rayCheck(){
 
         if ( INTERSECTED != intersects[ 0 ].object ) {
             selectItemSound.play()
-
             INTERSECTED = intersects[ 0 ].object;
-            gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.out(1)", y: INTERSECTED.userData.y+1 });
+            console.log(INTERSECTED)
+            gsap.to(INTERSECTED.scale, { duration: 0.5, ease: "ease.in(1)", z: INTERSECTED.userData.scaleZ+2 });
 
         }
 
     } else {
         if ( INTERSECTED ){
-            gsap.to(INTERSECTED.position, { duration: 0.5, ease: "back.in(1)", y: INTERSECTED.userData.y });
+            gsap.to(INTERSECTED.scale, { duration: 0.5, ease: "back.in(1)", z: INTERSECTED.userData.scaleZ });
         } 
         INTERSECTED = null;
     }
 
 }
-
-
+document.querySelector('.instructions_icon').addEventListener('click',()=>{
+    selectItemSound.play()
+    gsap.to('.instructions',{zIndex:5,opacity:1,duration:0.5})
+});
 
 // OPENING AND CLOSING WORKS
 function onClose(){
     selectItemSound.play()
-    gsap.to('.box, .library, .lab, .next, .prev',{zIndex:-1,opacity:0,duration:0.5})
+    gsap.to('.box, .library, .lab, .next, .prev, .instructions',{zIndex:-1,opacity:0,duration:0.5})
 }
 function onEnterOpen(e) {
     e.preventDefault();
@@ -643,7 +654,7 @@ function setUpRayInterractions() {
     raycaster = new THREE.Raycaster();
     raycaster.near=0
     raycaster.far=5
-    let geo=new THREE.BoxBufferGeometry(10.2, 7.85,2);
+    let geo=new THREE.BoxBufferGeometry(10.2, 7.85,0.1);
     let mat=new THREE.MeshPhongMaterial( { 
         color: 0xfefefe,
     })
@@ -651,36 +662,36 @@ function setUpRayInterractions() {
     const proj1 = new THREE.Mesh(geo,mat);
     proj1.rotation.x = - Math.PI * 0.5
     proj1.rotation.z = - 2.532
-    proj1.position.set(5.41, 1.0,-26.33)
+    proj1.position.set(5.41, 1.90,-26.33)
     proj1.name='proj1'
-    proj1.userData.y=1.0
+    proj1.userData.scaleZ=1.0
     proj1.userData.i=0
     const proj2 = new THREE.Mesh(geo,mat);
     proj2.rotation.x = - Math.PI * 0.5
     proj2.rotation.z = -1.307
-    proj2.position.set(11.13, 1.0,-40.922)
+    proj2.position.set(11.13, 1.90,-40.922)
     proj2.name='proj2'
-    proj2.userData.y=1.0
+    proj2.userData.scaleZ=1.0
     proj2.userData.i=1
     const proj3 = new THREE.Mesh(geo,mat);
     proj3.rotation.x = - Math.PI * 0.5
-    proj3.position.set(-2.12, 1.0, -51.06)
+    proj3.position.set(-2.12, 1.90, -51.06)
     proj3.name='proj3'
-    proj3.userData.y=1.0
+    proj3.userData.scaleZ=1.0
     proj3.userData.i=2
     const proj4 = new THREE.Mesh(geo,mat);
     proj4.rotation.x = - Math.PI * 0.5
     proj4.rotation.z = -1.821
-    proj4.position.set(-15.26, 1.0, -41.01)
+    proj4.position.set(-15.26, 1.90, -41.01)
     proj4.name='proj4'
-    proj4.userData.y=1.0
+    proj4.userData.scaleZ=1.0
     proj4.userData.i=3
     const proj5 = new THREE.Mesh(geo,mat);
     proj5.rotation.x = - Math.PI * 0.5
     proj5.rotation.z = -0.607
-    proj5.position.set(-9.82, 1.0, -26.55)
+    proj5.position.set(-9.82, 1.90, -26.55)
     proj5.name='proj5'
-    proj5.userData.y=1.0
+    proj5.userData.scaleZ=1.0
     proj5.userData.i=4
     proj1.userData.group='projects'
     proj2.userData.group='projects'
@@ -691,19 +702,19 @@ function setUpRayInterractions() {
     // geo=new THREE.BoxBufferGeometry(9, 9,2);
     const lightHouse = new THREE.Mesh(geo, mat);
     lightHouse.rotation.x = - Math.PI * 0.5
-    lightHouse.position.set(22, 1, 77)
+    lightHouse.position.set(22, 1.90, 77)
     lightHouse.name='lightHouse'
-    lightHouse.userData.y=1
+    lightHouse.userData.scaleZ=1
 
     const lab = new THREE.Mesh(geo, mat);
     lab.rotation.x = - Math.PI * 0.5
     lab.rotation.z = 1.571
-    lab.position.set(-26.27, 1, 53.14)
-    gui.add(lab.position,'x').min(-30).max(-20).step(0.01)
-    gui.add(lab.position,'z').min(52.5).max(53.5).step(0.01)
-    gui.add(lab.rotation,'z').min(1.52).max(1.597).step(0.001)
+    lab.position.set(-26.27, 1.90, 53.14)
+    // gui.add(lab.position,'x').min(-30).max(-20).step(0.01)
+    // gui.add(lab.position,'z').min(52.5).max(53.5).step(0.01)
+    // gui.add(lab.rotation,'z').min(1.52).max(1.597).step(0.001)
     lab.name='lab'
-    lab.userData.y=1
+    lab.userData.scaleZ=1
 
     const library = new THREE.Mesh(geo, mat);
     library.rotation.x = - Math.PI * 0.5
@@ -711,33 +722,33 @@ function setUpRayInterractions() {
     library.position.set(-42.12, 3.5, 10.67)
     
     library.name='library'
-    library.userData.y=3.5
+    library.userData.scaleZ=3.5
     lightHouse.userData.group='buildings'
     lab.userData.group='buildings'
     library.userData.group='buildings'
 
 
-    geo=new THREE.BoxBufferGeometry(3, 3,2);
+    geo=new THREE.BoxBufferGeometry(3, 3,0.1);
     const social1 = new THREE.Mesh(geo, mat);
     social1.rotation.x = - Math.PI * 0.5
-    social1.position.set(37.9, 1, 32)
+    social1.position.set(37.9, 1.90, 32)
     social1.name='twitter'
-    social1.userData.y=1
+    social1.userData.scaleZ=1
     const social2 = new THREE.Mesh(geo, mat);
     social2.rotation.x = - Math.PI * 0.5
-    social2.position.set(43.5, 1, 32)
+    social2.position.set(43.5, 1.90, 32)
     social2.name='github'
-    social2.userData.y=1
+    social2.userData.scaleZ=1
     const social3 = new THREE.Mesh(geo, mat);
     social3.rotation.x = - Math.PI * 0.5
-    social3.position.set(49.1, 1, 32)
+    social3.position.set(49.1, 1.90, 32)
     social3.name='linkedin'
-    social3.userData.y=1
+    social3.userData.scaleZ=1
     const social4 = new THREE.Mesh(geo, mat);
     social4.rotation.x = - Math.PI * 0.5
-    social4.position.set(54.7, 1, 32)
+    social4.position.set(54.7, 1.90, 32)
     social4.name='mail'
-    social4.userData.y=1
+    social4.userData.scaleZ=1
     social1.userData.group='socials'
     social2.userData.group='socials'
     social3.userData.group='socials'

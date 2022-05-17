@@ -55,8 +55,8 @@ body{
   z-index: 3;
   margin: auto 0px auto 20px;
   position: fixed;
-  top: 30px;
-  left: 50px;
+  top: 25px;
+  left: 30px;
   cursor: pointer;
 }
 .line1,.line2,.line3{
@@ -293,7 +293,7 @@ margin: auto;
   border-radius: 50%;
   cursor: pointer;
 }
-.box,.library,.lab{
+.box,.library,.lab,.instructions{
   display: flex;
   /* justify-content: space-around; */
   /* flex-direction: row; */
@@ -496,6 +496,29 @@ margin: auto;
   background-color: var(--paperdark);
 }
 
+
+.instructions_icon{
+  position: absolute;
+  z-index: 2;
+  text-align: center;
+  /* vertical-align: middle; */
+  line-height: 20px;
+  top: 25px;
+  right: 110px;
+  width: 25px;
+  height: 25px;
+  border: 2px rgba(255, 255, 255) solid ;
+  border-radius: 50%;
+  color: #fefefe;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.instructions_cont{
+  background-color: #000;
+  background-image: url('../assets/images/instructions_desktop.jpg');
+}
+
 @media only screen and (max-device-width: 800px){
   .book{
   flex: 1;
@@ -524,6 +547,10 @@ margin: auto;
   }
   .bookbutton{
     margin-bottom: 10px;
+  }
+  .instructions_cont{
+    background-color: #000;
+    background-image: url('../assets/images/instructions_mobile.jpg');
   }
 }
 

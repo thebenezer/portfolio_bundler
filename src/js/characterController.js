@@ -10,14 +10,15 @@ export default class CharacterController{
     rotateAngle = new THREE.Vector3(0, 1, 0)
     rotateQuarternion= new THREE.Quaternion()
     cameraTarget = new THREE.Vector3()
-    
+    lastActiveIsland 
     // constants
     fadeDuration= 0.2
     runVelocity = 10
     walkVelocity = 4
+    canJump = true
 
     constructor(character,animations,camera,orbitControls,world){
-        this.canJump = true
+        // this.canJump = true
         this._input=new CharacterInput();    
         this.character = character;
         this.actions = {};
@@ -39,7 +40,7 @@ export default class CharacterController{
 
         this.body = new CANNON.Body({
             mass: 1,
-            position: new CANNON.Vec3(-24, 4.0,47),
+            position: new CANNON.Vec3(-3.7321603111458113, 1.9534421246363518, 32.22759970714397),
             shape: shape,
             allowSleep: false,
             linearDamping:0.99,
@@ -56,13 +57,35 @@ export default class CharacterController{
         this.camera.position.z=this.character.position.z+10;
         this.orbitControls = orbitControls;
         this.updateCameraTarget(0,0,0);
+        this.body.addEventListener('collide',(e)=>{
+            this.canJump=true
+            if(e.contact.bj.userData){
+                this.lastActiveIsland=e.contact.bj
+                // console.log('last:',e.contact.bj)
+            }
+        });
+
     }
 
     update(delta) {
-        // console.log(this.character.position.y)
-        if(this.character.position.y<-10){
-            this.body.position.y=10
-            // console.log('yes')
+        if(this.character.position.y<-5){
+            let lastPos=new THREE.Vector3().copy(this.lastActiveIsland.position)
+            let tempPos = new THREE.Vector3().copy(this.character.position);
+            // console.log(tempPos)
+
+            var dir = new THREE.Vector3(); // direction to move fallen character
+            dir.subVectors( lastPos,tempPos ).normalize();
+            // console.log(dir);
+            // var lb = new THREE.Vector3().copy(this.lastActiveIsland.aabb.lowerBound); // direction to move fallen character
+            // var ub = new THREE.Vector3().copy(this.lastActiveIsland.aabb.upperBound); // direction to move fallen character
+            // ub.setY(10) 
+            // let box = new THREE.Box3(lb, ub);
+            // console.log(box)
+            // console.log(box.containsPoint(tempPos));
+            tempPos.addScaledVector(dir,1);
+            this.body.position.x=tempPos.x
+            this.body.position.z=tempPos.z
+            this.body.position.y=2.4
         }
         this.character.getWorldPosition(this.oldObjectPosition);
 
@@ -80,7 +103,8 @@ export default class CharacterController{
         if((this._input.keysPressed[' ']||this._input._inputTouch.touchJump) && this.canJump){
             // this.camera.position.y =this.character.position.y
             // moveY = 7*delta*100  
-            this.body.velocity.y=15
+        // console.log(this.character.position)
+        this.body.velocity.y=15
             this.canJump=false
             this._input._inputTouch.touchJump=false;
             play='fall'
@@ -140,9 +164,9 @@ export default class CharacterController{
         // this.camera.position.x += moveX
         // this.camera.position.z += moveZ
         // // this.camera.position.y += moveY
-        if (this.camera.position.y<this.character.position.y+0.5){
-            this.camera.position.y=this.character.position.y+0.5
-        }
+        // if (this.camera.position.y<this.character.position.y+0.5){
+        //     this.camera.position.y=this.character.position.y+0.5
+        // }
         // // console.log(this.camera.position,this.character.position)
         // // update camera target
         this.cameraTarget.x = this.character.position.x
@@ -156,8 +180,8 @@ export default class CharacterController{
         const delta = newObjectPosition.clone().sub(this.oldObjectPosition);
 
         this.camera.position.add(delta);
-
     }
+
     fadeToAction( actionName ) {
 
         const previousAction = this.currentAction;
