@@ -191,7 +191,7 @@ function init() {
     // ***** TEXTURE ****** //
     const textureLoader = new THREE.TextureLoader(loadingManager)
     const loader = new GLTFLoader(loadingManager);
-    const backgroundTexture = textureLoader.load(require('../assets/skies/Night2.png'))
+    const backgroundTexture = textureLoader.load(require('../assets/skies/night.jpg'))
     backgroundTexture.mapping=THREE.EquirectangularReflectionMapping
     backgroundTexture.encoding = THREE.sRGBEncoding;
     
@@ -384,8 +384,8 @@ function init() {
     });
 
     setUpRayInterractions();
-    // canvas.addEventListener( 'click', onClickEventHandler, false );
-    canvas.addEventListener( 'click', onClickOpen, false );
+    canvas.addEventListener( 'click', onClickEventHandler, false );
+    // canvas.addEventListener( 'click', onClickOpen, false );
     // canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
     // canvas.addEventListener( 'touchend', onDocumentTouchEnd, false );
 }
@@ -501,14 +501,14 @@ function onClickOpen(){
         else{
             selectItemSound.play()
             if (INTERSECTED.name=='twitter') {
-                window.open("https://www.twitter.com", "_blank");
+                window.open("https://twitter.com/th_ebenezer", "_blank");
             }else if(INTERSECTED.name=='github'){
                 window.open("https://github.com/thebenezer", "_blank"); 
             }else if(INTERSECTED.name=='linkedin'){
                 window.open("https://www.linkedin.com/in/thebenezer/", "_blank");
             }
             else{
-                window.location.href = "mailto:samebenezer21@gmail.com?subject=Contacting from Portfolio";
+                window.location.href = "mailto:thebenezer.mail@gmail.com?subject=Contacting from Portfolio";
             }
         }
     }
@@ -719,7 +719,7 @@ function setUpRayInterractions() {
     const library = new THREE.Mesh(geo, mat);
     library.rotation.x = - Math.PI * 0.5
     library.rotation.z = 1.571
-    library.position.set(-42.12, 3.5, 10.67)
+    library.position.set(-42.12, 4.2, 10.67)
     
     library.name='library'
     library.userData.scaleZ=3.5
@@ -836,10 +836,8 @@ function openPortfolio(){
     gsap.delayedCall(1,()=>{
         gsap.to('.overlay',{display:'none',duration:0})
         gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
-        // music.play();
+        gsap.to('.instructions',{zIndex:5,opacity:1,duration:1,delay:2})
         toggleMusic();
-        // openFullscreen();
-        // scene.camera.music.play()
     })
 }
 var elem = document.documentElement;

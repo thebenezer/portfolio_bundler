@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="46.21347"
+   height="11.562378"
+   viewBox="0 0 12.227314 3.0592125"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (b8e25be8, 2022-02-05)"
+   sodipodi:docname="select2.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="5.1449804"
+     inkscape:cx="-21.380062"
+     inkscape:cy="2.4295525"
+     inkscape:window-width="1496"
+     inkscape:window-height="905"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-0.23634279,-4.8203938)">
+    <g
+       id="g397"
+       style="fill:#1a1a1a;stroke:#683f54"
+       transform="matrix(-0.00443838,0,0,-0.00443838,40.067918,57.873543)" />
+    <g
+       id="g357"
+       transform="matrix(0,0.0431474,-0.13803307,0,14.099287,3.9182663)"
+       style="fill:#f9f9f9">
+      <g
+         id="g353"
+         style="fill:#f9f9f9"
+         transform="matrix(0,0.035433,-0.035433,0,457.23,-213.15)">
+        <path
+           id="path351"
+           sodipodi:nodetypes="ccccc"
+           d="m 7601,11063 -1251,1249 1252,-1999 1248,2001 z"
+           style="fill:#f9f9f9" />
+      </g>
+      <g
+         id="g355"
+         style="fill:#f9f9f9;stroke:#683f54"
+         transform="matrix(0,0.035433,-0.035433,0,457.12,-213.04)" />
+    </g>
+  </g>
+</svg>

@@ -23,7 +23,7 @@
      inkscape:pagecheckerboard="1"
      showgrid="false"
      inkscape:zoom="7.5711265"
-     inkscape:cx="1.1887267"
+     inkscape:cx="1.1226863"
      inkscape:cy="13.009953"
      inkscape:window-width="1496"
      inkscape:window-height="905"
@@ -41,7 +41,8 @@
      transform="translate(-0.41317977,-3.2703114)">
     <g
        id="g205"
-       transform="translate(0.52916625,0.66145846)">
+       transform="translate(0.52916625,0.66145846)"
+       style="opacity:0.4408001">
       <g
          id="g7755"
          transform="matrix(0.0790246,0,0,0.0790246,5.4505416,-20.763343)"

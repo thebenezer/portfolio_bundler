@@ -82,7 +82,7 @@ export default class CharacterController{
             // let box = new THREE.Box3(lb, ub);
             // console.log(box)
             // console.log(box.containsPoint(tempPos));
-            tempPos.addScaledVector(dir,1);
+            tempPos.addScaledVector(dir,5);
             this.body.position.x=tempPos.x
             this.body.position.z=tempPos.z
             this.body.position.y=2.4

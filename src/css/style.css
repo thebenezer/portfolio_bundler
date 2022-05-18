@@ -47,7 +47,9 @@ body{
   color: var(--foregnd);
   /* display: flex;
   flex-direction: column; */
-  min-height: 100vh;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -197,6 +199,7 @@ nav{
 #canvas{
 display: block;
 position: fixed;
+z-index: 1;
 top: 0%;
 right: 0%;
 width: 10vw;
@@ -228,7 +231,7 @@ touch-action: none;
   border-radius: 50%;
   left: 80px;
   bottom: 60px;
-  z-index: 1;
+  z-index: 2;
   /*To remove on tap blue color && select*/
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
@@ -252,7 +255,7 @@ margin: auto;
   position: fixed;
   bottom: 40px;
   right: 50px;
-  z-index: 1;
+  z-index: 2;
   border-radius: 50%;
   border: #fefefe 2px solid;
   padding: 2px;
@@ -308,7 +311,7 @@ margin: auto;
   /* background-color: #ffffff1e; */
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  opacity: 1;
+  opacity: 0;
 }
 .info_cont,.lib_cont{
   display: flex;
@@ -327,6 +330,7 @@ margin: auto;
   /* background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); */
   border: 2px #e0e0e0 solid;
   border-radius: 10px;
+  color: var(--white);
 }
 .laboratory{
   margin: auto;
@@ -336,20 +340,6 @@ margin: auto;
   width: 90%;
   height: 90%;
   transform: scaleX(1);
-}
-.closeBook{
-  z-index: 2;
-  position: fixed;
-  padding: 10px;
-  /* margin: 10px 12px; */
-  width: 40px;
-  height: 40px;
-  background-color: #ffffff63;
-  top: 6.9%;
-  right: 5.8%; 
-  border: #fefefe 2px solid;
-  border-radius: 50%;
-  cursor: pointer;
 }
 .projImg{
   flex: 1;
@@ -386,6 +376,9 @@ margin: auto;
 .info p{
   margin-bottom: 10px;
 }
+.info a{
+  color: var(--white);
+}
 .prev,.next{
   position: fixed;
   z-index: -1;
@@ -406,6 +399,7 @@ margin: auto;
   justify-content: space-evenly;
   align-content: center;
   flex-wrap: wrap;
+  color: var(--black);
 }
 .book{
   height: 80%;
@@ -499,7 +493,7 @@ margin: auto;
 
 .instructions_icon{
   position: absolute;
-  z-index: 2;
+  z-index: 3;
   text-align: center;
   /* vertical-align: middle; */
   line-height: 20px;
@@ -517,6 +511,13 @@ margin: auto;
 .instructions_cont{
   background-color: #000;
   background-image: url('../assets/images/instructions_desktop.jpg');
+}
+.link-img{
+  position: relative;
+  top: 2px;
+  width: 16px;
+  -webkit-filter: invert(1);
+ filter: invert(1);
 }
 
 @media only screen and (max-device-width: 800px){
@@ -586,6 +587,7 @@ margin: auto;
     -webkit-filter: invert(1);
    filter: invert(1);
   }
+  
   .hide-portrait p{
     color: var(--white);
   }
