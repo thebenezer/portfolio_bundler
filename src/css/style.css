@@ -54,7 +54,7 @@ body{
 }
 
 .hamburger{
-  z-index: 3;
+  z-index: 4;
   margin: auto 0px auto 20px;
   position: fixed;
   top: 25px;
@@ -351,6 +351,7 @@ margin: auto;
 .projImg img{
   width: 100%;
   height: 100%;
+  min-width: 200px;
   object-fit: cover;
   border-radius: 10px;
 }
@@ -360,7 +361,7 @@ margin: auto;
   font-size: 14px;
   /* height: 100%; */
   margin: auto;
-  padding-left: 60px;
+  /* padding-left: 60px; */
   /* background-color: #ffd100; */
 }
 .info h2{
@@ -404,6 +405,7 @@ margin: auto;
 .book{
   height: 80%;
   width: 30%;
+  min-width: 200px;
   margin: auto 10px;
   border-radius: 2px;
 }
@@ -507,6 +509,19 @@ margin: auto;
   opacity: 0.5;
   cursor: pointer;
 }
+.blink-border {
+  
+  animation: blink 1s;
+  animation-iteration-count: 10;
+}
+
+@keyframes blink { 
+  50% { 
+    border-color: var(--highlight) ; 
+    opacity: 1;
+    transform: scale(1.2);
+  }  
+}
 
 .instructions_cont{
   background-color: #000;
@@ -520,7 +535,19 @@ margin: auto;
  filter: invert(1);
 }
 
-@media only screen and (max-device-width: 800px){
+
+.hide-portrait{
+  display: none;
+}
+
+@media only screen and (max-device-width: 800px)and (orientation:landscape){
+  .info h2{
+    font-size: medium;
+    margin-bottom: 10px;
+  }
+  .info p{
+    font-size: 12px;
+  }
   .book{
   flex: 1;
   }
@@ -555,19 +582,38 @@ margin: auto;
   }
 }
 
-
-
-.hide-portrait{
-  display: none;
-  background-color: blue;
-}
-
-
 @media only screen and (max-device-width: 800px) and (orientation:portrait){
   .info_cont{
-    font-size: 12px;
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
-  .hide-portrait{
+  .info{
+    padding: 30px;
+  }
+  .closeProj{
+    top: 5%;
+  }
+  .book{
+    margin: 15px 30px;
+    height: 40%;
+  }
+  .instructions_cont{
+    background-color: #000;
+    background-image: url('../assets/images/instructions_mobile_portrait.jpg');
+  }
+  .hamburger{
+    left: 15px;
+  }
+  .equilizer {
+    right: 30px;
+  }
+  .instructions_icon{
+    right: 90px;
+  }
+  .projImg{
+    height: 30%;
+  }
+  /* .hide-portrait{
     opacity: 0.5;
     z-index: 10;
     display: flex;
@@ -590,5 +636,5 @@ margin: auto;
   
   .hide-portrait p{
     color: var(--white);
-  }
+  } */
 }

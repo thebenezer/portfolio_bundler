@@ -54,9 +54,9 @@ export default class CharacterController{
 
         this.camera.position.x=this.character.position.x;
         this.camera.position.y=this.character.position.y+3;
-        this.camera.position.z=this.character.position.z+10;
+        this.camera.position.z=this.character.position.z+5;
         this.orbitControls = orbitControls;
-        this.updateCameraTarget(0,0,0);
+        this.updateCameraTarget();
         this.body.addEventListener('collide',(e)=>{
             this.canJump=true
             if(e.contact.bj.userData){
@@ -88,14 +88,16 @@ export default class CharacterController{
             this.body.position.y=2.4
         }
         this.character.getWorldPosition(this.oldObjectPosition);
-
-        const directionPressed = DIRECTIONS.some(key => this._input.keysPressed[key] == true) || this._input._inputTouch.touchInputToggle
+        let directionPressed =DIRECTIONS.some(key => this._input.keysPressed[key] == true) || this._input._inputTouch.touchInputToggle
         var play = 'idle';
+        if(this.body.position.y<2.2){
+            directionPressed = false
+            play = 'fall'
+        }
         // this.footstepSound.pause()
 
         if (directionPressed && (this._input.shiftToggle||this._input._inputTouch.touchRun)) {
             play = 'run'
-            // this.footstepSound.playbackRate = 2; 
         } else if (directionPressed) {
             play = 'walk'
             // this.footstepSound.play()
@@ -103,17 +105,17 @@ export default class CharacterController{
         if((this._input.keysPressed[' ']||this._input._inputTouch.touchJump) && this.canJump){
             // this.camera.position.y =this.character.position.y
             // moveY = 7*delta*100  
-        // console.log(this.character.position)
-        this.body.velocity.y=15
+            // console.log(this.character.position)
+            this.body.velocity.y=15
             this.canJump=false
             this._input._inputTouch.touchJump=false;
-            play='fall'
+            play = 'fall'
         }
 
         this.fadeToAction(play)
         this.mixer.update(delta)
 
-        let moveX=0,moveZ=0,moveY=0;
+        // let moveX=0,moveZ=0,moveY=0;
         
         if (this.currentAction == 'run' || this.currentAction == 'walk') {
             // calculate towards camera direction
@@ -142,33 +144,26 @@ export default class CharacterController{
             const velocity = this.currentAction == 'run' ? this.runVelocity : this.walkVelocity
      
             // move character & camera
-            moveX=this.body.position.x,moveZ=this.body.position.z;
-
-            moveX = -this.walkDirection.x * velocity * delta
-            moveZ = -this.walkDirection.z * velocity * delta
             this.body.velocity.x=-this.walkDirection.x * velocity
             this.body.velocity.z=-this.walkDirection.z * velocity
         }
-        else{
-            this.body.velocity.lerp(this.body.velocity,1,new CANNON.Vec3(0,0,0))
-        }
+        // else{
+        //     this.body.velocity.lerp(this.body.velocity,1,new CANNON.Vec3(0,0,0))
+        // }
         this.character.position.x = this.body.position.x
         this.character.position.y = this.body.position.y-0.5
         this.character.position.z = this.body.position.z
-        this.updateCameraTarget(moveX, moveZ,moveY)
+        this.updateCameraTarget()
         this.orbitControls.update();// only required if controls.enableDamping = true, or if controls.autoRotate = true 
 
     }
-    updateCameraTarget(moveX, moveZ,moveY) {
+    updateCameraTarget() {
         // move camera
-        // this.camera.position.x += moveX
-        // this.camera.position.z += moveZ
-        // // this.camera.position.y += moveY
-        // if (this.camera.position.y<this.character.position.y+0.5){
-        //     this.camera.position.y=this.character.position.y+0.5
-        // }
-        // // console.log(this.camera.position,this.character.position)
-        // // update camera target
+    
+        if (this.camera.position.y<this.character.position.y+0.5){
+            this.camera.position.y=this.character.position.y+0.5
+        }
+        // update camera target
         this.cameraTarget.x = this.character.position.x
         this.cameraTarget.y = this.character.position.y+2
         this.cameraTarget.z = this.character.position.z

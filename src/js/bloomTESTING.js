@@ -132,18 +132,18 @@ function init() {
     // ***** LIGHTS ****** //
     scene.add( new THREE.AmbientLight( 0xfffefe, 0.5 ) );
     directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-    directionalLight.castShadow = true
+    // directionalLight.castShadow = true
 
     // directionalLight.shadow.mapSize.width = 2048
     // directionalLight.shadow.mapSize.height = 2048
 
-    directionalLight.shadow.camera.near = 1
-    directionalLight.shadow.camera.far = 200
+    // directionalLight.shadow.camera.near = 1
+    // directionalLight.shadow.camera.far = 200
 
-    directionalLight.shadow.camera.top = 50
-    directionalLight.shadow.camera.right = 50
-    directionalLight.shadow.camera.bottom = - 50
-    directionalLight.shadow.camera.left = - 50
+    // directionalLight.shadow.camera.top = 50
+    // directionalLight.shadow.camera.right = 50
+    // directionalLight.shadow.camera.bottom = - 50
+    // directionalLight.shadow.camera.left = - 50
 
     directionalLight.position.set(-20, 70, 33)
     // DirectionalLight.
@@ -239,7 +239,8 @@ function init() {
 
     // Ocean
     const geometry = new THREE.PlaneGeometry( 2000, 2000 );
-    const material = new THREE.MeshBasicMaterial( {color: debugObject.watercolor} );
+    const material = new THREE.MeshBasicMaterial( {color: debugObject.watercolor,
+    side:THREE.DoubleSide} );
     water = new THREE.Mesh( geometry, material );
     water.rotation.x=-Math.PI/2
     water.position.y=-0.2
@@ -341,6 +342,7 @@ function init() {
                 }
                 else if (child.name.includes('Circle')) {
                     child.material = bakedDirMaterial;
+                    // child.position.y=-5
                 }
                 else{
                     child.material = bakedDirMaterial;
@@ -592,7 +594,7 @@ function setActiveSlide(slideID, _time){
 }
 
 function gotoSlide(slideID, _time, _direction) {
-    console.log(currentSlideID)
+    // console.log(currentSlideID)
 	if (!isAnimating) {
 		isAnimating = true;
 		prevSlideID = currentSlideID;
@@ -640,12 +642,11 @@ function setupOrbitControls() {
     controls.enableDamping = true;
     controls.dampingFactor = 0.1;
     // controls.autoRotate = true;
-    controls.autoRotateSpeed=-0.5
+    // controls.autoRotateSpeed=-0.5
     controls.minDistance = 2.4;
-    // controls.maxDistance = 10;
-    // controls.maxPolarAngle = Math.PI/2;
+    controls.maxDistance = 10;
+    // controls.maxPolarAngle = 3*Math.PI/4;
     controls.update();
-
 }
 
 function setUpRayInterractions() {
@@ -810,14 +811,14 @@ function setupLoadingScreen(){
             });
             window.scrollTo(50, 50);
 
-            console.log('Loaded')
+            // console.log('Loaded')
         },
         // Progress
         (url, itemsLoaded, itemsTotal)=>{
             const progressRatio=itemsLoaded/itemsTotal;
             gsap.to(loadingBar,{scaleX:progressRatio,ease: "expo.out",duration:0.2})
             // loadingBar.style.transform=`scaleX(${progressRatio})`;
-            console.log(itemsLoaded/itemsTotal)
+            // console.log(itemsLoaded/itemsTotal)
         },
         // Error
         ()=>{
@@ -833,11 +834,13 @@ var isPlayingMusic =false;
 
 function openPortfolio(){
     gsap.to('.overlay',{scaleY:0,duration:0.5, delay: 0.5})
+    toggleMusic();
     gsap.delayedCall(1,()=>{
         gsap.to('.overlay',{display:'none',duration:0})
         gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
-        gsap.to('.instructions',{zIndex:5,opacity:1,duration:1,delay:2})
-        toggleMusic();
+        // gsap.to('.instructions',{zIndex:5,opacity:1,duration:1,delay:2})
+        document.querySelector('.instructions_icon').classList.add("blink-border");
+        // openFullscreen();
     })
 }
 var elem = document.documentElement;
@@ -869,7 +872,7 @@ const line3 = document.querySelector('.line3');
 const navitems=document.querySelectorAll('.navitem');
 const timeline=gsap.timeline();
 timeline.pause()
-timeline.to('nav',{duration:0,zIndex:2})
+timeline.to('nav',{duration:0,zIndex:3})
 timeline.to('nav',{duration:0.4,ease: "back.out(1.7)",width:300})
 timeline.to(navitems,{opacity:1,stagger: 0.1})
 hamburger.addEventListener('click',()=>{
