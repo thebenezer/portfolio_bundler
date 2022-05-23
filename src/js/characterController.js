@@ -3,6 +3,10 @@ const DIRECTIONS=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
 import * as CANNON from 'cannon-es'
 import CharacterInput from './characterInput'
 import { gsap } from 'gsap'
+const portalAnimation=gsap.timeline().pause();
+portalAnimation.to('.portalOverlay',{display:'flex',duration:0})
+portalAnimation.to('.portalOverlay',{duration:0,borderRadius:'50%',transformOrigin: "50% 50%"})
+portalAnimation.to('.portalOverlay',{duration:0.5,top:0,left:0,width:'100%',height:"100%",borderRadius:0})
 
 export default class CharacterController{
 
@@ -41,7 +45,8 @@ export default class CharacterController{
 
         this.body = new CANNON.Body({
             mass: 1,
-            position: new CANNON.Vec3(-3.7321603111458113, 1.9534421246363518, 32.22759970714397),
+            // position: new CANNON.Vec3(-3.7321603111458113, 1.9534421246363518, 32.22759970714397),
+            position: new CANNON.Vec3(-45, 1.9534421246363518, -26),
             shape: shape,
             allowSleep: false,
             linearDamping:0.99,
@@ -66,23 +71,23 @@ export default class CharacterController{
                 if(e.contact.bj.userData.name=='land')
                     this.lastActiveIsland=e.contact.bj
                 else if(e.contact.bj.userData.name=='portal1'){
-                    // console.log(e.contact.bj.userData.name)
-                    // console.log(e.contact.bj.position)
-                    // this.body.position.x=13.5
-                    // this.body.position.z=70
-                    gsap.to(this.body.position,{x:13.5,y:2.5,z:70,delay:0.2})
+                    portalAnimation.play()
+                    gsap.delayedCall(0.5,()=>{
+                        gsap.to(this.body.position,{duration:0,x:13.5,y:2.5,z:70})
+                    })
+                    gsap.delayedCall(1,()=>{
+                        portalAnimation.reverse()
+                    })
+                    
                 }
                 else if(e.contact.bj.userData.name=='portal2'){
-                    // console.log(e.contact.bj.userData.name)
-                    // this.body.position.y=10
-                    // this.body.position.x=5
-                    // this.body.position.z=70
-                    // this.body.force.x=0
-                    // this.body.force.y=0
-                    // this.body.force.z=0
-                    // this.body.position.x=-45
-                    // this.body.position.z=-26
-                    gsap.to(this.body.position,{x:-45,y:2.5,z:-26,delay:0.2})
+                    portalAnimation.play()
+                    gsap.delayedCall(0.5,()=>{
+                        gsap.to(this.body.position,{duration:0,x:-45,y:2.5,z:-26})
+                    })
+                    gsap.delayedCall(1,()=>{
+                        portalAnimation.reverse()
+                    })
                     
                 }
                 // console.log('last:',e.contact.bj)

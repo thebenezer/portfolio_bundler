@@ -9,7 +9,7 @@
 	<meta name="mobile-web-app-capable" content="yes" />
 	<link rel="shortcut icon" href="./assets/images/ebelogo_black.svg" type="image/x-icon">
 	<title>thebenezer - Portfolio</title>
-    <meta name="description" content="Code Wizard, Software Developer. Hi welcome to my portfolio. I showcase some of my projects here.">
+    <meta name="description" content="Code Wizard, Creative Developer 💻, DIY Enthusiast 🪛🔩, and a lover of all things that fly 🚁. Portfolio">
 
     <meta itemprop="name" content="thebenezer - Portfolio">
     <meta itemprop="description" content="Code Wizard, Software Developer">
@@ -48,11 +48,15 @@
 		.overlay{
 			position: fixed;
 			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+
 			width: 100%;
 			height: 100%;
 			background-color: black;
 			z-index: 10;
 		}
+		
 		.logo{
 			width: 50px;
 			-webkit-filter: invert(1);
@@ -79,11 +83,19 @@
 	</style>
 </head>
 <body>
-
+	<div class="portalOverlay">
+		<div class="overin"></div>
+	</div>
 	<div class="overlay">
-		
+		<div class="hide-portrait">
+			<img src="./assets/images/screen-rotate.png" alt="rotate-device"/>
+			<p>Please rotate your device<br> to landscape for a better experience.</p>
+		</div>
 		<div class="loading-bar"></div>
-			<div class="enter-button"><img class="logo" width="50" height="30" src="./assets/images/ebelogo_black.svg" alt="logo"/></div>
+		<div class="enter-button"><img class="logo" width="50" height="30" src="./assets/images/ebelogo_black.svg" alt="logo"/></div>
+		<div class="hide-portrait">
+			
+		</div>
 	</div>
 	<div class="instructions_icon">
 		<p>i</p>
@@ -224,8 +236,7 @@
 				</div>
 				<!-- <img src="./assets/images/Openbook.svg" alt="" class="openBookImg"> -->
 				<div class="bookcontent">
-					<p>Hi, I am Ebenezer, a creative mind that is astounded by the things that can be acheived by code. If coding is like magic, I'm a wizard who uses code to create whole new experiences.
-					Let's talk. 👇
+					<p>Hi 🙋‍♂️, I am Ebenezer, a creative developer 💻, DIY enthusiast 🪛🔩, and lover of all things that fly 🚁. If coding is magic, I'm a wizard who uses code to create whole new experiences. Have a job for me? Let's talk. 👇
 					<br><br>
 					</p>
 					<a href="mailto:thebenezer.mail@gmail.com?subject=Contacting from Portfolio" class="bookbutton">Contact</a>
@@ -313,9 +324,6 @@
 	<img src="./assets/images/jump.svg" id="jumpButton"/>
 
 	<div id="info"></div>
-	<div class="hide-portrait">
-		<img src="./assets/images/screen-rotate.png" alt="rotate-device"/>
-		<p>Please rotate your screen to landscape mode.</p>
-	</div>
+	
 </body>
 </html>

@@ -411,19 +411,24 @@ function render() {
         characterControllerInstance.update(dt)
         raycaster.set(new THREE.Vector3(characterControllerInstance.character.position.x,characterControllerInstance.character.position.y+4,characterControllerInstance.character.position.z),new THREE.Vector3(0,-1,0))
         rayCheck();
+        requestAnimationFrame( render2 );
     }
-    // console.log(renderer)
-    renderer.render(scene, camera);
-    // stats.update();
-    // composer.render();
+    else{
+        renderer.render(scene, camera);
+        requestAnimationFrame( render );
 
-    requestAnimationFrame( render );
+    }
+}
+function render2() {
+    const dt = clock.getDelta();
+    characterControllerInstance.world.step(1/120,dt);
+    characterControllerInstance.update(dt)
+    raycaster.set(new THREE.Vector3(characterControllerInstance.character.position.x,characterControllerInstance.character.position.y+4,characterControllerInstance.character.position.z),new THREE.Vector3(0,-1,0))
+    rayCheck();
+    composer.render();
+    requestAnimationFrame( render2 );
 }
 
-// function collisionJumpCheck(collision){
-//     characterControllerInstance.canJump=true
-//     console.log(collision.contact.bj)
-// }
 
 function onClickEventHandler( event ) {
 // Optimization needed in checking so many objects
@@ -465,7 +470,7 @@ function rayCheck(){
             selectItemSound.play()
             INTERSECTED = intersects[ 0 ].object;
             // console.log(INTERSECTED)
-            gsap.to(INTERSECTED.scale, { duration: 0.5, ease: "ease.in(1)", z: INTERSECTED.userData.scaleZ+2 });
+            gsap.to(INTERSECTED.scale, { duration: 0.5, ease: "ease.in(1)", z: INTERSECTED.userData.scaleZ+1 });
 
         }
 
@@ -730,7 +735,7 @@ function setUpRayInterractions() {
     const library = new THREE.Mesh(geo, mat);
     library.rotation.x = - Math.PI * 0.5
     library.rotation.z = 1.571
-    library.position.set(-42.12, 4.2, 10.67)
+    library.position.set(-42.12, 4.3, 10.67)
     
     library.name='library'
     library.userData.scaleZ=3.5
@@ -765,8 +770,8 @@ function setUpRayInterractions() {
     social3.userData.group='socials'
     social4.userData.group='socials'
 
-    scene.add(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
-    interractObjects.push(proj1,proj2,proj3,proj4,proj5,lightHouse,lab,library,social1,social2,social3,social4)
+    scene.add(proj1,proj2,proj3,proj4,proj5,lab,library,social1,social2,social3,social4)
+    interractObjects.push(proj1,proj2,proj3,proj4,proj5,lab,library,social1,social2,social3,social4)
     
 
 
@@ -785,38 +790,38 @@ function onWindowResize() {
 }
 
 function setupLoadingScreen(){
-    const overlayGeo= new THREE.PlaneBufferGeometry(2,2,1,1)
-    const overlayMat= new THREE.ShaderMaterial({
-        transparent:true,
-        uniforms:{
-            uAlpha: { value: 1.0 }
-        },
-        vertexShader:`
-            void main(){
-                gl_Position = vec4(position , 1.0);
-            }
-        `,
-        fragmentShader:`
-            uniform float uAlpha;
-            void main(){
-                gl_FragColor =vec4(0.0,0.0,0.0,uAlpha);
-            }
-        `,
-    })
-    const overlay= new THREE.Mesh(overlayGeo,overlayMat)
-    scene.add(overlay)
+    // const overlayGeo= new THREE.PlaneBufferGeometry(2,2,1,1)
+    // const overlayMat= new THREE.ShaderMaterial({
+    //     transparent:true,
+    //     uniforms:{
+    //         uAlpha: { value: 1.0 }
+    //     },
+    //     vertexShader:`
+    //         void main(){
+    //             gl_Position = vec4(position , 1.0);
+    //         }
+    //     `,
+    //     fragmentShader:`
+    //         uniform float uAlpha;
+    //         void main(){
+    //             gl_FragColor =vec4(0.0,0.0,0.0,uAlpha);
+    //         }
+    //     `,
+    // })
+    // const overlay= new THREE.Mesh(overlayGeo,overlayMat)
+    // scene.add(overlay)
 
 
     loadingManager= new THREE.LoadingManager(
         // Loaded
         ()=>{
             gsap.delayedCall(1,()=>{
-                gsap.to(overlayMat.uniforms.uAlpha,{duration: 1, value:0})
-                scene.remove(overlay)
+                // gsap.to(overlayMat.uniforms.uAlpha,{duration: 1, value:0})
+                // scene.remove(overlay)
                 loadingBar.style.transform=``;
                 document.querySelector('.enter-button').addEventListener('click', openPortfolio,{once:true})
                 gsap.to(loadingBar,{scaleX:0,ease: "expo.in",duration:0.5})
-                gsap.to('.overlay',{opacity:0.7,duration:0.5, delay: 0.5})
+                gsap.to('.overlay',{opacity:0.9,duration:0.5, delay: 0.5})
                 gsap.to('.enter-button',{opacity:1,cursor: 'Pointer',duration:0.5, delay: 0.5})
             });
             window.scrollTo(50, 50);
