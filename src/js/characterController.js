@@ -2,6 +2,7 @@ import * as THREE from 'three';
 const DIRECTIONS=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
 import * as CANNON from 'cannon-es'
 import CharacterInput from './characterInput'
+import { gsap } from 'gsap'
 
 export default class CharacterController{
 
@@ -59,8 +60,31 @@ export default class CharacterController{
         this.updateCameraTarget();
         this.body.addEventListener('collide',(e)=>{
             this.canJump=true
+            // console.log(e.contact.bj.index,e.contact.bj.position)
+
             if(e.contact.bj.userData){
-                this.lastActiveIsland=e.contact.bj
+                if(e.contact.bj.userData.name=='land')
+                    this.lastActiveIsland=e.contact.bj
+                else if(e.contact.bj.userData.name=='portal1'){
+                    // console.log(e.contact.bj.userData.name)
+                    // console.log(e.contact.bj.position)
+                    // this.body.position.x=13.5
+                    // this.body.position.z=70
+                    gsap.to(this.body.position,{x:13.5,y:2.5,z:70,delay:0.2})
+                }
+                else if(e.contact.bj.userData.name=='portal2'){
+                    // console.log(e.contact.bj.userData.name)
+                    // this.body.position.y=10
+                    // this.body.position.x=5
+                    // this.body.position.z=70
+                    // this.body.force.x=0
+                    // this.body.force.y=0
+                    // this.body.force.z=0
+                    // this.body.position.x=-45
+                    // this.body.position.z=-26
+                    gsap.to(this.body.position,{x:-45,y:2.5,z:-26,delay:0.2})
+                    
+                }
                 // console.log('last:',e.contact.bj)
             }
         });
@@ -110,6 +134,7 @@ export default class CharacterController{
             this.canJump=false
             this._input._inputTouch.touchJump=false;
             play = 'fall'
+            // console.log(this.body.position)
         }
 
         this.fadeToAction(play)

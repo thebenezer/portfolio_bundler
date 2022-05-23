@@ -2,48 +2,49 @@ import '../css/style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import Stats from 'three/examples/jsm/libs/stats.module.js';
+// import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+// import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { gsap } from 'gsap'
-import * as dat from 'lil-gui';
+// import * as dat from 'lil-gui';
 // const gui=new dat.GUI();
-function guiPanel() {
-    const lightFolder = gui.addFolder('light')
-    lightFolder.add(directionalLight, 'intensity').min(0).max(5).step(0.001)
-    lightFolder.add(directionalLight.position, 'x').min(- 500).max(500).step(1)
-    lightFolder.add(directionalLight.position, 'y').min(- 500).max(500).step(1)
-    lightFolder.add(directionalLight.position, 'z').min(- 500).max(500).step(1)
-    const sceneFolder = gui.addFolder('scene')
-    sceneFolder.addColor(debugObject,'scenecolor')
-    .onChange(()=>{
-        scene.background.set(debugObject.scenecolor);
-    });
-    sceneFolder.addColor(debugObject,'ambientlight')
-    .onChange(()=>{
-        scene.children[0].color.set(debugObject.ambientlight);
-    });
-    sceneFolder.addColor(debugObject,'fogcolor')
-    .onChange(()=>{
-        scene.fog.color.set(debugObject.fogcolor);
-    });
-    sceneFolder.close()
-    const objectFolder = gui.addFolder('colors')
-    // lampFolder.add(selectiveBloomEffect.options,'intensity').min(0).max(5).step(0.01)
-    objectFolder.addColor(debugObject,'lampcolor')
-    .onChange(()=>{
-        lampLightMaterial.color.set(debugObject.lampcolor);
-    });
-    objectFolder.addColor(debugObject,'watercolor')
-    .onChange(()=>{
-        water.material.color.set(debugObject.watercolor);
-    });
-    objectFolder.addColor(debugObject,'socialcolor')
-    .onChange(()=>{
-        socialChildMaterial.color.set(debugObject.socialcolor);
-    });
-    objectFolder.close()
-    gui.close()
-}
+// function guiPanel() {
+//     const lightFolder = gui.addFolder('light')
+//     lightFolder.add(directionalLight, 'intensity').min(0).max(5).step(0.001)
+//     lightFolder.add(directionalLight.position, 'x').min(- 500).max(500).step(1)
+//     lightFolder.add(directionalLight.position, 'y').min(- 500).max(500).step(1)
+//     lightFolder.add(directionalLight.position, 'z').min(- 500).max(500).step(1)
+//     const sceneFolder = gui.addFolder('scene')
+//     sceneFolder.addColor(debugObject,'scenecolor')
+//     .onChange(()=>{
+//         scene.background.set(debugObject.scenecolor);
+//     });
+//     sceneFolder.addColor(debugObject,'ambientlight')
+//     .onChange(()=>{
+//         scene.children[0].color.set(debugObject.ambientlight);
+//     });
+//     sceneFolder.addColor(debugObject,'fogcolor')
+//     .onChange(()=>{
+//         scene.fog.color.set(debugObject.fogcolor);
+//     });
+//     sceneFolder.close()
+//     const objectFolder = gui.addFolder('colors')
+//     // lampFolder.add(selectiveBloomEffect.options,'intensity').min(0).max(5).step(0.01)
+//     objectFolder.addColor(debugObject,'lampcolor')
+//     .onChange(()=>{
+//         lampLightMaterial.color.set(debugObject.lampcolor);
+//     });
+//     objectFolder.addColor(debugObject,'watercolor')
+//     .onChange(()=>{
+//         water.material.color.set(debugObject.watercolor);
+//     });
+//     objectFolder.addColor(debugObject,'socialcolor')
+//     .onChange(()=>{
+//         socialChildMaterial.color.set(debugObject.socialcolor);
+//     });
+//     objectFolder.close()
+//     gui.close()
+// }
 /*
 * Debug GUI
 */
@@ -61,7 +62,7 @@ import * as CANNON from 'cannon-es'
 import CharacterController from './characterController';
 
 import { BlendFunction,KernelSize, EffectComposer, EffectPass, RenderPass, SelectiveBloomEffect} from "postprocessing";
-import { DirectionalLight } from 'three';
+// import { DirectionalLight } from 'three';
 
 const canvas = document.querySelector('#canvas' );
 const loadingBar= document.querySelector('.loading-bar')
@@ -72,7 +73,7 @@ let water,lampLightMaterial,directionalLight,socialChildMaterial;
 let selectiveBloomEffect,selectiveBloomPass,bloomOptions;
 let music,selectMenuSound,selectItemSound;
 const clock=new THREE.Clock();
-
+let arpImg,stpImg,plaImg,shpImg,srfImg;
 let mouse = new THREE.Vector2();
 let clickxy = new THREE.Vector2();
 
@@ -123,14 +124,14 @@ function init() {
     const fov = 60;
     const aspect = window.innerWidth / window.innerHeight;  // the canvas default
     const near = 0.1;
-    const far = 1000;
+    const far = 500;
     camera = new THREE.PerspectiveCamera( fov, aspect, near, far);
 
     // ***** AUDIO ****** //
     setupGlobalAudio();
 
     // ***** LIGHTS ****** //
-    scene.add( new THREE.AmbientLight( 0xfffefe, 0.5 ) );
+    // scene.add( new THREE.AmbientLight( 0xfffefe, 0.5 ) );
     directionalLight = new THREE.DirectionalLight(0xffffff, 1)
     // directionalLight.castShadow = true
 
@@ -191,15 +192,15 @@ function init() {
     // ***** TEXTURE ****** //
     const textureLoader = new THREE.TextureLoader(loadingManager)
     const loader = new GLTFLoader(loadingManager);
-    const backgroundTexture = textureLoader.load(require('../assets/skies/night.jpg'))
-    backgroundTexture.mapping=THREE.EquirectangularReflectionMapping
-    backgroundTexture.encoding = THREE.sRGBEncoding;
+    // const backgroundTexture = textureLoader.load(require('../assets/skies/night.jpg'))
+    // backgroundTexture.mapping=THREE.EquirectangularReflectionMapping
+    // backgroundTexture.encoding = THREE.sRGBEncoding;
     
-    const bakedTexture = textureLoader.load(require('../assets/VRWorld/baked6.jpg'))
+    const bakedTexture = textureLoader.load(require('../assets/VRWorld/baked5.webp'))
     bakedTexture.flipY = false
     bakedTexture.encoding = THREE.sRGBEncoding;
 
-    const bakedDirTexture = textureLoader.load(require('../assets/VRWorld/DirectionTex3.jpg'))
+    const bakedDirTexture = textureLoader.load(require('../assets/VRWorld/DirectionTexture.webp'))
     bakedDirTexture.flipY = false
     bakedDirTexture.encoding = THREE.sRGBEncoding;
 
@@ -208,21 +209,22 @@ function init() {
     const doorLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff,side:THREE.DoubleSide })
     lampLightMaterial = new THREE.MeshBasicMaterial({ color: 0x00FFFF })
 
-    const proj1_texture = textureLoader.load(require('../assets/projectImages/arpDesktop.jpg'))
-    const proj2_texture = textureLoader.load(require('../assets/projectImages/stipling.jpg'))
-    const proj3_texture = textureLoader.load(require('../assets/projectImages/planes2.jpg'))
-    const proj4_texture = textureLoader.load(require('../assets/projectImages/shop.jpg'))
-    const proj5_texture = textureLoader.load(require('../assets/projectImages/surfDesktop.jpg'))
+    arpImg =require('../assets/projectImages/pinboards.webp')
+    stpImg =require('../assets/projectImages/stip.webp')
+    plaImg =require('../assets/projectImages/planes.webp')
+    shpImg =require('../assets/projectImages/shop.webp')
+    srfImg =require('../assets/projectImages/surf.webp')
+    const proj1_texture = textureLoader.load(arpImg)
+    const proj2_texture = textureLoader.load(stpImg)
+    const proj3_texture = textureLoader.load(plaImg)
+    const proj4_texture = textureLoader.load(shpImg)
+    const proj5_texture = textureLoader.load(srfImg)
 
-    proj1_texture.flipY = false
+    proj1_texture.flipY = proj2_texture.flipY = proj3_texture.flipY = proj4_texture.flipY = proj5_texture.flipY = false
     proj1_texture.encoding = THREE.sRGBEncoding;
-    proj2_texture.flipY = false
     proj2_texture.encoding = THREE.sRGBEncoding;
-    proj3_texture.flipY = false
     proj3_texture.encoding = THREE.sRGBEncoding;
-    proj4_texture.flipY = false
     proj4_texture.encoding = THREE.sRGBEncoding;
-    proj5_texture.flipY = false
     proj5_texture.encoding = THREE.sRGBEncoding;
 
     const proj1_Material = new THREE.MeshBasicMaterial({ map: proj1_texture })
@@ -272,14 +274,12 @@ function init() {
                 if(center.y<2){
                     boxBody.userData={name:"land"}
                 }
+                
                 world.addBody(boxBody)
             }
             if (child.name.includes('doorLight')) {
                 child.material = doorLightMaterial
             }
-            // else if (child.name.includes('lamppost')) {
-            //     child.material = bakedDirTexture
-            // }
             else if (child.name.includes('lampLight')) {
                 child.material = lampLightMaterial
                 selectiveBloomEffect.selection.add(child)
@@ -328,10 +328,18 @@ function init() {
                 // scene.add( helper );
                 const boxShape = new CANNON.Box(size.divideScalar(2))
                 const boxBody = new CANNON.Body({
-                mass: 0,
-                position: center,
-                shape: boxShape,
+                    mass: 0,
+                    position: center,
+                    shape: boxShape,
                 })
+
+                if (child.name.includes('Cube088')) {
+                    boxBody.userData={name:"portal1"}
+                    // console.log(child.name)
+                }else if (child.name.includes('Cube079')) {
+                    boxBody.userData={name:"portal2"}
+                    // console.log(child.name)
+                }
                 if (child.name.includes('social')) {
                     socialChildMaterial=child.material
                     child.material.color.set(debugObject.socialcolor)
@@ -347,6 +355,8 @@ function init() {
                 else{
                     child.material = bakedDirMaterial;
                     world.addBody(boxBody)
+                    // if(boxBody.index=) 
+                    // console.log(child.name,boxBody.index)
 
                 }
 
@@ -363,12 +373,12 @@ function init() {
     //Character Model
     loader.load( require('../assets/Character/character3.glb').default, function ( gltf ) {
         const character = gltf.scene;
-        gltf.scene.traverse((child)=>
-        {
-            // child.material = characterMaterial;
-            // child.material=landMaterial
-                // child.castShadow=true
-        })
+        // gltf.scene.traverse((child)=>
+        // {
+        //     // child.material = characterMaterial;
+        //     // child.material=landMaterial
+        //         // child.castShadow=true
+        // })
         character.scale.set(0.2,0.2,0.2)
         scene.add( character );
         setupOrbitControls();
@@ -376,7 +386,7 @@ function init() {
     }, undefined, function ( e ) {
         console.error( e );
     });
-    
+     
     // guiPanel()
 
     window.addEventListener( 'resize', onWindowResize,false );
@@ -402,10 +412,10 @@ function render() {
         raycaster.set(new THREE.Vector3(characterControllerInstance.character.position.x,characterControllerInstance.character.position.y+4,characterControllerInstance.character.position.z),new THREE.Vector3(0,-1,0))
         rayCheck();
     }
-
-    // renderer.render(scene, camera);
+    // console.log(renderer)
+    renderer.render(scene, camera);
     // stats.update();
-    composer.render();
+    // composer.render();
 
     requestAnimationFrame( render );
 }
@@ -454,7 +464,7 @@ function rayCheck(){
         if ( INTERSECTED != intersects[ 0 ].object ) {
             selectItemSound.play()
             INTERSECTED = intersects[ 0 ].object;
-            console.log(INTERSECTED)
+            // console.log(INTERSECTED)
             gsap.to(INTERSECTED.scale, { duration: 0.5, ease: "ease.in(1)", z: INTERSECTED.userData.scaleZ+2 });
 
         }
@@ -486,7 +496,7 @@ function onEnterOpen(e) {
 function onClickOpen(){
     // event.preventDefault();
     if (INTERSECTED) {
-        console.log(INTERSECTED.name)
+        // console.log(INTERSECTED.name)
         if(INTERSECTED.userData.group=='projects'){
             selectMenuSound.play()
             currentSlideID = INTERSECTED.userData.i;
@@ -842,6 +852,11 @@ function openPortfolio(){
         document.querySelector('.instructions_icon').classList.add("blink-border");
         // openFullscreen();
     })
+    document.getElementById('arp').src =arpImg;
+    document.getElementById('stp').src =stpImg;
+    document.getElementById('pla').src =plaImg;
+    document.getElementById('shp').src =shpImg;
+    document.getElementById('srf').src =srfImg;
 }
 var elem = document.documentElement;
 function openFullscreen() {
@@ -932,13 +947,13 @@ function setupGlobalAudio(){
     selectItemSound.volume=0.5
 
     // load a music and set it as the Audio object's buffer
-    audioLoader.load( require('../assets/sounds/MistintheMorning.mp3'), function( buffer ) {
+    audioLoader.load( require('../assets/sounds/songLow.mp3'), function( buffer ) {
         music.setBuffer( buffer );
         music.setLoop( true );
         music.setVolume( 0.5 );
     });
 
-    audioLoader.load( require('../assets/sounds/mainselectsound.wav'), function( buffer ) {
+    audioLoader.load( require('../assets/sounds/mainselectsound.mp3'), function( buffer ) {
         selectMenuSound.setBuffer( buffer );
         selectMenuSound.setVolume( selectItemSound.volume );
     });

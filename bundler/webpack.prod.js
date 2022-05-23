@@ -5,7 +5,9 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const CompressionPlugin = require("compression-webpack-plugin");
+
 
 
 
@@ -46,7 +48,7 @@ module.exports = merge(common,{
         },
     },
     plugins: [
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../src/index.html'),
             minify: {
@@ -56,7 +58,10 @@ module.exports = merge(common,{
             }
         }),
         new CleanWebpackPlugin(),
-        new MiniCSSExtractPlugin({filename: '[hash].css'})
+        new MiniCSSExtractPlugin({filename: '[hash].css'}),
+        new CompressionPlugin({
+            algorithm:'gzip'
+        })
     ],
     module:
     {

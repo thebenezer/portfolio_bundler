@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Expletus+Sans&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Expletus+Sans&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Signika:wght@300;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap');
 
@@ -55,7 +55,7 @@ body{
 
 .hamburger{
   z-index: 4;
-  margin: auto 0px auto 20px;
+  /* margin: auto 0px auto 20px; */
   position: fixed;
   top: 25px;
   left: 30px;
@@ -191,10 +191,11 @@ nav{
   justify-content: space-around;
 }
 .navsocial a{
-  margin: 0 10px;
+  margin: auto 10px;
 }
 .navsocial img{
   width: 30px;
+  margin: auto;
 }
 #canvas{
 display: block;
@@ -525,7 +526,7 @@ margin: auto;
 
 .instructions_cont{
   background-color: #000;
-  background-image: url('../assets/images/instructions_desktop.jpg');
+  background-image: url('../assets/images/instructions_desktop.webp');
 }
 .link-img{
   position: relative;
@@ -578,7 +579,7 @@ margin: auto;
   }
   .instructions_cont{
     background-color: #000;
-    background-image: url('../assets/images/instructions_mobile.jpg');
+    background-image: url('../assets/images/instructions_mobile.webp');
   }
 }
 
@@ -588,18 +589,18 @@ margin: auto;
     flex-wrap: nowrap;
   }
   .info{
-    padding: 30px;
+    padding: 10px;
   }
   .closeProj{
     top: 5%;
   }
   .book{
-    margin: 15px 30px;
+    margin: 10px 20px;
     height: 40%;
   }
   .instructions_cont{
     background-color: #000;
-    background-image: url('../assets/images/instructions_mobile_portrait.jpg');
+    background-image: url('../assets/images/instructions_mobile_portrait.webp');
   }
   .hamburger{
     left: 15px;
