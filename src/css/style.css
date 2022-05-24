@@ -572,7 +572,7 @@ margin: auto;
   /* height: 0; */
 }
 
-@media only screen and (max-device-width: 800px)and (orientation:landscape){
+@media only screen and (max-device-width: 900px)and (orientation:landscape){
   .info h2{
     font-size: medium;
     margin-bottom: 10px;

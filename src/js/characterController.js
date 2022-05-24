@@ -19,7 +19,7 @@ export default class CharacterController{
     // constants
     fadeDuration= 0.2
     runVelocity = 10
-    walkVelocity = 4
+    walkVelocity = 6
     canJump = true
 
     constructor(character,animations,camera,orbitControls,world){
@@ -115,6 +115,7 @@ export default class CharacterController{
             this.body.position.x=tempPos.x
             this.body.position.z=tempPos.z
             this.body.position.y=2.4
+            this.camera.position.y =5
         }
         this.character.getWorldPosition(this.oldObjectPosition);
         let directionPressed =DIRECTIONS.some(key => this._input.keysPressed[key] == true) || this._input._inputTouch.touchInputToggle
