@@ -19,7 +19,7 @@ export default class CharacterController{
     // constants
     fadeDuration= 0.2
     runVelocity = 10
-    walkVelocity = 6
+    walkVelocity = 5
     canJump = true
 
     constructor(character,animations,camera,orbitControls,world){
@@ -97,34 +97,28 @@ export default class CharacterController{
     }
 
     update(delta) {
-        if(this.character.position.y<-5){
+        if(this.character.position.y<-4){
             let lastPos=new THREE.Vector3().copy(this.lastActiveIsland.position)
             let tempPos = new THREE.Vector3().copy(this.character.position);
             // console.log(tempPos)
 
             var dir = new THREE.Vector3(); // direction to move fallen character
             dir.subVectors( lastPos,tempPos ).normalize();
-            // console.log(dir);
-            // var lb = new THREE.Vector3().copy(this.lastActiveIsland.aabb.lowerBound); // direction to move fallen character
-            // var ub = new THREE.Vector3().copy(this.lastActiveIsland.aabb.upperBound); // direction to move fallen character
-            // ub.setY(10) 
-            // let box = new THREE.Box3(lb, ub);
-            // console.log(box)
-            // console.log(box.containsPoint(tempPos));
+
             tempPos.addScaledVector(dir,5);
-            this.body.position.x=tempPos.x
-            this.body.position.z=tempPos.z
+            this.camera.position.x+=this.body.position.x=tempPos.x
+            this.camera.position.z+=this.body.position.z=tempPos.z
             this.body.position.y=2.4
-            this.camera.position.y =5
+            
+            // this.camera.position.y -=7
         }
         this.character.getWorldPosition(this.oldObjectPosition);
         let directionPressed =DIRECTIONS.some(key => this._input.keysPressed[key] == true) || this._input._inputTouch.touchInputToggle
         var play = 'idle';
-        if(this.body.position.y<2.2){
+        if(this.body.position.y<2.4){
             directionPressed = false
             play = 'fall'
         }
-        // this.footstepSound.pause()
 
         if (directionPressed && (this._input.shiftToggle||this._input._inputTouch.touchRun)) {
             play = 'run'
