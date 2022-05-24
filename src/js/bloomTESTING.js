@@ -823,6 +823,8 @@ function setupLoadingScreen(){
                 gsap.to(loadingBar,{scaleX:0,ease: "expo.in",duration:0.5})
                 gsap.to('.overlay',{opacity:0.9,duration:0.5, delay: 0.5})
                 gsap.to('.enter-button',{opacity:1,cursor: 'Pointer',duration:0.5, delay: 0.5})
+                gsap.to('.click_wiggle',{opacity:1,duration:0.5, delay: 1})
+                gsap.to('.click_pointer',{opacity:1,duration:0.5, delay: 1.2})
             });
             window.scrollTo(50, 50);
 
@@ -855,6 +857,13 @@ function openPortfolio(){
         gsap.to(scene.fog,{density:0.005,ease: "expo.out",duration:0.5})
         // gsap.to('.instructions',{zIndex:5,opacity:1,duration:1,delay:2})
         document.querySelector('.instructions_icon').classList.add("blink-border");
+        var tl = new gsap.timeline({repeat:2,repeatDelay:0.5,onComplete:()=>{
+                                        gsap.to('.instructions_wiggle, .instructions_pointer',{opacity:0,duration:0.5})
+                                        gsap.to('.instructions_wiggle, .instructions_pointer',{display:"none",delay:0.5})
+                                    }})
+                                    .to('.instructions_wiggle',0.2,{rotation:15})
+                                    .to('.instructions_wiggle',2,{rotation:0,ease: "elastic.out(0.9, .1)"});
+
         // openFullscreen();
     })
     document.getElementById('arp').src =arpImg;

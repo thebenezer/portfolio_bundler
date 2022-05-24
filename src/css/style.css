@@ -476,16 +476,17 @@ margin: auto;
   bottom: 0px;
   left:50%;
   transform: translate(-50%,0%);
-  align-self:baseline;
   margin: 20px auto;
   background-color: var(--paperdark);
   box-shadow: 5px 5px 25px 1px #0e0e0e99;
   border: #c9c5b9 1px solid;
   width: 150px;
   height: 30px;
+  line-height: 28px;
   border-radius: 2px;
   cursor: pointer;
   transition: all 0.5s ease;
+  color: var(--black);
 }
 .bookbutton:hover{
   background-color: #a1a1a1;
@@ -517,12 +518,22 @@ margin: auto;
   opacity: 0.5;
   cursor: pointer;
 }
+.instructions_pointer{
+  z-index: 2;
+  position: absolute;
+  right:145px;
+  top:20px;
+}
+.instructions_wiggle{
+  z-index: 2;
+  position: absolute;
+  right:160px;
+  top:65px;
+}
 .blink-border {
-  
   animation: blink 1s;
   animation-iteration-count: 10;
 }
-
 @keyframes blink { 
   50% { 
     border-color: var(--highlight) ; 
@@ -530,7 +541,6 @@ margin: auto;
     transform: scale(1.2);
   }  
 }
-
 .instructions_cont{
   background-color: #000;
   background-image: url('../assets/images/instructions_desktop.webp');
@@ -545,6 +555,7 @@ margin: auto;
 
 
 .hide-portrait{
+  flex: 1;
   padding: 0 20px;
   margin: auto;
   display: block;
@@ -555,6 +566,10 @@ margin: auto;
   align-content: center;
   opacity: 0;
   transition: all 0.5s ease;
+}
+.hide-portrait img{
+  width: 0;
+  /* height: 0; */
 }
 
 @media only screen and (max-device-width: 800px)and (orientation:landscape){
@@ -586,9 +601,13 @@ margin: auto;
     padding: 10px;
     overflow-y: scroll;
   }
-  .bookcontent p,.bookcontent a,.bookbutton ,.credits-info{
+  .bookcontent p,.credits-info{
     font-size: 12px;
     line-height: 20px;
+  }
+  .bookcontent a {
+    font-size: 12px;
+    line-height: 28px;
   }
   .bookbutton{
     margin-bottom: 10px;
@@ -614,12 +633,36 @@ margin: auto;
     margin: 10px 20px;
     height: 40%;
   }
+  .booktitle h3{
+    height: 20%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+  .bookcontent p,.credits-info{
+    font-size: 12px;
+    line-height: 20px;
+  }
+  .bookcontent a {
+    font-size: 12px;
+    line-height: 28px;
+  }
+  .bookbutton{
+    margin-bottom: 10px;
+  }
   .instructions_cont{
     background-color: #000;
     background-image: url('../assets/images/instructions_mobile_portrait.webp');
   }
+  .instructions_pointer{
+    right:120px;
+  }
+  .instructions_wiggle{
+    right:135px;
+  }
   .hamburger{
-    left: 15px;
+    left: 30px;
   }
   .equilizer {
     right: 30px;
@@ -631,7 +674,6 @@ margin: auto;
     height: 30%;
   }
   .hide-portrait{
-    flex: 1;
     opacity: 1;
     text-align: center;
     transition: all 0.5s ease;

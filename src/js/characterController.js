@@ -45,8 +45,8 @@ export default class CharacterController{
 
         this.body = new CANNON.Body({
             mass: 1,
-            // position: new CANNON.Vec3(-3.7321603111458113, 1.9534421246363518, 32.22759970714397),
-            position: new CANNON.Vec3(-45, 1.9534421246363518, -26),
+            position: new CANNON.Vec3(-3.7321603111458113, 1.9534421246363518, 32.22759970714397),
+            // position: new CANNON.Vec3(-45, 1.9534421246363518, -26),
             shape: shape,
             allowSleep: false,
             linearDamping:0.99,
