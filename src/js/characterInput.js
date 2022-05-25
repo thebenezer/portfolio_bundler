@@ -1,4 +1,6 @@
 import ControllerTouchInput from './touchInput'
+import * as THREE from 'three';
+const DIRECTIONS=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
 
 export default class CharacterInput {
     constructor() {
@@ -9,6 +11,7 @@ export default class CharacterInput {
         this._inputTouch=new ControllerTouchInput();    
         this.keysPressed = {ArrowUp:false,ArrowDown:false,ArrowLeft:false,ArrowRight:false, ' ':false};
         this.shiftToggle=false;
+        this.clock = new THREE.Clock();
         document.addEventListener('keydown', (e) => this._onKeyDown(e), false);
         document.addEventListener('keyup', (e) => this._onKeyUp(e), false);
     }
@@ -43,6 +46,8 @@ export default class CharacterInput {
 
         return directionOffset
     }
+
+
     _onKeyDown(e){
         this.shiftToggle=e.shiftKey;
         // if(e.key == ' '){
@@ -50,6 +55,10 @@ export default class CharacterInput {
         // }
         if (e.key in this.keysPressed){
             this.keysPressed[e.key]=true;
+            if (!this.clock.running) {
+                this.clock.start()
+            }
+            // console.log(this.clock)
         }
         // e.preventDefault();
         // switch (e.key) {
@@ -77,6 +86,9 @@ export default class CharacterInput {
         this.shiftToggle=e.shiftKey;
         if (e.key in this.keysPressed){
             this.keysPressed[e.key]=false;
+            if(DIRECTIONS.every(key => this.keysPressed[key] == false)){
+                this.clock.stop()
+            }
         }
         // switch (e.key) {
         //     case 'ArrowUp': // w

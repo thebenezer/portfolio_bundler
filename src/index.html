@@ -45,6 +45,23 @@
 			padding: 0;
 			box-sizing: border-box;
 		}	
+		.portalOverlay{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			display: none;
+			z-index: 6;
+			border-radius:50%;
+			background-color: #fff;
+		}
+		.portalOverlay img{
+			width: 100px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+		}
 		.overlay{
 			position: fixed;
 			display: flex;
@@ -105,8 +122,9 @@
 	</style>
 </head>
 <body>
+	<div id="info"></div>
 	<div class="portalOverlay">
-		<div class="overin"></div>
+		<img src="./assets/images/ebelogo_black.svg" alt="">
 	</div>
 	<div class="overlay">
 		<div class="hide-portrait">

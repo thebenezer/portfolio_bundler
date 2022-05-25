@@ -52,14 +52,7 @@ body{
   width: 100%;
   overflow: hidden;
 }
-.portalOverlay{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  display: none;
-  z-index: 6;
-  background-color: #fff;
-}
+
 .hamburger{
   z-index: 4;
   /* margin: auto 0px auto 20px; */
@@ -543,7 +536,7 @@ margin: auto;
 }
 .instructions_cont{
   background-color: #000;
-  background-image: url('../assets/images/instructions_desktop.webp');
+  background-image: url('../assets/images/instructions_desktop2.webp');
 }
 .link-img{
   position: relative;

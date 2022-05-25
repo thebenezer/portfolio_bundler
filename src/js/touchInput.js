@@ -44,6 +44,7 @@ export default class ControllerTouchInput {
   toggleMovement(evt,data) {
     this.joystickDOM.classList.remove('highlight')
     this.touchInputToggle=!this.touchInputToggle
+    this.touchRun=!this.touchRun
   }
   modifyDir(evt,data){
     this.joystickDOM.classList.add('highlight')

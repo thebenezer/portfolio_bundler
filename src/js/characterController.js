@@ -4,9 +4,8 @@ import * as CANNON from 'cannon-es'
 import CharacterInput from './characterInput'
 import { gsap } from 'gsap'
 const portalAnimation=gsap.timeline().pause();
-portalAnimation.to('.portalOverlay',{display:'flex',duration:0})
-portalAnimation.to('.portalOverlay',{duration:0,borderRadius:'50%',transformOrigin: "50% 50%"})
-portalAnimation.to('.portalOverlay',{duration:0.5,top:0,left:0,width:'100%',height:"100%",borderRadius:0})
+portalAnimation.to('.portalOverlay',{display:'block',duration:0})
+portalAnimation.to('.portalOverlay',{duration:0.5,width:'100%',height:"100%",borderRadius:0})
 
 export default class CharacterController{
 
@@ -113,18 +112,25 @@ export default class CharacterController{
             // this.camera.position.y -=7
         }
         this.character.getWorldPosition(this.oldObjectPosition);
-        let directionPressed =DIRECTIONS.some(key => this._input.keysPressed[key] == true) || this._input._inputTouch.touchInputToggle
+        let directionPressed =DIRECTIONS.some(key => this._input.keysPressed[key] == true)
         var play = 'idle';
         if(this.body.position.y<2.4){
             directionPressed = false
             play = 'fall'
         }
-
-        if (directionPressed && (this._input.shiftToggle||this._input._inputTouch.touchRun)) {
-            play = 'run'
-        } else if (directionPressed) {
-            play = 'walk'
-            // this.footstepSound.play()
+        else{
+            if ((directionPressed && this._input.shiftToggle)||this._input._inputTouch.touchRun) {
+                play = 'run'
+            }else if(this._input._inputTouch.touchInputToggle){
+                play = 'walk'
+                
+            } else if (directionPressed) {
+                play = 'walk'
+                this._input.clock.getElapsedTime()
+                if (this._input.clock.elapsedTime>2) {
+                    play = 'run'  
+                } 
+            }
         }
         if((this._input.keysPressed[' ']||this._input._inputTouch.touchJump) && this.canJump){
             // this.camera.position.y =this.character.position.y
