@@ -127,7 +127,7 @@ export default class CharacterController{
             } else if (directionPressed) {
                 play = 'walk'
                 this._input.clock.getElapsedTime()
-                if (this._input.clock.elapsedTime>2) {
+                if (this._input.clock.elapsedTime>1) {
                     play = 'run'  
                 } 
             }

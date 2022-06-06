@@ -38,13 +38,17 @@ export default class ControllerTouchInput {
     this._setupEventListeners();
   }
   _bindNipple() {
-    this.joystick.on('start end', (evt, data)=>this.toggleMovement(evt,data));
+    this.joystick.on('start', (evt, data)=>this.toggleMovement(evt,data));
     this.joystick.on('move',(evt,data)=>this.modifyDir(evt,data));
+    this.joystick.on('end',(evt,data)=>this.endMovement());
   }
   toggleMovement(evt,data) {
+    this.touchInputToggle=true
+  }
+  endMovement(){
     this.joystickDOM.classList.remove('highlight')
-    this.touchInputToggle=!this.touchInputToggle
-    this.touchRun=!this.touchRun
+    this.touchInputToggle=false;
+    this.touchRun=false;
   }
   modifyDir(evt,data){
     this.joystickDOM.classList.add('highlight')
