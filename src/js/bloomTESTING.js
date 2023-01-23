@@ -6,45 +6,6 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 // import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { gsap } from 'gsap'
-// import * as dat from 'lil-gui';
-// const gui=new dat.GUI();
-// function guiPanel() {
-//     const lightFolder = gui.addFolder('light')
-//     lightFolder.add(directionalLight, 'intensity').min(0).max(5).step(0.001)
-//     lightFolder.add(directionalLight.position, 'x').min(- 500).max(500).step(1)
-//     lightFolder.add(directionalLight.position, 'y').min(- 500).max(500).step(1)
-//     lightFolder.add(directionalLight.position, 'z').min(- 500).max(500).step(1)
-//     const sceneFolder = gui.addFolder('scene')
-//     sceneFolder.addColor(debugObject,'scenecolor')
-//     .onChange(()=>{
-//         scene.background.set(debugObject.scenecolor);
-//     });
-//     sceneFolder.addColor(debugObject,'ambientlight')
-//     .onChange(()=>{
-//         scene.children[0].color.set(debugObject.ambientlight);
-//     });
-//     sceneFolder.addColor(debugObject,'fogcolor')
-//     .onChange(()=>{
-//         scene.fog.color.set(debugObject.fogcolor);
-//     });
-//     sceneFolder.close()
-//     const objectFolder = gui.addFolder('colors')
-//     // lampFolder.add(selectiveBloomEffect.options,'intensity').min(0).max(5).step(0.01)
-//     objectFolder.addColor(debugObject,'lampcolor')
-//     .onChange(()=>{
-//         lampLightMaterial.color.set(debugObject.lampcolor);
-//     });
-//     objectFolder.addColor(debugObject,'watercolor')
-//     .onChange(()=>{
-//         water.material.color.set(debugObject.watercolor);
-//     });
-//     objectFolder.addColor(debugObject,'socialcolor')
-//     .onChange(()=>{
-//         socialChildMaterial.color.set(debugObject.socialcolor);
-//     });
-//     objectFolder.close()
-//     gui.close()
-// }
 /*
 * Debug GUI
 */
