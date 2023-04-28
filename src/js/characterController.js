@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-const DIRECTIONS=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'];
+const DIRECTIONS=['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','w','a','s','d'];
 import * as CANNON from 'cannon-es'
 import CharacterInput from './characterInput'
 import { gsap } from 'gsap'
