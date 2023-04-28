@@ -34,7 +34,7 @@ let water,lampLightMaterial,directionalLight,socialChildMaterial;
 let selectiveBloomEffect,selectiveBloomPass,bloomOptions;
 let music,selectMenuSound,selectItemSound;
 const clock=new THREE.Clock();
-let arpImg,stpImg,plaImg,shpImg,srfImg;
+let arpImg,stpImg,paraverseImg,shpImg,dataVizzImg;
 let mouse = new THREE.Vector2();
 let clickxy = new THREE.Vector2();
 
@@ -173,14 +173,14 @@ function init() {
 
     arpImg =require('../assets/projectImages/pinboards.webp')
     stpImg =require('../assets/projectImages/stip.webp')
-    plaImg =require('../assets/projectImages/planes.webp')
+    paraverseImg =require('../assets/projectImages/paraverse.webp')
     shpImg =require('../assets/projectImages/shop.webp')
-    srfImg =require('../assets/projectImages/surf.webp')
-    const proj1_texture = textureLoader.load(arpImg)
-    const proj2_texture = textureLoader.load(stpImg)
-    const proj3_texture = textureLoader.load(plaImg)
-    const proj4_texture = textureLoader.load(shpImg)
-    const proj5_texture = textureLoader.load(srfImg)
+    dataVizzImg =require('../assets/projectImages/dataVizz.webp')
+    const proj1_texture = textureLoader.load(paraverseImg)
+    const proj2_texture = textureLoader.load(dataVizzImg)
+    const proj3_texture = textureLoader.load(arpImg)
+    const proj4_texture = textureLoader.load(stpImg)
+    const proj5_texture = textureLoader.load(shpImg)
 
     proj1_texture.flipY = proj2_texture.flipY = proj3_texture.flipY = proj4_texture.flipY = proj5_texture.flipY = false
     proj1_texture.encoding = THREE.sRGBEncoding;
@@ -835,9 +835,9 @@ function openPortfolio(){
     })
     document.getElementById('arp').src =arpImg;
     document.getElementById('stp').src =stpImg;
-    document.getElementById('pla').src =plaImg;
+    document.getElementById('paraverse').src =paraverseImg;
     document.getElementById('shp').src =shpImg;
-    document.getElementById('srf').src =srfImg;
+    document.getElementById('dataVizz').src =dataVizzImg;
 }
 var elem = document.documentElement;
 function openFullscreen() {

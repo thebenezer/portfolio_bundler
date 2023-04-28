@@ -51,91 +51,26 @@ export default class CharacterInput {
 
     _onKeyDown(e){
         this.shiftToggle=e.shiftKey;
-        // if(e.key == ' '){
-        //     this.keysPressed[e.key]=true
-        // }
-        // if (e.key in this.keysPressed){
-        //     this.keysPressed[e.key]=true;
-        //     if (!this.clock.running) {
-        //         this.clock.start()
-        //     }
-        //     // console.log(this.clock)
-        // }
-        // e.preventDefault();
-        switch (e.key) {
-            case 'ArrowUp': // w
-                this.keysPressed[e.key] = true;
-                break;
-            case 'ArrowDown': // a
-                this.keysPressed[e.key] = true;
-                break;
-            case 'ArrowRight': // s
-                this.keysPressed[e.key] = true;
-                break;
-            case 'ArrowLeft': // d
-                this.keysPressed[e.key] = true;
-                break;
-            case 'w': // w
-                this.keysPressed[e.key] = true;
-                break;
-            case 'a': // a
-                this.keysPressed[e.key] = true;
-                break;
-            case 's': // s
-                this.keysPressed[e.key] = true;
-                break;
-            case 'd': // d
-                this.keysPressed[e.key] = true;
-                break;
-            case ' ': // SPACE
-                this.keysPressed[e.key]=true
-                break;
-            case 'Shift': // SHIFT
-            this.shiftToggle = true;
-            break;
+        if(e.key == ' '){
+            this.keysPressed[e.key]=true
+        }
+        if (e.key in this.keysPressed){
+            this.keysPressed[e.key]=true;
+            if (!this.clock.running) {
+                this.clock.start()
+            }
+            // console.log(this.clock)
         }
     }
     _onKeyUp(e){
-        // this.shiftToggle=e.shiftKey;
-        // if (e.key in this.keysPressed){
-        //     this.keysPressed[e.key]=false;
-        //     if(DIRECTIONS.every(key => this.keysPressed[key] == false)){
-        //         this.clock.stop()
-        //     }
-        // }
-        switch (e.key) {
-            case 'ArrowUp': // w
-                this.keysPressed[e.key] = false;
-                break;
-            case 'ArrowDown': // a
-                this.keysPressed[e.key] = false;
-                break;
-            case 'ArrowRight': // s
-                this.keysPressed[e.key] = false;
-                break;
-            case 'ArrowLeft': // d
-                this.keysPressed[e.key] = false;
-                break;
-            case 'w': // w
-                this.keysPressed[e.key] = false;
-                break;
-            case 'a': // a
-                this.keysPressed[e.key] = false;
-                break;
-            case 's': // s
-                this.keysPressed[e.key] = false;
-                break;
-            case 'd': // d
-                this.keysPressed[e.key] = false;
-                break;
-            case ' ': // SPACE
-                this.keysPressed[e.key]=false
-                break;
-            case 'Shift': // SHIFT
-            this.shiftToggle = false;
-            break;
+        this.shiftToggle=e.shiftKey;
+        if (e.key in this.keysPressed){
+            this.keysPressed[e.key]=false;
+            if(DIRECTIONS.every(key => this.keysPressed[key] == false)){
+                this.clock.stop()
+            }
         }
-    }
+        }
 
 
   };
