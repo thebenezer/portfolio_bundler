@@ -588,7 +588,60 @@ nav {
 	}
 }
 .instructions_cont {
-	background-color: #000;
+	background-color: #111;
+	color: var(--white);
+	overflow-y: auto;
+}
+.instructions_content {
+	margin: auto;
+	padding: 20px 40px;
+	max-width: 600px;
+	width: 100%;
+}
+.instructions_content h2 {
+	font-size: 1.6rem;
+	font-weight: 500;
+	margin-bottom: 24px;
+	color: var(--highlight);
+	text-align: center;
+}
+.instructions_section {
+	margin-bottom: 20px;
+}
+.instructions_section h3 {
+	font-size: 1rem;
+	font-weight: 500;
+	margin-bottom: 8px;
+	color: var(--highlight);
+	border-bottom: 1px solid #333;
+	padding-bottom: 4px;
+}
+.instructions_section ul {
+	list-style: none;
+	padding: 0;
+}
+.instructions_section ul li {
+	font-size: 0.9rem;
+	padding: 4px 0;
+	color: #ccc;
+}
+.key {
+	display: inline-block;
+	background: #333;
+	border: 1px solid #555;
+	border-radius: 4px;
+	padding: 1px 6px;
+	font-size: 0.8rem;
+	color: var(--white);
+	font-family: monospace;
+}
+.mobile-only {
+	display: none;
+}
+@media (max-device-width: 1024px) {
+	.mobile-only {
+		display: block;
+	}
 }
 .link-img {
 	position: relative;

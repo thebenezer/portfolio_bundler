@@ -7,7 +7,7 @@ import { gsap } from "gsap";
 
 import * as CANNON from "cannon-es";
 
-import CharacterController from "./characterController";
+import CharacterController from "./CharacterController";
 
 import {
 	BlendFunction,
@@ -46,7 +46,7 @@ let clickxy = new THREE.Vector2();
 let characterControllerInstance,
 	raycaster,
 	camRaycaster,
-	interractObjects = [],
+	interactObjects = [],
 	INTERSECTED;
 
 hasWebGL();
@@ -375,7 +375,7 @@ function init() {
 		close.addEventListener("click", onClose, false);
 	});
 
-	setUpRayInterractions();
+	setupRayInteractions();
 	canvas.addEventListener("click", onClickEventHandler, false);
 	// canvas.addEventListener( 'click', onClickOpen, false );
 	// canvas.addEventListener( 'touchstart', onDocumentTouchStart, false );
@@ -441,7 +441,7 @@ function onClickEventHandler(event) {
 				2 +
 			1;
 		camRaycaster.setFromCamera(mouse, characterControllerInstance.camera);
-		const selected = camRaycaster.intersectObjects(interractObjects, false);
+		const selected = camRaycaster.intersectObjects(interactObjects, false);
 		// console.log(clickxy, mouse,selected.length)
 		if (selected.length > 0 && INTERSECTED == selected[0].object) {
 			onClickOpen();
@@ -463,7 +463,7 @@ function onClickEventHandler(event) {
 // }
 
 function rayCheck() {
-	const intersects = raycaster.intersectObjects(interractObjects, false);
+	const intersects = raycaster.intersectObjects(interactObjects, false);
 
 	if (intersects.length > 0) {
 		// console.log(intersects)
@@ -678,7 +678,7 @@ function setupOrbitControls() {
 	controls.update();
 }
 
-function setUpRayInterractions() {
+function setupRayInteractions() {
 	// ***** RAYCASTER ****** //
 	camRaycaster = new THREE.Raycaster();
 	raycaster = new THREE.Raycaster();
@@ -802,7 +802,7 @@ function setUpRayInterractions() {
 		social3,
 		social4,
 	);
-	interractObjects.push(
+	interactObjects.push(
 		proj1,
 		proj2,
 		proj3,

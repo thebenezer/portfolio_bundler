@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
-import CharacterInput from "./characterInput";
+import CharacterInput from "./CharacterInput";
 import { gsap } from "gsap";
 
 const DIRECTIONS = [
@@ -60,7 +60,7 @@ export default class CharacterController {
 			position: new CANNON.Vec3(
 				-3.7321603111458113,
 				1.9534421246363518,
-				32.22759970714397
+				32.22759970714397,
 			),
 			// position: new CANNON.Vec3(-45, 1.9534421246363518, -26),
 			shape: shape,
@@ -136,7 +136,7 @@ export default class CharacterController {
 		}
 		this.character.getWorldPosition(this.oldObjectPosition);
 		let directionPressed = DIRECTIONS.some(
-			(key) => this._input.keysPressed[key] == true
+			(key) => this._input.keysPressed[key] == true,
 		);
 		var play = "idle";
 		if (this.body.position.y < 2.4) {
@@ -181,7 +181,7 @@ export default class CharacterController {
 			// calculate towards camera direction
 			var angleYCameraDirection = Math.atan2(
 				this.camera.position.x - this.character.position.x,
-				this.camera.position.z - this.character.position.z
+				this.camera.position.z - this.character.position.z,
 			);
 			// diagonal movement angle offset
 			var directionOffset = this._input._directionOffset();
@@ -189,13 +189,13 @@ export default class CharacterController {
 			// rotate character
 			this.rotateQuarternion.setFromAxisAngle(
 				this.rotateAngle,
-				angleYCameraDirection + directionOffset
+				angleYCameraDirection + directionOffset,
 			);
 			this.body.quaternion.copy(this.character.quaternion);
 			// this.character.quaternion.rotateTowards(this.body.quaternion, 0.1)
 			this.character.quaternion.rotateTowards(
 				this.rotateQuarternion,
-				delta * 10
+				delta * 10,
 			);
 
 			// calculate direction

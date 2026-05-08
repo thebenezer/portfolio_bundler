@@ -1,68 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
-	<meta name="theme-color" content="#000" >
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0" />
+	<meta name="theme-color" content="#000">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="mobile-web-app-capable" content="yes" />
 	<link rel="shortcut icon" href="./assets/images/ebelogo_black.svg" type="image/x-icon">
 	<title>Ebenezer - Portfolio</title>
-    <meta name="description" content="Code Wizard, Creative Developer, Freelancer. I love working on challenging problems and coming up with creative solutions!">
+	<meta name="description"
+		content="Code Wizard, Creative Developer, Freelancer. I love working on challenging problems and coming up with creative solutions!">
 
-    <meta itemprop="name" content="Ebenezer - Portfolio">
-    <meta itemprop="description" content="Code Wizard, Creative Developer.">
-    <meta itemprop="image" content="https://thebenezer.com/social2.webp">
+	<meta itemprop="name" content="Ebenezer - Portfolio">
+	<meta itemprop="description" content="Code Wizard, Creative Developer.">
+	<meta itemprop="image" content="https://thebenezer.com/social2.webp">
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Ebenezer - Portfolio">
-    <meta name="twitter:description" content="Code Wizard, Creative Developer.">
-    <meta name="twitter:image" content="https://thebenezer.com/social2.webp">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="Ebenezer - Portfolio">
+	<meta name="twitter:description" content="Code Wizard, Creative Developer.">
+	<meta name="twitter:image" content="https://thebenezer.com/social2.webp">
 
-    <meta property="og:site_name" content="Ebenezer - Portfolio">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://thebenezer.com">
-    <meta property="og:title" content="Ebenezer - Portfolio">
-    <meta property="og:description" content="Code Wizard, Creative Developer.">
-    <meta property="og:image" content="https://thebenezer.com/social2.webp">
+	<meta property="og:site_name" content="Ebenezer - Portfolio">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://thebenezer.com">
+	<meta property="og:title" content="Ebenezer - Portfolio">
+	<meta property="og:description" content="Code Wizard, Creative Developer.">
+	<meta property="og:image" content="https://thebenezer.com/social2.webp">
 
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <!-- <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+	<!-- <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png"> -->
-    <meta name="apple-mobile-web-app-title" content="thebenezer - Portfolio">
-    <meta name="application-name" content="thebenezer - Portfolio">
-    <meta name="msapplication-TileColor" content="#0e0e0e">
-    <meta name="theme-color" content="#0e0e0e">
-    
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+	<meta name="apple-mobile-web-app-title" content="thebenezer - Portfolio">
+	<meta name="application-name" content="thebenezer - Portfolio">
+	<meta name="msapplication-TileColor" content="#0e0e0e">
+	<meta name="theme-color" content="#0e0e0e">
+
+	<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
 	<style>
-		*{
+		* {
 			margin: 0;
 			padding: 0;
 			box-sizing: border-box;
-		}	
-		.portalOverlay{
+		}
+
+		.portalOverlay {
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%,-50%);
+			transform: translate(-50%, -50%);
 			display: none;
 			z-index: 6;
-			border-radius:50%;
+			border-radius: 50%;
 			background-color: #fff;
 		}
-		.portalOverlay img{
+
+		.portalOverlay img {
 			width: 100px;
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%,-50%);
+			transform: translate(-50%, -50%);
 		}
-		.overlay{
+
+		.overlay {
 			position: fixed;
 			display: flex;
 			flex-direction: column;
@@ -73,54 +78,61 @@
 			background-color: black;
 			z-index: 10;
 		}
-		
-		.logo{
+
+		.logo {
 			width: 50px;
 			-webkit-filter: invert(1);
 			transition: all 0.5s ease;
 			filter: invert(1);
 		}
-		.enter-button{
+
+		.enter-button {
 			margin: auto;
 			opacity: 0;
 			padding: 7px 50px 3px;
 			color: white;
 			border: #fefefe 1px solid;
-  			border-radius: 2px;
+			border-radius: 2px;
 			transition: all 0.5s ease;
 		}
-		.enter-button:hover{
+
+		.enter-button:hover {
 			background-color: white;
 			color: black;
 		}
-		.enter-button:hover>.logo{
+
+		.enter-button:hover>.logo {
 			-webkit-filter: invert(0);
 			filter: invert(0);
 		}
-		.hide-portrait{
+
+		.hide-portrait {
 			flex: 1;
 		}
 
-		.clickEnterIcon{
+		.clickEnterIcon {
 			flex: 1;
 			padding-top: 10px;
 			display: flex;
 			justify-content: center;
 		}
-		.click_wiggle{
+
+		.click_wiggle {
 			opacity: 0;
 			margin-top: 35px;
-			width:50px;
+			width: 50px;
 			height: 28px;
 		}
-		.click_pointer{
+
+		.click_pointer {
 			opacity: 0;
-			width:50px;
-			height:50px;
-			transform:rotate(76deg) scaleX(-1);
+			width: 50px;
+			height: 50px;
+			transform: rotate(76deg) scaleX(-1);
 		}
 	</style>
 </head>
+
 <body>
 	<div id="info"></div>
 	<div class="portalOverlay">
@@ -128,21 +140,24 @@
 	</div>
 	<div class="overlay">
 		<div class="hide-portrait">
-			<img src="./assets/images/screen-rotate.png" alt="rotate-device"/>
+			<img src="./assets/images/screen-rotate.png" alt="rotate-device" />
 			<p>Rotate your device<br>for a better experience.</p>
 		</div>
 		<div class="loading-bar"></div>
-		<div class="enter-button"><img class="logo" width="50" height="30" src="./assets/images/ebelogo_black.svg" alt="logo"/></div>
+		<div class="enter-button"><img class="logo" width="50" height="30" src="./assets/images/ebelogo_black.svg"
+				alt="logo" /></div>
 		<div class="clickEnterIcon">
 			<img class="click_wiggle" src="./assets/images/clickText.webp" alt="" width="50" height="50">
-			<img class="click_pointer" src="./assets/images/pointer.webp" alt=""  width="100" height="100">
+			<img class="click_pointer" src="./assets/images/pointer.webp" alt="" width="100" height="100">
 		</div>
 	</div>
 	<div class="instructions_icon">
 		<p>i</p>
 	</div>
-	<img src="./assets/images/pointer.webp" alt="" width="40" height="40" alt="instructions_img" class="instructions_pointer" >
-	<img src="./assets/images/instructions_icon.webp" width="100" height="20" alt="instructions_img" class="instructions_wiggle">
+	<img src="./assets/images/pointer.webp" alt="" width="40" height="40" alt="instructions_img"
+		class="instructions_pointer">
+	<img src="./assets/images/instructions_icon.webp" width="100" height="20" alt="instructions_img"
+		class="instructions_wiggle">
 	<div class="hamburger">
 		<span class="line1"></span>
 		<span class="line2"></span>
@@ -150,12 +165,12 @@
 	</div>
 	<svg xmlns="http://www.w3.org/2000/svg" class="equilizer" viewBox="0 0 128 128">
 		<g>
-		  <rect class="bar" transform="translate(25,0)" y="0"></rect>
-		  <rect class="bar" transform="translate(50,0)" y="0"></rect>
-		  <rect class="bar" transform="translate(75,0)" y="0"></rect>
-		  <rect class="bar" transform="translate(100,0)" y="0"></rect>
+			<rect class="bar" transform="translate(25,0)" y="0"></rect>
+			<rect class="bar" transform="translate(50,0)" y="0"></rect>
+			<rect class="bar" transform="translate(75,0)" y="0"></rect>
+			<rect class="bar" transform="translate(100,0)" y="0"></rect>
 		</g>
-	  </svg>
+	</svg>
 	<nav>
 		<div class="navlinks">
 			<div class="navlinks-about navitem">About</div>
@@ -163,15 +178,20 @@
 			<!-- <div>Resume</div>
 			<div>Credits</div> -->
 			<div class="navsocial">
-				<a href="https://www.linkedin.com/in/thebenezer/" target="_blank" class="navitem"><img width="30" height="30" src="./assets/images/linkedin.webp" alt="nav icon Linkedin"></a>
-				<a href="https://github.com/thebenezer" target="_blank" class="navitem"><img width="30" height="30" src="./assets/images/github.webp" alt="nav icon github"></a>
-				<a href="https://twitter.com/th_ebenezer" target="_blank" class="navitem"><img width="30" height="30" src="./assets/images/twitter.webp" alt="nav icon twitter"></a>
-				<a href="mailto:thebenezer.mail@gmail.com?subject=Contacting from Portfolio" target="_blank" class="navitem"><img width="30" height="30" src="./assets/images/email.webp" alt="nav icon e-mail"></a>
+				<a href="https://www.linkedin.com/in/thebenezer/" target="_blank" class="navitem"><img width="30"
+						height="30" src="./assets/images/linkedin.webp" alt="nav icon Linkedin"></a>
+				<a href="https://github.com/thebenezer" target="_blank" class="navitem"><img width="30" height="30"
+						src="./assets/images/github.webp" alt="nav icon github"></a>
+				<a href="https://twitter.com/th_ebenezer" target="_blank" class="navitem"><img width="30" height="30"
+						src="./assets/images/twitter.webp" alt="nav icon twitter"></a>
+				<a href="mailto:thebenezer.mail@gmail.com?subject=Contacting from Portfolio" target="_blank"
+					class="navitem"><img width="30" height="30" src="./assets/images/email.webp"
+						alt="nav icon e-mail"></a>
 			</div>
 		</div>
 	</nav>
 
-    <canvas  id="canvas"></canvas>
+	<canvas id="canvas"></canvas>
 	<div id="zone_joystick" class="">
 		<img src="./assets/images/arrows.svg" alt="joystick">
 	</div>
@@ -179,76 +199,92 @@
 
 	<div class="box">
 		<div class="info_cont">
-			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon"/>
+			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon" />
 			<div class="projImg">
 				<img id="paraverse" alt="screenshot of paraverse gameplay">
 			</div>
 			<div class="info">
 				<h2>The Paraverse — An In-Browser Metaverse Game</h2>
 				<h3>Description:</h3>
-				<p>Built a game with the team at ParagonsNFT. An open world with dynamic day and night cycles, grass, water, shaders and more.</p>
+				<p>Built a game with the team at ParagonsNFT. An open world with dynamic day and night cycles, grass,
+					water, shaders and more.</p>
 				<h3>Tools Used:</h3>
 				<p>Three.js, WebGL, GLSL, React, Next.js</p>
 				<h3>Live Link:
-				<a style="display: inline;" href="https://paraverse.paragonsnft.com/" target="_blank" rel="noopener noreferrer"><img class="link-img" width="16" height="16" src="./assets/images/link.png" alt="link-icon"> Paraverse</a></h3>
+					<a style="display: inline;" href="https://paraverse.paragonsnft.com/" target="_blank"
+						rel="noopener noreferrer"><img class="link-img" width="16" height="16"
+							src="./assets/images/link.png" alt="link-icon"> Paraverse</a>
+				</h3>
 			</div>
 		</div>
 	</div>
 	<div class="box">
 		<div class="info_cont">
-			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon"/>
+			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon" />
 			<div class="projImg">
 				<img id="dataVizz" alt="Visualizing Thousands of AI Generated Images using a Clustering Algorithm">
 			</div>
 			<div class="info">
-				<h2>Diffusion Architecture — Visualizing Thousands of AI Generated Images using a Clustering Algorithm</h2>
+				<h2>Diffusion Architecture — Visualizing Thousands of AI Generated Images using a Clustering Algorithm
+				</h2>
 				<h3>Description:</h3>
-				<p>Created a web app for a client to visualize thousands images using a clustering algorithm. Added features for viewing point clouds and depth textures of AI generated images../</p>
+				<p>Created a web app for a client to visualize thousands images using a clustering algorithm. Added
+					features for viewing point clouds and depth textures of AI generated images../</p>
 				<h3>Tools Used:</h3>
 				<p>Python, Three.js, WebGL, GLSL, Vite</p>
 				<h3>Github:
-				<a href="https://explore.diffusionarchitecture.com/" target="_blank" rel="noopener noreferrer"><img class="link-img" width="16" height="16" src="./assets/images/link.png" alt="link-icon"> Diffusion Architecture</a></h3>
+					<a href="https://explore.diffusionarchitecture.com/" target="_blank" rel="noopener noreferrer"><img
+							class="link-img" width="16" height="16" src="./assets/images/link.png" alt="link-icon">
+						Diffusion Architecture</a>
+				</h3>
 			</div>
 		</div>
 	</div>
 	<div class="box">
 		<div class="info_cont">
-			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon"/>
+			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon" />
 			<div class="projImg">
 				<img id="arp" alt="pinboARds project screenshot">
 			</div>
 			<div class="info">
 				<h2>pinboARds</h2>
 				<h3>Description:</h3>
-				<p>A web based Augmented Reality application where users can create and interact with virtual pinboards.</p>
+				<p>A web based Augmented Reality application where users can create and interact with virtual pinboards.
+				</p>
 				<h3>Tools Used:</h3>
 				<p>PHP, Javascript, WebXR, threejs, Google Cloud Platform, Git</p>
-				<h3>Github: <a href="https://github.com/thebenezer/pinboARds" target="_blank" rel="noopener noreferrer"><img class="link-img" width="16" height="16" src="./assets/images/link.png" alt="link-icon"> pinboARds</a></h3>
-				
+				<h3>Github: <a href="https://github.com/thebenezer/pinboARds" target="_blank"
+						rel="noopener noreferrer"><img class="link-img" width="16" height="16"
+							src="./assets/images/link.png" alt="link-icon"> pinboARds</a></h3>
+
 			</div>
 		</div>
 	</div>
 	<div class="box">
 		<div class="info_cont">
-			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon"/>
+			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon" />
 			<div class="projImg">
 				<img id="stp" alt="stippling project sample">
 			</div>
 			<div class="info">
 				<h2>Stippling</h2>
 				<h3>Description:</h3>
-				<p>A project to convert any given image into stipple artwork, using quadtrees and circle packing algorithm. </p>
+				<p>A project to convert any given image into stipple artwork, using quadtrees and circle packing
+					algorithm. </p>
 				<h3>Tools Used:</h3>
 				<p>Python, PILLOW Library, numpy, Git</p>
 				<h3>Github:
-				<a href="https://github.com/thebenezer/stippling" target="_blank" rel="noopener noreferrer"><img class="link-img" width="16" height="16" src="./assets/images/link.png" alt="link-icon"> stippling</a></h3>
+					<a href="https://github.com/thebenezer/stippling" target="_blank" rel="noopener noreferrer"><img
+							class="link-img" width="16" height="16" src="./assets/images/link.png" alt="link-icon">
+						stippling</a>
+				</h3>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="box">
 		<div class="info_cont">
-			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon"/>
+			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon" />
 			<div class="projImg">
 				<!-- <img src="./assets/projectImages/shop.jpg" alt=""> -->
 				<img id="shp" alt="Monochromatic shop website screenshot">
@@ -256,30 +292,37 @@
 			<div class="info">
 				<h2>Monochromatic Shop</h2>
 				<h3>Description:</h3>
-				<p>An e-commerce store to list and sell my artworks. Hosted on Google Cloud Platform with PayPal Integration for secure payments.</p>
+				<p>An e-commerce store to list and sell my artworks. Hosted on Google Cloud Platform with PayPal
+					Integration for secure payments.</p>
 				<h3>Tools Used:</h3>
 				<p>Google Cloud Platform, Javascript, PHP, Bootstrap</p>
 				<h3>Github:
-				<a style="display: inline;" href="https://github.com/thebenezer/island" target="_blank" rel="noopener noreferrer"><img class="link-img" width="16" height="16" src="./assets/images/link.png" alt="link-icon"> shop</a></h3>
+					<a style="display: inline;" href="https://github.com/thebenezer/island" target="_blank"
+						rel="noopener noreferrer"><img class="link-img" width="16" height="16"
+							src="./assets/images/link.png" alt="link-icon"> shop</a>
+				</h3>
 			</div>
 		</div>
 	</div>
-	
-	
+
+
 
 	<div class="library">
 		<div class="lib_cont">
-			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon"/>
+			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon" />
 			<div class="book about">
 				<div class="booktitle">
 					<h3>About</h3>
 				</div>
 				<!-- <img src="./assets/images/Openbook.svg" alt="" class="openBookImg"> -->
 				<div class="bookcontent">
-					<p>Hi, I am Ebenezer- Creative Dev, Freelancer and DIY Enthusiast. I love working on challenging problems and coming up with creative solutions! Optimization is my jam. If you're looking for a developer to add to your team, I'd love to hear from you! 👇
-					<br><br>
+					<p>Hi, I am Ebenezer- Creative Dev, Freelancer and DIY Enthusiast. I love working on challenging
+						problems and coming up with creative solutions! Optimization is my jam. If you're looking for a
+						developer to add to your team, I'd love to hear from you! 👇
+						<br><br>
 					</p>
-					<a href="mailto:thebenezer.mail@gmail.com?subject=Contacting from Portfolio" class="bookbutton">Contact</a>
+					<a href="mailto:thebenezer.mail@gmail.com?subject=Contacting from Portfolio"
+						class="bookbutton">Contact</a>
 					<!-- <button class="bookbutton">Contact</button> -->
 				</div>
 			</div>
@@ -300,41 +343,61 @@
 					<div class="credits-info">
 						Tools Used:
 						<ul>
-							<li><a href="https://www.blender.org/" target="_blank" rel="noopener noreferrer">Blender</a></li>
-							<li><a href="https://inkscape.org/" target="_blank" rel="noopener noreferrer">Inkscape</a></li>
-							<li><a href="https://threejs.org/" target="_blank" rel="noopener noreferrer">three.js</a></li>
-							<li><a href="https://webpack.js.org/" target="_blank" rel="noopener noreferrer">Webpack</a></li>
-							<li><a href="https://greensock.com/" target="_blank" rel="noopener noreferrer">GSAP Animation Library</a></li>
+							<li><a href="https://www.blender.org/" target="_blank" rel="noopener noreferrer">Blender</a>
+							</li>
+							<li><a href="https://inkscape.org/" target="_blank" rel="noopener noreferrer">Inkscape</a>
+							</li>
+							<li><a href="https://threejs.org/" target="_blank" rel="noopener noreferrer">three.js</a>
+							</li>
+							<li><a href="https://webpack.js.org/" target="_blank" rel="noopener noreferrer">Webpack</a>
+							</li>
+							<li><a href="https://greensock.com/" target="_blank" rel="noopener noreferrer">GSAP
+									Animation Library</a></li>
 						</ul>
 						Icons:
 						<ul>
-							<li><a href="https://www.flaticon.com/free-icons/github" target="_blank" rel="noopener noreferrer" title="github icons">Flaticon: Github</a></li>
-							<li><a href="https://www.flaticon.com/free-icons/email" target="_blank" rel="noopener noreferrer" title="email icons">Flaticon: Email </a></li>
-							<li><a href="https://www.flaticon.com/free-icons/twitter-social-badge" target="_blank" rel="noopener noreferrer" title="twitter-social-badge icons">Flaticon: Twitter</a></li>
-							<li><a href="https://www.flaticon.com/free-icons/linkedin" target="_blank" rel="noopener noreferrer" title="linkedin icons">Flaticon: Linkedin</a></li>
-							<li><a href="https://www.flaticon.com/free-icons/screen-rotate" target="_blank" rel="noopener noreferrer" title="orientation icons">Flaticon: screen-rotate</a></li>
+							<li><a href="https://www.flaticon.com/free-icons/github" target="_blank"
+									rel="noopener noreferrer" title="github icons">Flaticon: Github</a></li>
+							<li><a href="https://www.flaticon.com/free-icons/email" target="_blank"
+									rel="noopener noreferrer" title="email icons">Flaticon: Email </a></li>
+							<li><a href="https://www.flaticon.com/free-icons/twitter-social-badge" target="_blank"
+									rel="noopener noreferrer" title="twitter-social-badge icons">Flaticon: Twitter</a>
+							</li>
+							<li><a href="https://www.flaticon.com/free-icons/linkedin" target="_blank"
+									rel="noopener noreferrer" title="linkedin icons">Flaticon: Linkedin</a></li>
+							<li><a href="https://www.flaticon.com/free-icons/screen-rotate" target="_blank"
+									rel="noopener noreferrer" title="orientation icons">Flaticon: screen-rotate</a></li>
 						</ul>
 						Music:
 						<ul>
-							<li><a href="https://www.purple-planet.com" target="_blank" rel="noopener noreferrer">Mist in the Morning</a></li>
-							<li><a href="https://mixkit.co/" target="_blank" rel="noopener noreferrer">Jump Sound</a></li>
-							<li><a href="https://mixkit.co/" target="_blank" rel="noopener noreferrer">Select Main Sound</a></li>
-							<li><a href="https://mixkit.co/" target="_blank" rel="noopener noreferrer">Select Item Sound</a></li>
+							<li><a href="https://www.purple-planet.com" target="_blank" rel="noopener noreferrer">Mist
+									in the Morning</a></li>
+							<li><a href="https://mixkit.co/" target="_blank" rel="noopener noreferrer">Jump Sound</a>
+							</li>
+							<li><a href="https://mixkit.co/" target="_blank" rel="noopener noreferrer">Select Main
+									Sound</a></li>
+							<li><a href="https://mixkit.co/" target="_blank" rel="noopener noreferrer">Select Item
+									Sound</a></li>
 						</ul>
 						GLTF Models:
 						<ul>
-							<li><a href="https://github.com/brunosimon/folio-2019" target="_blank" rel="noopener noreferrer">Octocat Model</a></li>
-							<li><a href="https://github.com/brunosimon/folio-2019" target="_blank" rel="noopener noreferrer">Twitter Model</a></li>
-							<li><a href="https://github.com/brunosimon/folio-2019" target="_blank" rel="noopener noreferrer">Linkedin Model</a></li>
-							<li><a href="https://github.com/brunosimon/folio-2019" target="_blank" rel="noopener noreferrer">Mail-box Model</a></li>
+							<li><a href="https://github.com/brunosimon/folio-2019" target="_blank"
+									rel="noopener noreferrer">Octocat Model</a></li>
+							<li><a href="https://github.com/brunosimon/folio-2019" target="_blank"
+									rel="noopener noreferrer">Twitter Model</a></li>
+							<li><a href="https://github.com/brunosimon/folio-2019" target="_blank"
+									rel="noopener noreferrer">Linkedin Model</a></li>
+							<li><a href="https://github.com/brunosimon/folio-2019" target="_blank"
+									rel="noopener noreferrer">Mail-box Model</a></li>
 						</ul>
 						Image:
 						<ul>
-							<li><a href="https://www.vecteezy.com/free-vector/open-book">Open Book Vectors by Vecteezy</a></li>
+							<li><a href="https://www.vecteezy.com/free-vector/open-book">Open Book Vectors by
+									Vecteezy</a></li>
 						</ul>
 						<br><br><br>
 					</div>
-					<img style="margin: 10px auto;"src="./assets/images/down.svg" width="46" height="12" alt="scroll">
+					<img style="margin: 10px auto;" src="./assets/images/down.svg" width="46" height="12" alt="scroll">
 				</div>
 			</div>
 			<!-- <img src="./assets/ImageCreated/about.jpg" class="book"/>
@@ -344,26 +407,59 @@
 	</div>
 	<div class="lab">
 		<div class="info_cont">
-			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon"/>
+			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon" />
 			<p class="laboratory">The laboratory is still under construction. Coming soon!</p>
 		</div>
 	</div>
 
 	<div class="instructions">
 		<div class="info_cont instructions_cont">
-			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon"/>
-			<!-- <img src="./assets/images/instructions_desktop.jpg"> -->
+			<img src="./assets/images/close.svg" class="closeProj" alt="close-icon" />
+			<div class="instructions_content">
+				<h2>How to Play</h2>
+				<div class="instructions_section">
+					<h3>Movement</h3>
+					<ul>
+						<li><span class="key">W A S D</span> or <span class="key">↑ ↓ ← →</span> — Move</li>
+						<li><span class="key">Shift</span> — Sprint</li>
+						<li><span class="key">Space</span> — Jump</li>
+					</ul>
+				</div>
+				<div class="instructions_section">
+					<h3>Camera</h3>
+					<ul>
+						<li><span class="key">Click &amp; Drag</span> — Rotate camera</li>
+						<li><span class="key">Scroll</span> — Zoom</li>
+					</ul>
+				</div>
+				<div class="instructions_section">
+					<h3>Interact</h3>
+					<ul>
+						<li>Walk up to an object to highlight it</li>
+						<li><span class="key">Enter</span> or <span class="key">Click</span> — Open / Interact</li>
+					</ul>
+				</div>
+				<div class="instructions_section mobile-only">
+					<h3>Mobile</h3>
+					<ul>
+						<li>Use the <strong>joystick</strong> to move</li>
+						<li>Tap the <strong>jump button</strong> to jump</li>
+						<li>Tap highlighted objects to interact</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 
 
-	<img src="./assets/images/leftArrow.svg" class="prev" alt="previous-icon"/>
-	<img src="./assets/images/rightArrow.svg" class="next" alt="next-icon"/>
-	
+	<img src="./assets/images/leftArrow.svg" class="prev" alt="previous-icon" />
+	<img src="./assets/images/rightArrow.svg" class="next" alt="next-icon" />
+
 	<!-- <img src="./assets/images/select3.svg" id="interractButton"/> -->
-	<img src="./assets/images/jump.svg" id="jumpButton"/>
+	<img src="./assets/images/jump.svg" id="jumpButton" />
 
 	<div id="info"></div>
-	
+
 </body>
+
 </html>
