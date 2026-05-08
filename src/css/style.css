@@ -163,10 +163,6 @@ nav{
   z-index: -1;
   width: 0px;
   background-color: var(--paperlight);
-  background-image: url('../assets/images/ebelogo.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
   /* transform-origin: top left; */
   /* transform: scaleX(0); */
 }
@@ -323,10 +319,6 @@ margin: auto;
   height: 90%;
   margin: auto;
   background-color: #393939ce;
-  background-image: url('../assets/images/ebelogo.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
   /* background: linear-gradient(-0deg, #efd5fff3 0%, #515adaf1 100%); */
   /* background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%); */
   border: 2px #e0e0e0 solid;
@@ -536,7 +528,6 @@ margin: auto;
 }
 .instructions_cont{
   background-color: #000;
-  background-image: url('../assets/images/instructions_desktop2.webp');
 }
 .link-img{
   position: relative;
@@ -607,7 +598,6 @@ margin: auto;
   }
   .instructions_cont{
     background-color: #000;
-    background-image: url('../assets/images/instructions_mobile.webp');
   }
 }
 
@@ -646,7 +636,6 @@ margin: auto;
   }
   .instructions_cont{
     background-color: #000;
-    background-image: url('../assets/images/instructions_mobile_portrait.webp');
   }
   .instructions_pointer{
     right:120px;
