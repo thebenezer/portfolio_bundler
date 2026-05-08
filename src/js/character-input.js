@@ -1,4 +1,4 @@
-import ControllerTouchInput from "./TouchInput";
+import ControllerTouchInput from "./touch-input";
 import * as THREE from "three";
 const DIRECTIONS = [
 	"ArrowUp",

@@ -7,7 +7,7 @@ import { gsap } from "gsap";
 
 import * as CANNON from "cannon-es";
 
-import CharacterController from "./CharacterController";
+import CharacterController from "./character-controller";
 
 import {
 	BlendFunction,

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
-import CharacterInput from "./CharacterInput";
+import CharacterInput from "./character-input";
 import { gsap } from "gsap";
 
 const DIRECTIONS = [
